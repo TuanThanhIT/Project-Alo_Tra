@@ -21,6 +21,13 @@ public class MilkTeaType {
     public MilkTeaType() {
     }
 
+    @Override
+    public String toString() {
+        return "MilkTeaType{" +
+               "milkTeaTypeID=" + milkTeaTypeID +
+               ", milkTeaTypeName='" + milkTeaTypeName + '\'' +
+               '}';
+    }
     // Getters và Setters
     public int getMilkTeaTypeID() {
         return milkTeaTypeID;
