@@ -1,0 +1,41 @@
+/* Sidebar */
+#sidebar {
+    width: 16.6667%; /* 1/6 chiều ngang màn hình */
+    height: 100%; /* Full chiều cao */
+    overflow-y: auto; /* Hiển thị cuộn nếu nội dung quá nhiều */
+    background-color: #f8f9fa;
+}
+
+#sidebar .sb-sidenav-menu {
+    padding-top: 1rem;
+}
+
+#sidebar .nav-link {
+    color: #495057;
+    font-weight: 500;
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+#sidebar .nav-link:hover {
+    background-color: #e9ecef;
+    color: #007bff;
+    border-radius: 4px;
+}
+
+#sidebar .sb-sidenav-menu-heading {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-top: 1rem;
+    padding-left: 1rem;
+}
+
+/* Main Content */
+#main-content {
+    background-color: #ffffff;
+    overflow-y: auto;
+}
