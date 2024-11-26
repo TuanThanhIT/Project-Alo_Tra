@@ -14,7 +14,7 @@ public class MilkTea {
     @ManyToOne
     @JoinColumn(name = "TypeMilkTeaID", referencedColumnName = "milkTeaTypeID")
     private MilkTeaType milkTeaType;
-
+    
     // Mối quan hệ N:M với Ingredient thông qua MilkTea_Ingredient
     @ManyToMany
     @JoinTable(
@@ -24,20 +24,26 @@ public class MilkTea {
     )
     private List<Ingredient> ingredients;
 
-    @Column(name = "MilkTeaName")
+    @ManyToMany(mappedBy = "milkTeas")  // mappedBy tương ứng với trường trong Branch
+    private List<Branch> branches;  // Mối quan hệ N:M với Branch
+
+    @Column(name = "MilkTeaName", columnDefinition = "nvarchar(255)")
     private String milkTeaName;
 
     @Column(name = "Image")
     private String image;
 
     @Column(name = "Price")
-    private BigDecimal price;  // Using BigDecimal for precision (decimal in SQL)
+    private BigDecimal price;
 
     @Column(name = "DiscountPrice")
-    private BigDecimal discountPrice;  // Using BigDecimal for precision (decimal in SQL)
+    private BigDecimal discountPrice;
 
-    @Column(name = "Description")
+    @Column(name = "Description", columnDefinition = "nvarchar(max)")
     private String description;
+
+    @Column(columnDefinition = "nvarchar(max)")
+    private String introduction;
 
     @ManyToOne
     @JoinColumn(name = "DiscountID", referencedColumnName = "discountID")
@@ -54,104 +60,13 @@ public class MilkTea {
     @Column(name = "QuantityStock")
     private int quantityStock;
 
-    // Constructor không tham số
-    public MilkTea() {
+    // Các getter và setter khác
+
+    public List<Branch> getBranches() {
+        return branches;
     }
 
-    // Getters và Setters
-    public int getMilkTeaID() {
-        return milkTeaID;
-    }
-
-    public void setMilkTeaID(int milkTeaID) {
-        this.milkTeaID = milkTeaID;
-    }
-
-    public MilkTeaType getMilkTeaType() {
-        return milkTeaType;
-    }
-
-    public void setMilkTeaType(MilkTeaType milkTeaType) {
-        this.milkTeaType = milkTeaType;
-    }
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public String getMilkTeaName() {
-        return milkTeaName;
-    }
-
-    public void setMilkTeaName(String milkTeaName) {
-        this.milkTeaName = milkTeaName;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public BigDecimal getDiscountPrice() {
-        return discountPrice;
-    }
-
-    public void setDiscountPrice(BigDecimal discountPrice) {
-        this.discountPrice = discountPrice;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Discount getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Discount discount) {
-        this.discount = discount;
-    }
-
-    public Sizes getSize() {
-        return size;
-    }
-
-    public void setSize(Sizes size) {
-        this.size = size;
-    }
-
-    public Rate getRate() {
-        return rate;
-    }
-
-    public void setRate(Rate rate) {
-        this.rate = rate;
-    }
-
-    public int getQuantityStock() {
-        return quantityStock;
-    }
-
-    public void setQuantityStock(int quantityStock) {
-        this.quantityStock = quantityStock;
+    public void setBranches(List<Branch> branches) {
+        this.branches = branches;
     }
 }
