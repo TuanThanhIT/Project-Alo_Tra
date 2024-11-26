@@ -1,7 +1,8 @@
 package vn.iotstar.entity;
 
 import jakarta.persistence.*;
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -61,8 +62,24 @@ public class User {
     // Constructor không tham số
     public User() {
     }
+    
+    
+    public User(String fullName, Date date, String address, String phone, String email, String userName,
+			String password, boolean active, String image, int roleID) {
+		this.fullName = fullName;
+		this.date = date;
+		this.address = address;
+		this.phone = phone;
+		this.email = email;
+		this.userName = userName;
+		this.password = password;
+		this.active = active;
+		this.image = image;
+		this.roleID = roleID;
+	}
 
-    // Getters và Setters
+
+	// Getters và Setters
     public int getUserID() {
         return userID;
     }
@@ -79,7 +96,7 @@ public class User {
         this.fullName = fullName;
     }
 
-    public java.sql.Date getDate() {
+    public Date getDate() {
         return date;
     }
 

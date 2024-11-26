@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Đăng Ký Tài Khoản</title>
+<!-- Bootstrap 5 CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link rel="stylesheet" href="/css/register.css">
+</head>
+<body>
+	<div class="container">
+		<!-- Logo -->
+		<div class="logo">
+			<img src="/img/logo-milktea.avif" alt="Logo" />
+		</div>
+
+		<!-- Tiêu đề -->
+		<h1>Đăng Ký Tài Khoản</h1>
+
+		<!-- Form -->
+		<form action="/register" method="POST" enctype="multipart/form-data">
+			<div class="mb-3">
+				<label for="fullName" class="form-label">Họ và Tên</label> <input
+					type="text" class="form-control" id="fullName" name="fullName"
+					required />
+			</div>
+
+			<div class="mb-3">
+				<label for="address" class="form-label">Địa Chỉ</label> <input
+					type="text" class="form-control" id="address" name="address"
+					required />
+			</div>
+
+			<div class="mb-3">
+				<label for="phone" class="form-label">Số Điện Thoại</label> <input
+					type="text" class="form-control" id="phone" name="phone" required />
+			</div>
+
+			<div class="mb-3">
+				<label for="email" class="form-label">Email</label> <input
+					type="email" class="form-control" id="email" name="email" required />
+			</div>
+
+			<div class="mb-3">
+				<label for="userName" class="form-label">Tên Tài Khoản</label> <input
+					type="text" class="form-control" id="userName" name="userName"
+					required />
+			</div>
+
+			<div class="mb-3">
+				<label for="password" class="form-label">Mật Khẩu</label> <input
+					type="password" class="form-control" id="password" name="password"
+					required />
+			</div>
+
+			<!-- Khung hiển thị ảnh -->
+			<div class="image-preview" id="imagePreview">
+				<img src="" alt="Ảnh Đại Diện" style="display: none" />
+			</div>
+
+			<div class="mb-3">
+				<label for="image" class="form-label">Ảnh Đại Diện</label> <input
+					type="file" class="form-control" id="image" name="image"
+					accept="image/*" onchange="previewImage(event)" required />
+			</div>
+
+			<div class="mb-3">
+				<label for="roleID" class="form-label">Chức Vụ</label> <select
+					class="form-select" id="roleID" name="roleID" required>
+					<option value="">Chọn chức vụ</option>
+					<th:block th:each="role : ${listRole}">
+						<option th:value="${role.roleID}" th:text="${role.roleName}"></option>
+					</th:block>
+				</select>
+				<br>
+
+
+			<button type="submit" class="btn btn-primary">Đăng Ký</button>
+		</form>
+	</div>
+
+	<!-- JavaScript -->
+	<script>
+		function previewImage(event) {
+			const input = event.target;
+			const previewContainer = document.getElementById("imagePreview");
+			const previewImage = previewContainer.querySelector("img");
+
+			// Nếu có ảnh, hiển thị trong khung
+			if (input.files && input.files[0]) {
+				const reader = new FileReader();
+				reader.onload = function(e) {
+					previewImage.src = e.target.result;
+					previewImage.style.display = "block";
+				};
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+	</script>
+	<!-- Bootstrap JS -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
