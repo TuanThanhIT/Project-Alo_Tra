@@ -1,4 +1,35 @@
-<div th:fragment="header">
-    <!-- Nội dung header của bạn -->
-    <h1>Welcome to Seller Panel</h1>
-</div>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{seller/layout-seller.html}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue</title>
+<link rel="stylesheet" href="/css/seller.css">
+</head>
+<body>
+	<div th:fragment="header">
+		<!-- Nội dung header của bạn -->
+		<!-- BEGIN SIDE BAR -->
+		<div id="sidebar" class="sidebar">
+			<a href="#" class="closebtn" onclick="closeSidebar()">&equiv;</a> <a
+				href="#">Link 1</a> <a href="#">Link 2</a> <a href="#">Link 3</a>
+		</div>
+
+		<!-- Màn đen mờ (overlay) -->
+		<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+		<button class="floating-btn" onclick="openSidebar()">&equiv;</button>
+
+		<script src="/script/seller.js"></script>
+		<!-- END SIDE BAR -->
+		<div class="logo-container">
+			<h1>Welcome to Seller Panel</h1>
+		</div>
+		<nav>
+			<a href="#dashboard">Dashboard</a> <a href="#revenue">Revenue</a> <a
+				href="#profile">Profile</a> <a href="#logout">Logout</a>
+		</nav>
+	</div>
+</body>
