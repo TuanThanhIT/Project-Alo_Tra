@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{seller/layout-seller.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branch</title>
+    <link rel="stylesheet" href="/css/seller.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="/script/seller.js" defer></script> <!-- Sử dụng defer để đảm bảo script chạy sau khi DOM được load -->
+	
+	
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1>Đây là trang quản lý chi nhánh cửa hàng</h1>
+        <form>
+            <label for="name">Người quản lý:</label>
+            <input type="text" id="name" name="name" placeholder="Nhập tên của bạn">
+
+            <!-- BEGIN ADDRESS -->
+            <label for="name">Địa chỉ chi nhánh:</label>
+            <div>
+                <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm">
+                    <option value="" selected>Chọn tỉnh thành</option>
+                </select>
+                
+                <select class="form-select form-select-sm mb-3" id="district" aria-label=".form-select-sm">
+                    <option value="" selected>Chọn quận huyện</option>
+                </select>
+                
+                <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm">
+                    <option value="" selected>Chọn phường xã</option>
+                </select>
+            </div>
+            <!-- END ADDRESS -->
+            
+            <!-- BEGIN HOUR -->
+<label for="time">Thời gian mở cửa:</label>
+<div>
+    <select id="open-hour" class="form-select form-select-sm">
+        <option value="" selected>Chọn giờ</option>
+    </select>
+    <select id="open-minute" class="form-select form-select-sm">
+        <option value="" selected>Chọn phút</option>
+    </select>
+    <select id="open-second" class="form-select form-select-sm">
+        <option value="" selected>Chọn giây</option>
+    </select>
+</div>
+
+<label for="time">Thời gian đóng cửa:</label>
+<div>
+    <select id="close-hour" class="form-select form-select-sm">
+        <option value="" selected>Chọn giờ</option>
+    </select>
+    <select id="close-minute" class="form-select form-select-sm">
+        <option value="" selected>Chọn phút</option>
+    </select>
+    <select id="close-second" class="form-select form-select-sm">
+        <option value="" selected>Chọn giây</option>
+    </select>
+</div>
+<!-- END HOUR -->
+
+<!-- BEGIN BANNER -->
+
+ <div class="banner">
+        <div class="image-slider">
+            <img src="/img/BackgroundSeller1.jpg" alt="Image 1">
+            <img src="https://via.placeholder.com/600x300?text=Image+2" alt="Image 2">
+            <img src="https://via.placeholder.com/600x300?text=Image+3" alt="Image 3">
+            <img src="https://via.placeholder.com/600x300?text=Image+4" alt="Image 4">
+        </div>
+    </div>
+<!-- END BANNER -->
+
+            <label for="description">Mô tả:</label>
+            <textarea id="description" name="description" rows="4" placeholder="Nhập mô tả"></textarea>
+            
+            <button type="submit">Gửi</button>
+        </form>
+    </div>
+</body>
+</html>

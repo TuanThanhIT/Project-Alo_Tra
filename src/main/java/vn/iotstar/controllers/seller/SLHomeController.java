@@ -8,9 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequestMapping("seller")
 public class SLHomeController {
-	@GetMapping("/")
+	@GetMapping("/revenue")
 	public String revenue() {
 		return "seller/revenue/revenue";
+	}
+	
+	@GetMapping("/branch")
+	public String branch() {
+		return "seller/branch/branchhome";
 	}
 	
 }

@@ -12,14 +12,14 @@
 	transition: 0.2s;
 	padding-top: 60px;
 	color: white;
-	z-index: 10;
+	z-index: 10000;
 }
 
 .sidebar a {
 	padding: 10px 15px;
 	text-decoration: none;
 	font-size: 18px;
-	color: #818181;
+	color: white;
 	display: block;
 	transition: 0.3s;
 }
@@ -86,56 +86,162 @@ header {
     align-items: center; /* Align items vertically in center */
     justify-content: space-between; /* Distribute space evenly */
     height: 60px;
-    padding: 0 20px;
-    background-color: #111; /* Black background */
+    background-color:rgba(0, 0, 0, 0.8); /* Black background */
     color: white;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-header .floating-btn {
-    margin-right: 20px; /* Add some space to the right of the button */
-    order: 0; /* Ensure button is on the left */
+/*END HEADER*/
+
+/*BEGIN FOOTER*/
+footer {
+    color: black; /* Chữ màu trắng */
+    
+    text-align: center; /* Căn giữa nội dung */
+    font-size: 14px; /* Kích thước chữ */
+    position: relative;
+    width: 100%;
 }
 
-/* Logo container adjustments */
-header .logo-container {
-    flex: 1; /* Take up available space */
+footer p {
+    margin: 5px 0; /* Khoảng cách giữa các đoạn văn */
+}
+
+footer a {
+    color: #1e90ff; /* Màu xanh dương cho liên kết */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+footer a:hover {
+    text-decoration: underline; /* Hiển thị gạch chân khi hover */
+    color: #00bfff; /* Làm sáng màu liên kết khi hover */
+}
+/*END FOOTER*/
+
+/* BEGIN CONTENT */
+
+main {
     display: flex;
-    justify-content: center; /* Center align the logo/title */
-    align-items: center;
-    order: 1; /* Place after floating button */
+    justify-content: center; /* Căn giữa nội dung */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    min-height: calc(100vh - 120px); /* Trừ chiều cao header và footer */
+	background-color: white;
+    /* Tương ứng: padding-top, padding-right, padding-bottom, padding-left */
+    padding: 80px 50px 40px 50px;
+	height: 100%;
+    margin: 0;
 }
 
-header .logo-container h1 {
-    margin: 0;
-    font-size: 20px;
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Khoảng cách giữa các phần tử */
+}
+
+h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    color: #555;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #f9f9f9;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #007bff;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
     font-weight: bold;
     color: white;
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
-/* Navigation menu adjustments */
-header nav {
+button:hover {
+    background: #0056b3;
+}
+/* END CONTENT */
+
+hr {
+    border: 0; /* Loại bỏ đường viền mặc định */
+    border-top: 2px solid black; /* Đường viền trên màu đen với độ dày 2px */
+    margin: 20px 0; /* Tạo khoảng cách trên và dưới */
+}
+
+/* BEGIN BANNER */
+.banner {
+    width: 600px;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-slider {
     display: flex;
-    gap: 15px;
-    align-items: center;
-    order: 2; /* Place on the right */
+    width: calc(600px * 4); /* Width = image width * number of images */
+    animation: slide 12s linear infinite;
 }
 
-header nav a {
-    text-decoration: none;
-    color: white;
-    font-size: 14px;
-    padding: 5px 10px;
-    border-radius: 3px;
-    transition: background-color 0.3s;
+.image-slider img {
+    width: 600px;
+    height: 300px;
 }
 
-header nav a:hover {
-    background-color: #333;
-    color: white;
+@keyframes slide {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(0); /* Ảnh đầu tiên dừng */
+    }
+    50% {
+        transform: translateX(-600px); /* Chuyển sang ảnh thứ hai */
+    }
+    75% {
+        transform: translateX(-1200px); /* Chuyển sang ảnh thứ ba */
+    }
+    100% {
+        transform: translateX(-1800px); /* Chuyển sang ảnh thứ tư */
+    }
 }
-/*END HEADER*/
+
+.image-slider {
+    display: flex;
+    width: calc(600px * 4); /* Width = image width * number of images */
+    animation: slide 8s steps(4) infinite; /* Tổng thời gian = (3 giây dừng + 1 giây chuyển) x số ảnh */
+}
+
+.image-slider img {
+    width: 600px;
+    height: 300px;
+}
+
+
+/* END BANNER */
+
