@@ -1,12 +1,24 @@
 package vn.iotstar.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
 
+import groovy.transform.ToString;
+
 @Entity
 @Table(name = "Branch")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,4 +78,6 @@ public class Branch {
     public void setMilkTeas(List<MilkTea> milkTeas) {
         this.milkTeas = milkTeas;
     }
+    
+    
 }
