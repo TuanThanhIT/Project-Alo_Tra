@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import vn.iotstar.entity.User;
@@ -15,6 +17,30 @@ import vn.iotstar.services.IUserService;
 @Service
 public class UserServiceImpl implements IUserService{
 	
+	@Override
+	public <S extends User> S save(S entity) {
+		return userRepository.save(entity);
+	}
+
+
+	@Override
+	public Page<User> findAll(Pageable pageable) {
+		return userRepository.findAll(pageable);
+	}
+
+
+	@Override
+	public long count() {
+		return userRepository.count();
+	}
+
+
+	@Override
+	public void delete(User entity) {
+		userRepository.delete(entity);
+	}
+
+
 	@Autowired
 	UserRepository userRepository;
 
