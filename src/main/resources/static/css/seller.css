@@ -81,7 +81,7 @@
 /*END SIDE BAR*/
 
 /*BEGIN HEADER*/
-header {
+.custom-header {
 	display: flex; /* Flexbox for alignment */
     align-items: center; /* Align items vertically in center */
     justify-content: space-between; /* Distribute space evenly */
@@ -130,9 +130,10 @@ main {
     min-height: calc(100vh - 120px); /* Trừ chiều cao header và footer */
 	background-color: white;
     /* Tương ứng: padding-top, padding-right, padding-bottom, padding-left */
-    padding: 80px 50px 40px 50px;
+    padding: 80px 0px 40px 0px;
 	height: 100%;
     margin: 0;
+    background: linear-gradient(to right, #f5f7fa, #c3cfe2);
 }
 
 
@@ -140,6 +141,15 @@ form {
     display: flex;
     flex-direction: column;
     gap: 15px; /* Khoảng cách giữa các phần tử */
+}
+
+.background {
+    background: rgba(255, 255, 255, 0.9); /* Nền trắng mờ */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+    padding: 30px;
+    width: 100%;
+    max-width: 1300px; /* Độ rộng tối đa */
 }
 
 h2 {
@@ -179,6 +189,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease;
+    max-width: 200px;
 }
 
 button:hover {

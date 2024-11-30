@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{seller/layout-seller.html}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{seller/layout-seller.html}">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revenue</title>
-<link rel="stylesheet" href="/css/seller.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue</title>
+    <link rel="stylesheet" href="/css/seller.css">
 </head>
 <body>
-	<div th:fragment="header">
-		<!-- Nội dung header của bạn -->
-		<!-- BEGIN SIDE BAR -->
-		<div id="sidebar" class="sidebar">
-			<a href="#" class="closebtn" onclick="closeSidebar()">&equiv;</a> <a
-				href="/seller/revenue">Thống kê doanh thu</a> <a href="/seller/branch">Thông tin cửa hàng</a> <a href="#">Link 3</a>
-		</div>
+    <div th:fragment="header" class="custom-header">
+        <!-- Nội dung header của bạn -->
+        <!-- BEGIN SIDE BAR -->
+        <div id="sidebar" class="sidebar">
+            <a href="#" class="closebtn" onclick="closeSidebar()">&equiv;</a>
+            <a href="/seller/revenue">Thống kê doanh thu</a>
+            <a href="/seller/branch">Thông tin cửa hàng</a>
+            <a href="/seller/milkTeas">Danh sách sản phẩm</a>
+            <a href="#">Danh sách đơn hàng</a>
+            <a href="#">Đăng xuất</a>
+        </div>
 
-		<!-- Màn đen mờ (overlay) -->
-		<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+        <!-- Màn đen mờ (overlay) -->
+        <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
 
-		<button class="floating-btn" onclick="openSidebar()">&equiv;</button>
+        <button class="floating-btn" onclick="openSidebar()">&equiv;</button>
 
-		<script src="/script/seller.js"></script>
-		<!-- END SIDE BAR -->
-	</div>
+        <script src="/script/seller.js"></script>
+        <!-- END SIDE BAR -->
+    </div>
 </body>
+</html>
