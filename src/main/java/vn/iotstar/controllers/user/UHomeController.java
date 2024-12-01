@@ -30,35 +30,20 @@ public class UHomeController {
     private IUserService userService; // Giả sử bạn có một service để cập nhật thông tin người dùng
     
     @GetMapping("home")
-    public String index(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        
-        if (session != null && session.getAttribute("account") != null) {
-            User user = (User) session.getAttribute("account");
-            // Truyền thông tin fullname vào model
-            model.addAttribute("user", user);
-            
-            // Đưa các loại trà sữa hiển thị lên sidebar
-            List<MilkTeaType> list = milkteaType.findAll();
-            model.addAttribute("listType", list);
-            return "user/homeuser"; // Trả về trang homeuser.html
-        }
-        
-        return "redirect:/login"; // Nếu không có session, chuyển hướng về trang login
+    public String index(Model model) {
+    	// Đưa các loại trà sữa hiển thị lên sidebar
+        List<MilkTeaType> list = milkteaType.findAll();
+        model.addAttribute("listType", list);
+
+        // Dữ liệu `user` đã được thêm từ Interceptor, không cần xử lý lại
+        return "user/homeuser"; // Trả về trang homeuser.html
     }
     
     // Hiển thị trang Hồ sơ
     @GetMapping("account")
-    public String showAccountPage(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        
-        if (session != null && session.getAttribute("account") != null) {
-            User user = (User) session.getAttribute("account");
-            model.addAttribute("user", user); // Truyền thông tin người dùng vào model
-            return "user/account"; // Trả về trang account.html
-        }
-        
-        return "redirect:/login"; // Nếu không có session, chuyển hướng về trang login
+    public String showAccountPage(Model model) {
+    	 // Dữ liệu `user` đã được thêm từ Interceptor, không cần xử lý lại
+        return "user/account"; // Trả về trang account.html
     }
     @PostMapping("/account/{id}")
     public String editAccount(Model model, @PathVariable("id") Integer userId, @ModelAttribute User updatedUser) {
