@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{seller/layout-seller.html}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add-Branch</title>
+        <link rel="stylesheet" href="/css/seller.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+        <script src="/script/seller.js" defer></script> <!-- Sử dụng defer để đảm bảo script chạy sau khi DOM được load -->
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <form class="background" action="#" th:action="@{/seller/saveBranch}" th:object="${branch}" method="POST">
+                <h1>Nhập thông tin chi nhánh</h1>
+
+                <!-- Địa chỉ chi nhánh -->
+                <label for="address">Địa chỉ chi nhánh:</label>
+                <div>
+                    <!-- Dropdown chọn Tỉnh/Thành -->
+                    <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm">
+                        <option value="" selected>Chọn tỉnh thành</option>
+                        
+                    </select>
+
+                    <!-- Dropdown chọn Quận/Huyện -->
+                    <select class="form-select form-select-sm mb-3" id="district" aria-label=".form-select-sm">
+                        <option value="" selected>Chọn quận huyện</option>
+                    </select>
+
+                    <!-- Dropdown chọn Phường/Xã -->
+                    <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm">
+                        <option value="" selected>Chọn phường xã</option>
+                    </select>
+
+                    <!-- Hidden input để lưu giá trị gộp -->
+                    <input type="hidden" id="address" th:field="*{address}" />
+                </div>
+
+                <!-- Thời gian mở và đóng cửa -->
+                <label for="time">Thời gian mở cửa:</label>
+                <div>
+                    <!-- Dropdown chọn giờ, phút, giây cho Open Time -->
+                    <select id="open-hour" class="form-select form-select-sm">
+                        <option value="" selected>Chọn giờ</option>
+                        <option th:each="hour : ${#numbers.sequence(0, 23)}" th:value="${hour}" th:text="${hour}"></option>
+                    </select>
+
+                    <select id="open-minute" class="form-select form-select-sm">
+                        <option value="" selected>Chọn phút</option>
+                        <option th:each="minute : ${#numbers.sequence(0, 59)}" th:value="${minute}" th:text="${minute}"></option>
+                    </select>
+
+                    <select id="open-second" class="form-select form-select-sm">
+                        <option value="" selected>Chọn giây</option>
+                        <option th:each="second : ${#numbers.sequence(0, 59)}" th:value="${second}" th:text="${second}"></option>
+                    </select>
+
+                    <!-- Hidden input liên kết với model -->
+                    <input type="time" id="open-time" th:field="*{openTime}" />
+                </div>
+
+                <label for="time">Thời gian đóng cửa:</label>
+                <div>
+                    <select id="close-hour" class="form-select form-select-sm">
+                        <option value="" selected>Chọn giờ</option>
+                        <option th:each="hour : ${#numbers.sequence(0, 23)}" th:value="${hour}" th:text="${hour}"></option>
+                    </select>
+
+                    <select id="close-minute" class="form-select form-select-sm">
+                        <option value="" selected>Chọn phút</option>
+                        <option th:each="minute : ${#numbers.sequence(0, 59)}" th:value="${minute}" th:text="${minute}"></option>
+                    </select>
+
+                    <select id="close-second" class="form-select form-select-sm">
+                        <option value="" selected>Chọn giây</option>
+                        <option th:each="second : ${#numbers.sequence(0, 59)}" th:value="${second}" th:text="${second}"></option>
+                    </select>
+
+                    <!-- Sử dụng th:field để liên kết với model -->
+                    <input type="time" id="close-time" th:field="*{closeTime}" />
+                </div>
+
+                <label for="introduction">Giới thiệu:</label>
+                <input type="text" id="introduction" name="introduction" placeholder="Nhập giới thiệu chi nhánh" th:field="*{introduction}">
+
+                <label for="description">Mô tả:</label>
+                <textarea id="description" name="description" rows="4" placeholder="Nhập mô tả chi nhánh" th:field="*{description}"></textarea>
+
+                <label for="image">Hình ảnh:</label>
+                <textarea id="image" name="image" rows="4" placeholder="Cái này để chứa ảnh" th:field="*{images}"></textarea>
+
+                <button type="submit">Hoàn thành</button>
+            </form>
+        </div>
+    </body>
+</html>

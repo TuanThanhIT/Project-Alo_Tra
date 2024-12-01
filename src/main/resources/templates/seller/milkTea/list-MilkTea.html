@@ -20,7 +20,9 @@
     <table class="table table-bordered table-striped table-dark">
         <thead class="table-dark">
         <tr>
+        	<th>Hình ảnh</th>
             <th>Tên sản phẩm</th>
+            <th>Loại sản phẩm</th>
             <th>Giá gốc</th>
             <th>Giá khuyến mãi</th>
             <th>Số lượng còn lại</th>
@@ -31,7 +33,9 @@
         </thead>
         <tbody>
         <tr th:each="milkTea : ${milkTeas}">
+        	<td th:text="${milkTea.image}"></td>
             <td th:text="${milkTea.milkTeaName}"></td>
+            <td th:text="${milkTea.milkTeaType.milkTeaTypeName}"></td>
             <td th:text="${milkTea.price}"></td>
             <td th:text="${milkTea.discountPrice}"></td>
             <td th:text="${milkTea.quantityStock}"></td>
@@ -39,11 +43,11 @@
             <td th:text="${milkTea.description}"></td>
             <td>
                 <a th:href="@{/seller/milkTea/add-MilkTea(milkTeaID=${milkTea.milkTeaID})}" class="btn btn-info btn-sm">
-                    Update
+                    Cập nhật
                 </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a th:href="@{/seller/milkTea/delete-MilkTea(milkTeaID=${milkTea.milkTeaID})}" class="btn btn-danger btn-sm"
                    onclick="if (!(confirm('Are you sure you want to delete this product?'))) return false">
-                    Delete
+                    Xóa
                 </a>
             </td>
         </tr>
