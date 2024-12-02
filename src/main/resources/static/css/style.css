@@ -568,7 +568,7 @@
 
 /* Căn chỉnh logo sang bên trái */
 .navbar .navbar-brand img {
-  max-height: 70px; /* Giới hạn chiều cao của logo */
+  max-height: 100px; /* Giới hạn chiều cao của logo */
 }
 
 /* Điều chỉnh chiều cao và màu nền của phần Đăng nhập, Đăng ký và Giỏ hàng */
