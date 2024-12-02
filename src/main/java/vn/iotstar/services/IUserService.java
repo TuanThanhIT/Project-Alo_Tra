@@ -14,9 +14,13 @@ public interface IUserService {
 	User addUser(User user);
 
 	User login(String username, String password);
+
+	boolean existsByUserName(String username);
+
+	User getUserByUsername(String username);
 	
-	boolean checkUserNameExists(String username);
 	
-	boolean register(String fullName, String address, String phone, String email, String userName, String password, String image, int roleID);
+	
+	
 
 }

@@ -9,20 +9,21 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
 	@Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-        .csrf().disable() // Tắt CSRF nếu không cần thiết
-        .authorizeRequests()
-            .anyRequest().permitAll() // Cho phép tất cả các request mà không cần xác thực
-        .and()
-        .formLogin().disable() // Tắt trang login mặc định của Spring Security
-        .httpBasic().disable() // Tắt xác thực HTTP Basic
-        .logout()
-            .logoutUrl("/logout") // Đảm bảo đường dẫn logout đúng
-            .logoutSuccessUrl("/") // Chuyển hướng về trang chủ sau khi đăng xuất (hoặc trang bạn muốn)
-            .invalidateHttpSession(true) // Đảm bảo xóa session khi logout
-            .deleteCookies("JSESSIONID"); // Xóa cookie session khi logout
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	    http
+	    .csrf().disable()
+	    .authorizeRequests()
+	        .anyRequest().permitAll()  // Tất cả các request đều được phép mà không cần xác thực
+	    .and()
+	    .formLogin().disable()  // Tắt trang login mặc định của Spring Security
+	    .httpBasic().disable()  // Tắt xác thực HTTP Basic
+	    .logout()
+	        .logoutUrl("/logout")  // Đảm bảo đường dẫn logout đúng
+	        .logoutSuccessUrl("/")  // Chuyển hướng về trang chủ sau khi đăng xuất
+	        .invalidateHttpSession(true)  // Xóa session khi logout
+	        .deleteCookies("JSESSIONID");  // Xóa cookie session khi logout
 
-    return http.build();
-    }
+	    return http.build();
+	}
+
 }

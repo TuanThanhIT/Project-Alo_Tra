@@ -33,7 +33,12 @@ public class UserServiceImpl implements IUserService{
 	    
 	    return null;
 	}
-
+	
+	
+	@Override
+	public User getUserByUsername(String username) {
+        return userRepository.findByUserName(username).orElse(null); // Trả về null nếu không tìm thấy người dùng
+    }
 
 	@Override
 	public User addUser(User user) {
@@ -53,26 +58,16 @@ public class UserServiceImpl implements IUserService{
 	}
 
 
+	
+
+
 	@Override
-	public boolean checkUserNameExists(String username) {
+	public boolean existsByUserName(String username) {
 		return userRepository.existsByUserName(username);
 	}
 
-
-	@Override
-	public boolean register(String fullName, String address, String phone, String email, String userName,
-			String password, String image, int roleID) 
-	{
-		if(checkUserNameExists(userName))
-		{
-			return false;
-		}
-		// Lấy ngày hiện tại
-		Date currentDate = new Date(System.currentTimeMillis());
-		// Tạo đối tượng User với ngày hiện tại
-		userRepository.save(new User(fullName, currentDate, address, phone, email, userName, password, true, image, roleID));
-		return true;
-	}
+	
+	
 	
 	
 	

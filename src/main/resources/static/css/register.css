@@ -90,3 +90,9 @@ h1 {
 	height: 100%;
 	object-fit: cover; /* Đảm bảo ảnh luôn khớp khung */
 }
+
+.form-check-inline {
+	display: inline-block; /* Đảm bảo các radio button nằm ngang */
+	margin-right: 20px; /* Khoảng cách giữa các radio button */
+}
+

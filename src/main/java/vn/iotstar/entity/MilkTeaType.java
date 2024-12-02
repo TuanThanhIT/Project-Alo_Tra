@@ -10,7 +10,7 @@ public class MilkTeaType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int milkTeaTypeID;
 
-    @Column(name = "MilkTeaTypeName")
+    @Column(name = "MilkTeaTypeName", columnDefinition = "NVARCHAR(200)")
     private String milkTeaTypeName;
 
     // Mối quan hệ 1:N với MilkTea

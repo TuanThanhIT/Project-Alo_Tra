@@ -21,7 +21,7 @@ public class User {
     @Column(name = "Address", nullable = false, columnDefinition = "nvarchar(max)")
     private String address;
 
-    @Column(name = "Phone", nullable = false, length = 10)
+    @Column(name = "Phone", nullable = false, length = 20)
     private String phone;
 
     @Column(name = "Email", nullable = false, columnDefinition = "nvarchar(max)")
@@ -63,20 +63,7 @@ public class User {
     public User() {
     }
     
-    
-    public User(String fullName, Date date, String address, String phone, String email, String userName,
-			String password, boolean active, String image, int roleID) {
-		this.fullName = fullName;
-		this.date = date;
-		this.address = address;
-		this.phone = phone;
-		this.email = email;
-		this.userName = userName;
-		this.password = password;
-		this.active = active;
-		this.image = image;
-		this.roleID = roleID;
-	}
+   
 
 
 	// Getters và Setters
@@ -100,8 +87,8 @@ public class User {
         return date;
     }
 
-    public void setDate(java.sql.Date date) {
-        this.date = date;
+    public void setDate(Date currentDate) {
+        this.date = currentDate;
     }
 
     public String getAddress() {

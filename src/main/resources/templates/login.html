@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,29 +9,52 @@
 </head>
 <body>
 	<div class="login-container">
-		<div th:if="${alert != null}" class="alert alert-danger">
-			<span th:text="${alert}"></span>
+		<div id="alertBox" th:if="${alert != null}"
+			class="custom-alert position-fixed top-0 end-0 m-3"
+			style="min-width: 300px;">
+			<div class="alert-content">
+				<span th:text="${alert}"></span>
+			</div>
+			<div class="progress-bar-wrapper">
+				<div class="progress-bar"></div>
+			</div>
 		</div>
+
 		<img src="/img/logo-milktea.avif" alt="Logo" class="logo">
 		<h2>Đăng Nhập</h2>
 		<form action="/login" method="POST">
 			<input type="text" name="username" placeholder="Tên đăng nhập"
-				required> <input type="password" name="password"
-				placeholder="Mật khẩu" required>
+				th:value="${username}" required> <input type="password"
+				name="password" placeholder="Mật khẩu" th:value="${password}"
+				required>
 
-			<!-- Nhớ mật khẩu -->
+			<!-- Checkbox nhớ mật khẩu -->
 			<div class="remember-forgot">
-				<label> <input type="checkbox" name="remember"> Nhớ
-					mật khẩu
+				<label> <input type="checkbox" name="remember"
+					th:checked="${rememberMe}"> Nhớ mật khẩu
 				</label> <a href="/forgot-password" class="forgot-link">Quên mật khẩu?</a>
 			</div>
 
 			<button type="submit">Đăng Nhập</button>
 		</form>
+
+
 		<div class="register">
 			Chưa có tài khoản? <a href="/register">Đăng ký ngay</a>
 		</div>
-
 	</div>
+	<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertBox = document.getElementById("alertBox");
+        if (alertBox) {
+            // Tự động xóa alert sau 5 giây
+            setTimeout(() => {
+                alertBox.remove();
+            }, 5000);
+        }
+    });
+</script>
+
+
 </body>
 </html>
