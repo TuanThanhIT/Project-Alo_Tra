@@ -36,17 +36,17 @@
         <div class="col-md-6">
           <label for="typeMilkTea" class="form-label">Loại Trà Sữa</label>
           <select
-            th:field="*{milkTeaType.milkTeaTypeID}"
-            class="form-select"
-            id="typeMilkTea"
-            required
-          >
-            <option
-              th:each="type : ${listType}"
-              th:value="${type.milkTeaTypeID}"
-              th:text="${type.milkTeaTypeName}"
-            ></option>
-          </select>
+    th:field="*{milkTeaType.milkTeaTypeID}"
+    class="form-select"
+    id="typeMilkTea"
+    required
+>
+    <option
+        th:each="type : ${listType}"
+        th:value="${type.milkTeaTypeID}"
+        th:text="${type.milkTeaTypeName}"
+    ></option>
+</select>
         </div>
 
         <!-- Price -->

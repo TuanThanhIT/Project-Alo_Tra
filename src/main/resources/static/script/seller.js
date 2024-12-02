@@ -80,3 +80,34 @@ document.addEventListener("DOMContentLoaded", function () {
         addressInput.value = `${ward}, ${district}, ${city}`.replace(/, $/, "").replace(/^, /, "");
     }
 });
+
+// Hàm cắt chuỗi trước dấu phẩy đầu tiên
+function getStringBeforeComma(inputString) {
+    if (!inputString) return ""; // Kiểm tra chuỗi rỗng hoặc null
+    const index = inputString.indexOf(","); // Tìm vị trí dấu ","
+    if (index === -1) return inputString; // Nếu không có dấu ",", trả về toàn bộ chuỗi
+    return inputString.substring(0, index); // Cắt chuỗi từ đầu đến dấu ","
+}
+
+// Lưu giá trị chuỗi trước dấu phẩy vào thẻ hidden
+document.addEventListener("DOMContentLoaded", () => {
+    const imageElement = document.getElementById("milkTeaImage");
+    const hiddenElement = document.getElementById("hiddenValue");
+    const outputElement = document.getElementById("output");
+
+    // Lấy giá trị từ thuộc tính `data-image`
+    const imageValue = imageElement.getAttribute("data-image");
+
+    // Cắt chuỗi trước dấu phẩy đầu tiên
+    const result = getStringBeforeComma(imageValue);
+
+    // Lưu kết quả vào thẻ hidden
+    hiddenElement.value = result;
+
+    // Hiển thị kết quả (nếu cần)
+    outputElement.textContent = result;
+
+    console.log("Giá trị lưu trong thẻ hidden:", hiddenElement.value);
+});
+
+

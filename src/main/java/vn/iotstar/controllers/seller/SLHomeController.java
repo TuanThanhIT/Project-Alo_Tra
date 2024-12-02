@@ -1,5 +1,6 @@
 package vn.iotstar.controllers.seller;
 
+import java.beans.PropertyEditorSupport;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,8 +26,11 @@ import vn.iotstar.service.seller.IMilkTeaService;
 import vn.iotstar.service.seller.IMilkTeaTypeService;
 import vn.iotstar.utils.PathConstants;
 
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -44,6 +48,22 @@ public class SLHomeController {
 	
 	@Autowired
 	private IMilkTeaTypeService iMilkTeaTypeService;
+	
+	@InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(MilkTeaType.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if (text == null || text.isEmpty()) {
+                    setValue(null);
+                } else {
+                    int id = Integer.parseInt(text);
+                    Optional<MilkTeaType> milkTeaType = iMilkTeaTypeService.findById(id);
+                    setValue(milkTeaType.orElse(null));
+                }
+            }
+        });
+    }
 	
 	@GetMapping("/revenue")
 	public String revenue() {
@@ -68,15 +88,6 @@ public class SLHomeController {
 		return "seller/milkTea/list-MilkTea";
 	}
 	
-	@GetMapping("/add")
-	public String showAddMilkTeaForm(Model model) {
-		List<MilkTeaType> list = iMilkTeaTypeService.findAll();
-		model.addAttribute("listType", list);
-		
-	    model.addAttribute("milkTea", new MilkTea());
-	    return "seller/milkTea/add-MilkTea";
-	}
-
 	
 	@GetMapping("/add-branch")
 	public String addBranch(Model model) {
@@ -91,6 +102,14 @@ public class SLHomeController {
 		return "redirect:/seller/branch";
 	}
 	
+	@GetMapping("/add")
+	public String showAddMilkTeaForm(Model model) {
+		List<MilkTeaType> list = iMilkTeaTypeService.findAll();
+		model.addAttribute("listType", list);
+	    model.addAttribute("milkTea", new MilkTea());
+	    return "seller/milkTea/add-MilkTea";
+	}
+
 	@PostMapping("/milktea/save")
 	public String saveMilkTea(@ModelAttribute MilkTeaDto milkTeaDto, Model model) {
 	    String uploadDirectory = PathConstants.UPLOAD_DIRECTORY; // Thư mục lưu ảnh
@@ -138,14 +157,14 @@ public class SLHomeController {
 	    milkTea.setDiscountPrice(milkTeaDto.getDiscountPrice());
 	    milkTea.setDescription(milkTeaDto.getDescription());
 	    milkTea.setIntroduction(milkTeaDto.getIntroduction());
-	    milkTea.setMilkTeaID(milkTeaDto.getMilkTeaTypeID());
+	    milkTea.setMilkTeaType(milkTeaDto.getMilkTeaType()); // Gán trực tiếp đối tượng MilkTeaType
 
 	    // Nối danh sách tên file ảnh thành chuỗi, cách nhau bởi dấu phẩy
 	    milkTea.setImage(String.join(",", storedFileNames));
 
 	    iMilkTeaService.save(milkTea); // Gọi service lưu vào DB
 	    model.addAttribute("success", "Thêm trà sữa thành công!");
-
+	    
 	    return "redirect:/seller/milkTeas"; // Chuyển hướng đến danh sách MilkTea
 	}
 	
