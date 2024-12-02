@@ -22,15 +22,6 @@ public class MilkTea {
     @JoinColumn(name = "TypeMilkTeaID", referencedColumnName = "milkTeaTypeID")
     private MilkTeaType milkTeaType;
     
-    // Mối quan hệ N:M với Ingredient thông qua MilkTea_Ingredient
-    @ManyToMany
-    @JoinTable(
-        name = "MilkTea_Ingredient",
-        joinColumns = @JoinColumn(name = "MilkTeaID"),
-        inverseJoinColumns = @JoinColumn(name = "IngredientID")
-    )
-    private List<Ingredient> ingredients;
-
     @ManyToMany(mappedBy = "milkTeas")  // mappedBy tương ứng với trường trong Branch
     private List<Branch> branches;  // Mối quan hệ N:M với Branch
 
@@ -52,17 +43,6 @@ public class MilkTea {
     @Column(columnDefinition = "nvarchar(max)")
     private String introduction;
 
-    @ManyToOne
-    @JoinColumn(name = "DiscountID", referencedColumnName = "discountID")
-    private Discount discount;
-
-    @ManyToOne
-    @JoinColumn(name = "SizeID", referencedColumnName = "sizeID")
-    private Sizes size;
-
-    @ManyToOne
-    @JoinColumn(name = "RateID", referencedColumnName = "rateID")
-    private Rate rate;
 
     @Column(name = "QuantityStock")
     private int quantityStock;
@@ -76,4 +56,15 @@ public class MilkTea {
     public void setBranches(List<Branch> branches) {
         this.branches = branches;
     }
+    
+    @OneToMany(mappedBy = "milkTea", cascade = CascadeType.ALL)
+    private List<BranchMilkTea> branchMilkTeas;
+    
+    @OneToMany(mappedBy = "milkTea", cascade = CascadeType.ALL)
+    private List<Rate> userMilkTeaRates;
+    
+    @OneToMany(mappedBy = "milkTea", cascade = CascadeType.ALL)
+    private List<Like> userMilkTeaLikes;
+
+
 }

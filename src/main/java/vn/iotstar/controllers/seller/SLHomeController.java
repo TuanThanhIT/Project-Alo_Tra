@@ -1,5 +1,11 @@
 package vn.iotstar.controllers.seller;
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,11 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import vn.iotstar.entity.Branch;
 import vn.iotstar.entity.MilkTea;
+import vn.iotstar.entity.MilkTeaType;
+import vn.iotstar.model.MilkTeaDto;
+import vn.iotstar.service.seller.IBranchMilkTeaService;
 import vn.iotstar.service.seller.IBranchService;
 import vn.iotstar.service.seller.IMilkTeaService;
+import vn.iotstar.service.seller.IMilkTeaTypeService;
+import vn.iotstar.utils.PathConstants;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,11 +38,12 @@ public class SLHomeController {
 	
 	@Autowired
 	private IBranchService iBranService;
-
-	private Branch branch;
-
-
 	
+	@Autowired
+	private IBranchMilkTeaService iBranchMilkTeaService;
+	
+	@Autowired
+	private IMilkTeaTypeService iMilkTeaTypeService;
 	
 	@GetMapping("/revenue")
 	public String revenue() {
@@ -52,15 +65,18 @@ public class SLHomeController {
 	public String listMilkTea(Model model) {
 		List<MilkTea> milkTeas = iMilkTeaService.findAll();
 		model.addAttribute("milkTeas", milkTeas);
-		return "seller/MilkTea/list-MilkTea";
+		return "seller/milkTea/list-MilkTea";
 	}
 	
-	@GetMapping("/add-milkTeas")
-	public String addMilkTea(Model model) {
-		MilkTea milkTea = new MilkTea();
-		model.addAttribute("milkTea", milkTea);
-		return "seller/MilkTea/add-MilkTea";
+	@GetMapping("/add")
+	public String showAddMilkTeaForm(Model model) {
+		List<MilkTeaType> list = iMilkTeaTypeService.findAll();
+		model.addAttribute("listType", list);
+		
+	    model.addAttribute("milkTea", new MilkTea());
+	    return "seller/milkTea/add-MilkTea";
 	}
+
 	
 	@GetMapping("/add-branch")
 	public String addBranch(Model model) {
@@ -71,8 +87,66 @@ public class SLHomeController {
 	
 	@PostMapping("/saveBranch")
 	public String saveBranch(@ModelAttribute("branch") Branch branch) {
-		this.branch = branch;
 		iBranService.save(branch);
 		return "redirect:/seller/branch";
 	}
+	
+	@PostMapping("/milktea/save")
+	public String saveMilkTea(@ModelAttribute MilkTeaDto milkTeaDto, Model model) {
+	    String uploadDirectory = PathConstants.UPLOAD_DIRECTORY; // Thư mục lưu ảnh
+	    List<String> storedFileNames = new ArrayList<>(); // Danh sách tên ảnh lưu trong DB
+
+	    try {
+	        // Duyệt qua từng file trong mảng MultipartFile[]
+	        for (MultipartFile image : milkTeaDto.getImages()) {
+	            if (!image.isEmpty()) {
+	                String originalFileName = image.getOriginalFilename();
+	                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
+	                
+	                // Kiểm tra định dạng ảnh hợp lệ
+	                if (!fileExtension.equals(".jpg") && !fileExtension.equals(".png") && !fileExtension.equals(".jpeg")) {
+	                    model.addAttribute("alert", "Chỉ chấp nhận ảnh JPG, PNG, JPEG");
+	                    return "milktea-form";
+	                }
+
+	                // Tạo tên file lưu trữ
+	                String storageFileName = System.currentTimeMillis() + "_" + originalFileName;
+
+	                // Lưu file vào thư mục
+	                Path uploadPath = Paths.get(uploadDirectory);
+	                if (!Files.exists(uploadPath)) {
+	                    Files.createDirectories(uploadPath); // Tạo thư mục nếu chưa tồn tại
+	                }
+
+	                try (InputStream inputStream = image.getInputStream()) {
+	                    Files.copy(inputStream, uploadPath.resolve(storageFileName), StandardCopyOption.REPLACE_EXISTING);
+	                }
+
+	                // Thêm tên file vào danh sách
+	                storedFileNames.add(storageFileName);
+	            }
+	        }
+	    } catch (Exception ex) {
+	        model.addAttribute("alert", "Có lỗi xảy ra khi upload ảnh: " + ex.getMessage());
+	        return "milktea-form";
+	    }
+
+	    // Lưu thông tin MilkTea vào cơ sở dữ liệu
+	    MilkTea milkTea = new MilkTea();
+	    milkTea.setMilkTeaName(milkTeaDto.getMilkTeaName());
+	    milkTea.setPrice(milkTeaDto.getPrice());
+	    milkTea.setDiscountPrice(milkTeaDto.getDiscountPrice());
+	    milkTea.setDescription(milkTeaDto.getDescription());
+	    milkTea.setIntroduction(milkTeaDto.getIntroduction());
+	    milkTea.setMilkTeaID(milkTeaDto.getMilkTeaTypeID());
+
+	    // Nối danh sách tên file ảnh thành chuỗi, cách nhau bởi dấu phẩy
+	    milkTea.setImage(String.join(",", storedFileNames));
+
+	    iMilkTeaService.save(milkTea); // Gọi service lưu vào DB
+	    model.addAttribute("success", "Thêm trà sữa thành công!");
+
+	    return "redirect:/seller/milkTeas"; // Chuyển hướng đến danh sách MilkTea
+	}
+	
 }

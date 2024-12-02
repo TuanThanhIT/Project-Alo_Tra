@@ -1,38 +1,32 @@
 package vn.iotstar.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
-@Table(name = "Rate")
-@Data
+@Table(name = "Likes")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Rate {
+@Getter
+@Setter
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int rateID;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "UserID", referencedColumnName = "userID")
     private User user;
-    
+
     @ManyToOne
     @JoinColumn(name = "MilkTeaID", referencedColumnName = "milkTeaID")
     private MilkTea milkTea;
 
-    @Column(name = "Comment", columnDefinition = "nvarchar(max)")
-    private String comment;
-    
-    @Column(name = "PostTime")
-    private LocalDate postTime;
-
-    @Column(name = "RateValue")
-    private BigDecimal rateValue;
-
+    @Column(name = "LikedAt")
+    private LocalDate likedAt; // Thời gian người dùng thích sản phẩm
 }
