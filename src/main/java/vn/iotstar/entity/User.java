@@ -1,12 +1,19 @@
 package vn.iotstar.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "Users")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +28,7 @@ public class User {
     @Column(name = "Address", nullable = false, columnDefinition = "nvarchar(max)")
     private String address;
 
-    @Column(name = "Phone", nullable = false, length = 20)
+    @Column(name = "Phone", nullable = false, length = 10)
     private String phone;
 
     @Column(name = "Email", nullable = false, columnDefinition = "nvarchar(max)")
@@ -59,131 +66,11 @@ public class User {
     @JoinColumn(name = "RoleID", referencedColumnName = "roleID", insertable = false, updatable = false)
     private Role role;
 
-    // Constructor không tham số
-    public User() {
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Rate> userMilkTeaRates;
     
-   
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Like> userMilkTeaLikes;
 
 
-	// Getters và Setters
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date currentDate) {
-        this.date = currentDate;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public int getRoleID() {
-        return roleID;
-    }
-
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public List<Rate> getRates() {
-        return rates;
-    }
-
-    public void setRates(List<Rate> rates) {
-        this.rates = rates;
-    }
-
-    public List<Shipper> getShippers() {
-        return shippers;
-    }
-
-    public void setShippers(List<Shipper> shippers) {
-        this.shippers = shippers;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

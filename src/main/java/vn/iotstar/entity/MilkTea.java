@@ -1,11 +1,18 @@
 package vn.iotstar.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
 @Table(name = "MilkTea")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MilkTea {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,15 +22,6 @@ public class MilkTea {
     @JoinColumn(name = "TypeMilkTeaID", referencedColumnName = "milkTeaTypeID")
     private MilkTeaType milkTeaType;
     
-    // Mối quan hệ N:M với Ingredient thông qua MilkTea_Ingredient
-    @ManyToMany
-    @JoinTable(
-        name = "MilkTea_Ingredient",
-        joinColumns = @JoinColumn(name = "MilkTeaID"),
-        inverseJoinColumns = @JoinColumn(name = "IngredientID")
-    )
-    private List<Ingredient> ingredients;
-
     @ManyToMany(mappedBy = "milkTeas")  // mappedBy tương ứng với trường trong Branch
     private List<Branch> branches;  // Mối quan hệ N:M với Branch
 
@@ -44,21 +42,18 @@ public class MilkTea {
 
     @Column(columnDefinition = "nvarchar(max)")
     private String introduction;
+    
+    @Transient
+    private boolean isFavorited; // Không lưu thuộc tính này vào database
 
-    @ManyToOne
-    @JoinColumn(name = "DiscountID", referencedColumnName = "discountID")
-    private Discount discount;
+    // Getter và Setter cho isFavorited
+    public boolean isFavorited() {
+        return isFavorited;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "SizeID", referencedColumnName = "sizeID")
-    private Sizes size;
-
-    @ManyToOne
-    @JoinColumn(name = "RateID", referencedColumnName = "rateID")
-    private Rate rate;
-
-    @Column(name = "QuantityStock")
-    private int quantityStock;
+    public void setFavorited(boolean isFavorited) {
+        this.isFavorited = isFavorited;
+    }
 
     // Các getter và setter khác
 
@@ -69,4 +64,15 @@ public class MilkTea {
     public void setBranches(List<Branch> branches) {
         this.branches = branches;
     }
+    
+    @OneToMany(mappedBy = "milkTea", cascade = CascadeType.ALL)
+    private List<BranchMilkTea> branchMilkTeas;
+    
+    @OneToMany(mappedBy = "milkTea", cascade = CascadeType.ALL)
+    private List<Rate> userMilkTeaRates;
+    
+    @OneToMany(mappedBy = "milkTea", cascade = CascadeType.ALL)
+    private List<Like> userMilkTeaLikes;
+
+
 }

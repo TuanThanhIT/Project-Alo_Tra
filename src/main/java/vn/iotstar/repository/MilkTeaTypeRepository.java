@@ -7,5 +7,5 @@ import vn.iotstar.entity.MilkTeaType;
 
 @Repository
 public interface MilkTeaTypeRepository extends JpaRepository<MilkTeaType, Integer>{
-
+	
 }

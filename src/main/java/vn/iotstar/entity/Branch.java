@@ -1,12 +1,24 @@
 package vn.iotstar.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
 
+import groovy.transform.ToString;
+
 @Entity
 @Table(name = "Branch")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,20 +28,16 @@ public class Branch {
     @JoinColumn(name = "UserID", referencedColumnName = "userID")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "CityID", referencedColumnName = "cityID")
-    private City city;
-
     @Column(name = "Images")
     private String images;
 
-    @Column(name = "Address")
+    @Column(name = "Address", columnDefinition = "nvarchar(max)")
     private String address;
 
     @Column(name = "Description", columnDefinition = "nvarchar(max)")
     private String description;
 
-    @Column(columnDefinition = "nvarchar(255)")
+    @Column(name = "Introduction", columnDefinition = "nvarchar(255)")
     private String introduction;
     
     @Column(name = "OpenTime")
@@ -38,7 +46,7 @@ public class Branch {
     @Column(name = "CloseTime")
     private LocalTime closeTime;
 
-    @Column(name = "Active")
+    @Column(name = "Active", nullable = false, columnDefinition = "int default 1")
     private int active;
 
     @Column(name = "Income")
@@ -66,4 +74,9 @@ public class Branch {
     public void setMilkTeas(List<MilkTea> milkTeas) {
         this.milkTeas = milkTeas;
     }
+    
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
+    private List<BranchMilkTea> branchMilkTeas;
+
+    
 }

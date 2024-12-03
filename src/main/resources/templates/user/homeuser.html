@@ -14,7 +14,8 @@
 						<li class="list-group-item" th:each="type : ${listType}">
 							<!-- Hiển thị tên loại trà sữa --> <a href="#"
 							class="text-dark text-decoration-none"
-							th:onclick="'showCategory(' + type.milkTeaTypeID + ')'"> <span
+							th:href="@{'/user/product?typeMilkTeaID=' + ${type.milkTeaTypeID}}"
+							th:id="${type.milkTeaTypeID}"> <span
 								th:text="${type.milkTeaTypeName}">Tên Loại Trà Sữa</span>
 						</a>
 						</li>
@@ -236,7 +237,7 @@
 					</div>
 					<!-- Button Xem thêm -->
 					<div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-						<a href="" class="btn btn-primary rounded-pill p`y-3 px-5">
+						<a th:href="@{/user/product}" class="btn btn-primary rounded-pill p`y-3 px-5">
 							Xem thêm sản phẩm </a>
 					</div>
 				</div>
