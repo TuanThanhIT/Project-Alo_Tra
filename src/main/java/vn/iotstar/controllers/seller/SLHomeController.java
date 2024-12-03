@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import vn.iotstar.entity.Branch;
+import vn.iotstar.entity.BranchMilkTea;
 import vn.iotstar.entity.MilkTea;
 import vn.iotstar.entity.MilkTeaType;
+import vn.iotstar.entity.User;
+import vn.iotstar.model.BranchDto;
 import vn.iotstar.model.MilkTeaDto;
 import vn.iotstar.service.seller.IBranchMilkTeaService;
 import vn.iotstar.service.seller.IBranchService;
@@ -41,7 +44,7 @@ public class SLHomeController {
 	private IMilkTeaService iMilkTeaService;
 	
 	@Autowired
-	private IBranchService iBranService;
+	private IBranchService iBranhService;
 	
 	@Autowired
 	private IBranchMilkTeaService iBranchMilkTeaService;
@@ -72,7 +75,7 @@ public class SLHomeController {
 	
 	@GetMapping("/branch")
 	public String branch(Model model) {
-		Optional<Branch> branchOptional = iBranService.findById(1);
+		Optional<Branch> branchOptional = iBranhService.findById(1);
 	    if (branchOptional.isPresent()) {
 	        model.addAttribute("branch", branchOptional.get());
 	    } else {
@@ -97,12 +100,56 @@ public class SLHomeController {
 	}
 	
 	@PostMapping("/saveBranch")
-	public String saveBranch(@ModelAttribute("branch") Branch branch) {
-		iBranService.save(branch);
+	public String saveBranch(@ModelAttribute BranchDto branchDto, Model model) {
+		String uploadDirectory = PathConstants.UPLOAD_DIRECTORY;
+		List<String> storedFileNames = new ArrayList<>();
+		
+		try {
+	        for (MultipartFile image : branchDto.getImages()) {
+	            if (!image.isEmpty()) {
+	                String originalFileName = image.getOriginalFilename();
+	                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
+
+	                if (!fileExtension.equals(".jpg") && !fileExtension.equals(".png") && !fileExtension.equals(".jpeg")) {
+	                    model.addAttribute("alert", "Chỉ chấp nhận ảnh JPG, PNG, JPEG");
+	                    return "milktea-form";
+	                }
+
+	                String storageFileName = System.currentTimeMillis() + "_" + originalFileName;
+
+	                Path uploadPath = Paths.get(uploadDirectory);
+	                if (!Files.exists(uploadPath)) {
+	                    Files.createDirectories(uploadPath);
+	                }
+
+	                try (InputStream inputStream = image.getInputStream()) {
+	                    Files.copy(inputStream, uploadPath.resolve(storageFileName), StandardCopyOption.REPLACE_EXISTING);
+	                }
+	                storedFileNames.add(storageFileName);
+	            }
+	        }
+	    } catch (Exception ex) {
+	        model.addAttribute("alert", "Có lỗi xảy ra khi upload ảnh: " + ex.getMessage());
+	        return "milktea-form";
+	    }
+		
+		Branch branch = new Branch();
+		branch.setAddress(branchDto.getAddress());
+		branch.setOpenTime(branchDto.getOpenTime());
+		branch.setCloseTime(branch.getCloseTime());
+		branch.setIntroduction(branchDto.getIntroduction());
+		branch.setDescription(branchDto.getDescription());
+		
+		branch.setImages(String.join(",", storedFileNames));
+
+	    iBranhService.save(branch); // Gọi service lưu vào DB
+	    model.addAttribute("success", "Thêm thông tin thành công!");
+		
+		
 		return "redirect:/seller/branch";
 	}
 	
-	@GetMapping("/add")
+	@GetMapping("/add-milkTea")
 	public String showAddMilkTeaForm(Model model) {
 		List<MilkTeaType> list = iMilkTeaTypeService.findAll();
 		model.addAttribute("listType", list);
@@ -114,7 +161,7 @@ public class SLHomeController {
 	public String saveMilkTea(@ModelAttribute MilkTeaDto milkTeaDto, Model model) {
 	    String uploadDirectory = PathConstants.UPLOAD_DIRECTORY; // Thư mục lưu ảnh
 	    List<String> storedFileNames = new ArrayList<>(); // Danh sách tên ảnh lưu trong DB
-
+	    
 	    try {
 	        // Duyệt qua từng file trong mảng MultipartFile[]
 	        for (MultipartFile image : milkTeaDto.getImages()) {
@@ -165,6 +212,10 @@ public class SLHomeController {
 	    iMilkTeaService.save(milkTea); // Gọi service lưu vào DB
 	    model.addAttribute("success", "Thêm trà sữa thành công!");
 	    
+	    Optional<Branch> branch = iBranhService.findById(1);
+	    Branch enBranch = branch.get();
+	    BranchMilkTea branchMilkTea = new BranchMilkTea(enBranch, milkTea);
+	    iBranchMilkTeaService.save(branchMilkTea);
 	    return "redirect:/seller/milkTeas"; // Chuyển hướng đến danh sách MilkTea
 	}
 	

@@ -13,57 +13,86 @@
 </head>
 <body>
     <div layout:fragment="content">
-        <form class="background" action="#" th:action="@{/seller/saveBranch}" th:object="${branch}" method="POST">
+        <form class="background" 
+              action="#" 
+              th:action="@{/seller/saveBranch}" 
+              th:object="${branch}" 
+              method="POST" 
+              enctype="multipart/form-data">
             <h1>Nhập thông tin chi nhánh</h1>
             <hr>
             <div class="container">
                 <div class="row">
-                    <!-- khối bên trái -->
+                    <!-- Khối bên trái -->
                     <div class="col-md-6">
                         <!-- Địa chỉ chi nhánh -->
                         <label for="address">Địa chỉ chi nhánh:</label>
                         <div>
                             <!-- Dropdown chọn Tỉnh/Thành -->
-                            <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm">
+                            <select class="form-select form-select-sm mb-3" 
+                                    id="city" 
+                                    aria-label=".form-select-sm">
                                 <option value="" selected>Chọn tỉnh thành</option>
                             </select>
 
                             <!-- Dropdown chọn Quận/Huyện -->
-                            <select class="form-select form-select-sm mb-3" id="district" aria-label=".form-select-sm">
+                            <select class="form-select form-select-sm mb-3" 
+                                    id="district" 
+                                    aria-label=".form-select-sm">
                                 <option value="" selected>Chọn quận huyện</option>
                             </select>
 
                             <!-- Dropdown chọn Phường/Xã -->
-                            <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm">
+                            <select class="form-select form-select-sm" 
+                                    id="ward" 
+                                    aria-label=".form-select-sm">
                                 <option value="" selected>Chọn phường xã</option>
                             </select>
 
                             <!-- Hidden input để lưu giá trị gộp -->
-                            <input type="hidden" id="address" th:field="*{address}" />
+                            <input type="hidden" 
+                                   id="address" 
+                                   th:field="*{address}" />
                         </div>
 
                         <!-- Thời gian mở và đóng cửa -->
                         <label for="time">Thời gian mở cửa:</label>
                         <div>
-                            <input type="time" id="open-time" th:field="*{openTime}" />
+                            <input type="time" 
+                                   id="open-time" 
+                                   th:field="*{openTime}" />
                         </div>
 
                         <label for="time">Thời gian đóng cửa:</label>
                         <div>
-                            <input type="time" id="close-time" th:field="*{closeTime}" />
+                            <input type="time" 
+                                   id="close-time" 
+                                   th:field="*{closeTime}" />
                         </div>
 
                         <label for="introduction">Giới thiệu:</label>
-                        <input type="text" id="introduction" name="introduction" placeholder="Nhập giới thiệu chi nhánh" th:field="*{introduction}">
+                        <input type="text" 
+                               id="introduction" 
+                               name="introduction" 
+                               placeholder="Nhập giới thiệu chi nhánh" 
+                               th:field="*{introduction}">
 
                         <label for="description">Mô tả:</label>
-                        <textarea id="description" name="description" rows="4" placeholder="Nhập mô tả chi nhánh" th:field="*{description}"></textarea>
+                        <textarea id="description" 
+                                  name="description" 
+                                  rows="4" 
+                                  placeholder="Nhập mô tả chi nhánh" 
+                                  th:field="*{description}"></textarea>
                     </div>
 
-                    <!-- khối bên phải -->
-                    <div class="col-md-6">
-                        <label for="image">Hình ảnh:</label>
-                        <textarea id="image" name="image" rows="4" placeholder="Cái này để chứa ảnh" th:field="*{images}"></textarea>
+                    <!-- Khối bên phải -->
+                    <div class="col-12">
+                        <label for="images" class="form-label">Ảnh</label>
+                        <input type="file" 
+                               name="images" 
+                               id="images" 
+                               class="form-control" 
+                               multiple />
                     </div>
                 </div>
             </div>

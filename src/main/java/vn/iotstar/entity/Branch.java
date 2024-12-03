@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -49,9 +48,6 @@ public class Branch {
     @Column(name = "Active", nullable = false, columnDefinition = "int default 1")
     private int active;
 
-    @Column(name = "Income")
-    private BigDecimal income;
-
     @ManyToOne
     @JoinColumn(name = "RateID", referencedColumnName = "rateID")
     private Rate rate;
@@ -77,6 +73,9 @@ public class Branch {
     
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
     private List<BranchMilkTea> branchMilkTeas;
+    
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
+    private List<income> incomes;
 
     
 }

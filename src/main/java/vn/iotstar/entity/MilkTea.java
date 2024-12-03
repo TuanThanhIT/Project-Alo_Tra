@@ -44,8 +44,6 @@ public class MilkTea {
     private String introduction;
 
 
-    @Column(name = "QuantityStock")
-    private int quantityStock;
 
     // Các getter và setter khác
 

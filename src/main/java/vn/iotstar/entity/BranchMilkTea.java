@@ -31,4 +31,12 @@ public class BranchMilkTea {
 
     @Column(name = "StockQuantity")
     private int stockQuantity; // Số lượng trong kho
+
+	public BranchMilkTea(Branch branch, MilkTea milkTea) {
+		super();
+		this.branch = branch;
+		this.milkTea = milkTea;
+	}
+    
+    
 }
