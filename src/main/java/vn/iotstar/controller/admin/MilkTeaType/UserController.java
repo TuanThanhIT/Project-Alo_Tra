@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import vn.iotstar.entity.User;
 import vn.iotstar.service.admin.IMilkTeaType;
 import vn.iotstar.services.IUserService;
 
-@Controller
+@RestController
 @RequestMapping("admin/user")
 public class UserController {
 	@Autowired
