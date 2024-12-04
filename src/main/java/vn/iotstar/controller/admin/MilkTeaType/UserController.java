@@ -4,34 +4,44 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import vn.iotstar.entity.MilkTeaType;
 import vn.iotstar.entity.User;
-import vn.iotstar.service.admin.IMilkTeaType;
 import vn.iotstar.services.IUserService;
 
-@RestController
+@Controller
 @RequestMapping("admin/user")
 public class UserController {
 	@Autowired
 	IUserService iUserService;
 	
-	@RequestMapping("")
-	public String listCategories(ModelMap model) {
-		List<User> list = iUserService.findAll();
-		System.out.println("Danh sách users: " + list); // Debug kiểm tra
-		model.addAttribute("users", list); // Tên biến là "milkTeaTypes"
-		return "admin/user/list"; // Tên View
-	}
-	
+//	@RequestMapping("")
+//	public String listCategories(ModelMap model) {
+//		List<User> list = iUserService.findAll();
+//		System.out.println("Danh sách users: " + list); // Debug kiểm tra
+//		model.addAttribute("users", list); // Tên biến là "milkTeaTypes"
+//		return "admin/user/list"; // Tên View
+//	}
+	 @RequestMapping("")
+	    public String listCategories(@RequestParam(defaultValue = "0") int page, ModelMap model) {
+	        // Sử dụng pageable để giới hạn số sản phẩm hiển thị trên mỗi trang
+	        Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
+	        Page<User> milkTeaTypesPage = iUserService.findAll(pageable);
+
+	        // Thêm các thuộc tính vào model để truyền cho view
+	        model.addAttribute("users", milkTeaTypesPage.getContent()); // Dữ liệu sản phẩm
+	        model.addAttribute("currentPage", page); // Trang hiện tại
+	        model.addAttribute("totalPages", milkTeaTypesPage.getTotalPages()); // Tổng số trang
+	        return "admin/user/list"; // View name
+	    }
 	
 //	@RequestMapping("toggleActive/{userID}")
 //	@ResponseBody // Để trả về dữ liệu trực tiếp (thường cho AJAX)
