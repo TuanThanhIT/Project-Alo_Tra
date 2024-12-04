@@ -99,28 +99,9 @@ public class DiscountController {
 	    // Nếu milkTeaType null, trả về lại form thêm hoặc sửa
 	    return new ModelAndView("admin/discount/addOrEdit");
 	}
+	
 
-
-	@GetMapping("edit/{discountID}")
-	public ModelAndView edit(ModelMap model, @PathVariable("discountID") Integer discountID) {
-		Optional<Discount> opt = discountService.findById(discountID);
-
-		DiscountModel discountModel = new DiscountModel();
-		if (opt.isPresent()) {
-			Discount entity = opt.get();
-			// Copy properties from entity to model
-			BeanUtils.copyProperties(entity, discountModel);
-
-			discountModel.setIsEdit(true);
-
-			model.addAttribute("discounts", discountModel);
-
-			return new ModelAndView("admin/discount/addOrEdit", model);
-		}
-
-		model.addAttribute("message", "Discount không tồn tại");
-		return new ModelAndView("forward:/admin/discount", model);
-	}
+	
 	@GetMapping("delete/{discountID}")
 	public ModelAndView delete(@PathVariable("discountID") Integer discountID, 
 	                           RedirectAttributes redirectAttributes) {
@@ -134,7 +115,26 @@ public class DiscountController {
 	    return new ModelAndView("redirect:/admin/discount");
 	}
 
+	@GetMapping("edit/{discountID}")
+	public ModelAndView edit(ModelMap model, @PathVariable("discountID") Integer discountID) {
+		Optional<Discount> opt = discountService.findById(discountID);
 
+		DiscountModel discountModel = new DiscountModel();
+		if (opt.isPresent()) {
+			Discount entity = opt.get();
+			// Copy properties from entity to model
+			BeanUtils.copyProperties(entity, discountModel);
+
+			discountModel.setIsEdit(true);
+
+			model.addAttribute("discount", discountModel);
+
+			return new ModelAndView("admin/discount/addOrEdit", model);
+		}
+
+		model.addAttribute("message", "Discount không tồn tại");
+		return new ModelAndView("forward:/admin/discount", model);
+	}
 //	@GetMapping("edit/{idType}")
 //	public ModelAndView edit(ModelMap model, @PathVariable("idType") int idType) {
 //		Optional<MilkTeaTypeEntity> opt = milkTeaTypeService.findById(idType);
