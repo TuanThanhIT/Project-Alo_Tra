@@ -1,4 +1,35 @@
-<div layout:fragment="header">
-    <!-- Nội dung header của bạn -->
-    <h1>Welcome to Admin Panel</h1>
-</div>
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layout-admin.html}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue</title>
+</head>
+<body>
+
+    <div th:fragment="header" class="custom-header">
+        <!-- Nội dung header của bạn -->
+        <!-- BEGIN SIDE BAR -->
+        <div id="sidebar" class="sidebar">
+            <a href="#" class="closebtn" onclick="closeSidebar()">&equiv;</a>
+            <a href="/admin/user">Quản lí tài khoản</a>
+            <a href="/seller/branch">Thông tin cửa hàng</a>
+            <a href="/seller/milkTeas">Danh sách sản phẩm</a>
+            <a href="#">Danh sách đơn hàng</a>
+            <a href="#">Đăng xuất</a>
+        </div>
+
+        <!-- Màn đen mờ (overlay) -->
+        <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+        <button class="floating-btn" onclick="openSidebar()">&equiv;</button>
+
+        <script src="/script/headerAdmin.js"></script>
+        <!-- END SIDE BAR -->
+    </div>
+
+</body>
+</html>
