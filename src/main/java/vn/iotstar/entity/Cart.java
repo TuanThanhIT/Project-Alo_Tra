@@ -1,11 +1,18 @@
 package vn.iotstar.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
 @Table(name = "Cart")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,49 +36,4 @@ public class Cart {
         inverseJoinColumns = @JoinColumn(name = "MilkTeaID")
     )
     private List<MilkTea> milkTeas;
-
-    // Constructor không tham số
-    public Cart() {
-    }
-
-    // Getters và Setters
-    public int getCartID() {
-        return cartID;
-    }
-
-    public void setCartID(int cartID) {
-        this.cartID = cartID;
-    }
-
-    public BigDecimal getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(BigDecimal totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    public int getTotalProduct() {
-        return totalProduct;
-    }
-
-    public void setTotalProduct(int totalProduct) {
-        this.totalProduct = totalProduct;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public List<MilkTea> getMilkTeas() {
-        return milkTeas;
-    }
-
-    public void setMilkTeas(List<MilkTea> milkTeas) {
-        this.milkTeas = milkTeas;
-    }
 }
