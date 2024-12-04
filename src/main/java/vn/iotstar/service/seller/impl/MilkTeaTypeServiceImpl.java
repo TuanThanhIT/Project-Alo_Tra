@@ -32,6 +32,10 @@ public class MilkTeaTypeServiceImpl implements IMilkTeaTypeService{
 		return iMilkTeaTypeRepository.findById(id);
 	}
 	
-	
+	  @Override
+	public MilkTeaType findByName(String name) {
+	        return iMilkTeaTypeRepository.findByMilkTeaTypeName(name)
+	                .orElseThrow(() -> new RuntimeException("MilkTeaType không tồn tại với tên: " + name));
+	    }
 
 }

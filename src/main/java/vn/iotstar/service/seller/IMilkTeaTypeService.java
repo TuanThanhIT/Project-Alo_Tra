@@ -8,4 +8,5 @@ import vn.iotstar.entity.MilkTeaType;
 public interface IMilkTeaTypeService {
 	public List<MilkTeaType> findAll();
 	Optional<MilkTeaType> findById(Integer id);
+	MilkTeaType findByName(String name);
 }
