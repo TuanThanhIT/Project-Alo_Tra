@@ -95,8 +95,8 @@ public class UserServiceImpl implements IUserService{
 		}
 		// Lấy ngày hiện tại
 		Date currentDate = new Date(System.currentTimeMillis());
+	
 		// Tạo đối tượng User với ngày hiện tại
-		userRepository.save(new User(fullName, currentDate, address, phone, email, userName, password, true, image, roleID));
 		return true;
 	}
 	

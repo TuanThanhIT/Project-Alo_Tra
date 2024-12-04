@@ -1,0 +1,260 @@
+@charset "UTF-8";
+
+/*BEGIN SIDE BAR*/
+.sidebar {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: #111;
+	overflow-x: hidden;
+	transition: 0.2s;
+	padding-top: 60px;
+	color: white;
+	z-index: 10000;
+}
+
+.sidebar a {
+	padding: 10px 15px;
+	text-decoration: none;
+	font-size: 18px;
+	color: white;
+	display: block;
+	transition: 0.3s;
+}
+
+.sidebar a:hover {
+	background-color: white;
+	color: black;
+}
+
+.sidebar .closebtn {
+	position: absolute;
+	top: 10px;
+	left: 20px;
+	font-size: 36px;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	padding: 6px;
+	text-align: center;
+	line-height: 20px;
+}
+
+.floating-btn {
+	position: fixed;
+	top: 10px;
+	left: 20px;
+	background-color: transparent;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	/* Tương ứng: padding-top, padding-right, padding-bottom, padding-left */
+    padding: 0px 0px 40px 0px;
+	font-size: 36px;
+	width: 40px;
+	height: 40px;
+	line-height: 30px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	transition: background-color 0.2s;
+	display: inline-block;
+	z-index: 1;
+}
+
+.floating-btn:hover {
+	background-color: white;
+	color: black;
+}
+
+.overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 9;
+}
+/*END SIDE BAR*/
+
+/*BEGIN HEADER*/
+.custom-header {
+	display: flex; /* Flexbox for alignment */
+    align-items: center; /* Align items vertically in center */
+    justify-content: space-between; /* Distribute space evenly */
+    height: 60px;
+    background-color:rgba(0, 0, 0, 0.8); /* Black background */
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/*END HEADER*/
+
+/*BEGIN FOOTER*/
+footer {
+    color: black; /* Chữ màu trắng */
+    
+    text-align: center; /* Căn giữa nội dung */
+    font-size: 14px; /* Kích thước chữ */
+    position: relative;
+    width: 100%;
+}
+
+footer p {
+    margin: 5px 0; /* Khoảng cách giữa các đoạn văn */
+}
+
+footer a {
+    color: #1e90ff; /* Màu xanh dương cho liên kết */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+footer a:hover {
+    text-decoration: underline; /* Hiển thị gạch chân khi hover */
+    color: #00bfff; /* Làm sáng màu liên kết khi hover */
+}
+/*END FOOTER*/
+
+/* BEGIN CONTENT */
+
+main {
+    display: flex;
+    justify-content: center; /* Căn giữa nội dung */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    min-height: calc(100vh - 120px); /* Trừ chiều cao header và footer */
+	background-color: white;
+    /* Tương ứng: padding-top, padding-right, padding-bottom, padding-left */
+    padding: 80px 0px 40px 0px;
+	height: 100%;
+    margin: 0;
+    background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Khoảng cách giữa các phần tử */
+}
+
+.background {
+    background: rgba(255, 255, 255, 0.9); /* Nền trắng mờ */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+    padding: 30px;
+    width: 100%;
+    max-width: 1300px; /* Độ rộng tối đa */
+}
+
+h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    color: #555;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #f9f9f9;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #007bff;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    max-width: 200px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+/* END CONTENT */
+
+hr {
+    border: 0; /* Loại bỏ đường viền mặc định */
+    border-top: 2px solid black; /* Đường viền trên màu đen với độ dày 2px */
+    margin: 20px 0; /* Tạo khoảng cách trên và dưới */
+    z-index: 1;
+}
+
+/* BEGIN BANNER */
+.banner {
+    width: 600px;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-slider {
+    display: flex;
+    width: calc(600px * 4); /* Width = image width * number of images */
+    animation: slide 12s linear infinite;
+}
+
+.image-slider img {
+    width: 600px;
+    height: 300px;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(0); /* Ảnh đầu tiên dừng */
+    }
+    50% {
+        transform: translateX(-600px); /* Chuyển sang ảnh thứ hai */
+    }
+    75% {
+        transform: translateX(-1200px); /* Chuyển sang ảnh thứ ba */
+    }
+    100% {
+        transform: translateX(-1800px); /* Chuyển sang ảnh thứ tư */
+    }
+}
+
+.image-slider {
+    display: flex;
+    width: calc(600px * 4); /* Width = image width * number of images */
+    animation: slide 8s steps(4) infinite; /* Tổng thời gian = (3 giây dừng + 1 giây chuyển) x số ảnh */
+}
+
+.image-slider img {
+    width: 600px;
+    height: 300px;
+}
+
+
+/* END BANNER */
+
