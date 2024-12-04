@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -27,7 +26,10 @@ public class Branch {
     @ManyToOne
     @JoinColumn(name = "UserID", referencedColumnName = "userID")
     private User user;
-
+    
+    @Column(columnDefinition = "nvarchar(max)")
+    private String branchName;
+    
     @Column(name = "Images")
     private String images;
 
@@ -48,14 +50,7 @@ public class Branch {
 
     @Column(name = "Active", nullable = false, columnDefinition = "int default 1")
     private int active;
-
-    @Column(name = "Income")
-    private BigDecimal income;
-
-    @ManyToOne
-    @JoinColumn(name = "RateID", referencedColumnName = "rateID")
-    private Rate rate;
-
+    
     // Mối quan hệ N:M với MilkTea thông qua bảng trung gian
     @ManyToMany
     @JoinTable(
@@ -77,6 +72,9 @@ public class Branch {
     
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
     private List<BranchMilkTea> branchMilkTeas;
+    
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
+    private List<Income> incomes;
 
     
 }
