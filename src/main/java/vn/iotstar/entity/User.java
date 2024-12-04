@@ -71,6 +71,13 @@ public class User {
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Like> userMilkTeaLikes;
+    @Override
+    public String toString() {
+        return "User{" +
+                "userID=" + userID +
+                ", fullName='" + fullName + '\'' +
+                '}';
+    }
 
 
 }

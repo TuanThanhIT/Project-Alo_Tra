@@ -38,6 +38,13 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "PayID", referencedColumnName = "payID")
     private Pays pays;  // Thuộc tính trỏ đến Pay
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderID=" + orderID +
+                ", userID=" + (user != null ? user.getUserID() : "null") +
+                '}';
+    }
 
 }
 
