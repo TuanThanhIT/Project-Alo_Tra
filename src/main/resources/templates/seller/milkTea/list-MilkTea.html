@@ -19,6 +19,11 @@
         <div>
             <a th:href="@{/seller/add-milkTea}" class="btn btn-primary btn-sm mb-3">Thêm sản phẩm</a>
         </div>
+		        <select class="form-select" id="listType" name="listType" required onchange="this.form.submit()">
+    <option value="">Tất cả</option>
+    <option th:each="type : ${listType}" th:value="${type.milkTeaTypeID}" th:text="${type.milkTeaTypeName}" th:selected="${type.milkTeaTypeID == typeMilkTeaID}"></option>
+</select>
+
         <table class="table table-bordered table-striped table-dark">
             <thead class="table-dark">
                 <tr>
@@ -64,6 +69,28 @@
             </tbody>
         </table>
     </form>
+    <!-- Phân trang -->
+				<div class="box-footer clearfix">
+					<ul class="pagination pagination-sm no-margin pull-right">
+    <!-- Mũi tên trái -->
+    <li th:if="${currentPage > 1}">
+        <a th:href="@{/seller/milkTeas(pageNo=${currentPage-1})}">&#8592;</a>
+    </li>
+    
+    <!-- Số trang -->
+    <li th:each="i : ${#numbers.sequence(1, totalPage)}"
+        th:classappend="${currentPage == i ? 'active' : ''}">
+        <a th:text="${i}" th:href="@{/seller/milkTeas(pageNo=${i})}"></a>
+    </li>
+    
+    <!-- Mũi tên phải -->
+    <li th:if="${currentPage < totalPage}">
+        <a th:href="@{/seller/milkTeas(pageNo=${currentPage+1})}">&#8594;</a>
+    </li>
+</ul>
+
+
+				</div>
 </div>
 </body>
 </html>

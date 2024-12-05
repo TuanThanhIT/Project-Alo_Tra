@@ -9,26 +9,26 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Income")
+@Table(name = "income") // Đặt tên bảng nhất quán
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class income {
+public class Income {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "Date", nullable = false)
+    @Column(name = "date", nullable = false) // Viết thường để nhất quán
     private LocalDate date;
 
-    @Column(name = "Value", nullable = false)
+    @Column(name = "value", nullable = false)
     private double value;
 
-    @ManyToOne
-    @JoinColumn(name = "BranchID", referencedColumnName = "branchID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branchid", referencedColumnName = "branchid", nullable = false) // Tên cột consistent
     private Branch branch;
 
-    // Constructor, Getters, and Setters
+    // Các hàm tạo đã được Lombok xử lý
 }

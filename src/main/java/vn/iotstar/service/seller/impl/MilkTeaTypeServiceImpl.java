@@ -22,11 +22,6 @@ public class MilkTeaTypeServiceImpl implements IMilkTeaTypeService{
 		return iMilkTeaTypeRepository.findAll();
 	}
 
-	/**
-	 * @param id
-	 * @return
-	 * @see org.springframework.data.repository.CrudRepository#findById(java.lang.Object)
-	 */
 	@Override
 	public Optional<MilkTeaType> findById(Integer id) {
 		return iMilkTeaTypeRepository.findById(id);

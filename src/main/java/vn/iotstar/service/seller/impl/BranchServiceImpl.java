@@ -1,5 +1,6 @@
 package vn.iotstar.service.seller.impl;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +38,4 @@ public class BranchServiceImpl implements IBranchService{
 		iBranchRepository.deleteById(id);
 		
 	}
-
 }
