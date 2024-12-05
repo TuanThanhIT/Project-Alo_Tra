@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import vn.iotstar.entity.MilkTeaType;
 import vn.iotstar.entity.User;
 import vn.iotstar.services.IUserService;
@@ -22,7 +24,7 @@ import vn.iotstar.services.IUserService;
 public class UserController {
 	@Autowired
 	IUserService iUserService;
-	
+
 //	@RequestMapping("")
 //	public String listCategories(ModelMap model) {
 //		List<User> list = iUserService.findAll();
@@ -30,19 +32,31 @@ public class UserController {
 //		model.addAttribute("users", list); // Tên biến là "milkTeaTypes"
 //		return "admin/user/list"; // Tên View
 //	}
-	 @RequestMapping("")
-	    public String listCategories(@RequestParam(defaultValue = "0") int page, ModelMap model) {
-	        // Sử dụng pageable để giới hạn số sản phẩm hiển thị trên mỗi trang
-	        Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
-	        Page<User> milkTeaTypesPage = iUserService.findAll(pageable);
+	@RequestMapping("")
+	public String listCategories(@RequestParam(defaultValue = "0") int page, ModelMap model,
+			HttpServletRequest request) {
 
-	        // Thêm các thuộc tính vào model để truyền cho view
-	        model.addAttribute("users", milkTeaTypesPage.getContent()); // Dữ liệu sản phẩm
-	        model.addAttribute("currentPage", page); // Trang hiện tại
-	        model.addAttribute("totalPages", milkTeaTypesPage.getTotalPages()); // Tổng số trang
-	        return "admin/user/list"; // View name
-	    }
-	
+		// Lấy thông tin user từ session trực tiếp
+		HttpSession session = request.getSession(false); // Lấy session nếu có
+		User user = (User) session.getAttribute("account"); // Lấy thông tin user từ session
+
+		// Kiểm tra xem user có tồn tại và role của user có phải là admin (roleID == 1)
+		if (user != null && user.getRoleID() == 1) {
+
+			// Sử dụng pageable để giới hạn số sản phẩm hiển thị trên mỗi trang
+			Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
+			Page<User> milkTeaTypesPage = iUserService.findAll(pageable);
+
+			// Thêm các thuộc tính vào model để truyền cho view
+			model.addAttribute("users", milkTeaTypesPage.getContent()); // Dữ liệu sản phẩm
+			model.addAttribute("currentPage", page); // Trang hiện tại
+			model.addAttribute("totalPages", milkTeaTypesPage.getTotalPages()); // Tổng số trang
+			return "admin/user/list"; // View name
+		} else {
+			return "user/error"; // Nếu không phải admin hoặc không có user thì trả về trang lỗi
+		}
+	}
+
 //	@RequestMapping("toggleActive/{userID}")
 //	@ResponseBody // Để trả về dữ liệu trực tiếp (thường cho AJAX)
 //	public ResponseEntity<?> toggleUserActive(@PathVariable Integer userID) {
@@ -64,31 +78,24 @@ public class UserController {
 //	}
 	@RequestMapping("toggleActive/{userID}")
 	public String toggleUserActive(@PathVariable Integer userID, ModelMap model) {
-	    try {
-	        Optional<User> userOpt = iUserService.findById(userID); // Tìm user
-	        if (userOpt.isPresent()) {
-	            User user = userOpt.get();
-	            user.setActive(!user.isActive()); // Đổi trạng thái
-	            iUserService.save(user); // Lưu vào DB
+		try {
+			Optional<User> userOpt = iUserService.findById(userID); // Tìm user
+			if (userOpt.isPresent()) {
+				User user = userOpt.get();
+				user.setActive(!user.isActive()); // Đổi trạng thái
+				iUserService.save(user); // Lưu vào DB
 
-	            // Thêm thông báo vào ModelMap và quay lại trang danh sách
-	            model.addAttribute("message", "Trạng thái tài khoản đã được thay đổi!");
-	            return "forward:/admin/user"; // Quay lại trang danh sách users
-	        } else {
-	            model.addAttribute("message", "Không tìm thấy người dùng có ID: " + userID);
-	            return "redirect:/admin/user"; // Quay lại trang danh sách nếu không tìm thấy người dùng
-	        }
-	    } catch (Exception e) {
-	        model.addAttribute("message", "Có lỗi xảy ra: " + e.getMessage());
-	        return "redirect:/admin/user"; // Quay lại trang danh sách nếu có lỗi
-	    }
+				// Thêm thông báo vào ModelMap và quay lại trang danh sách
+				model.addAttribute("message", "Trạng thái tài khoản đã được thay đổi!");
+				return "forward:/admin/user"; // Quay lại trang danh sách users
+			} else {
+				model.addAttribute("message", "Không tìm thấy người dùng có ID: " + userID);
+				return "redirect:/admin/user"; // Quay lại trang danh sách nếu không tìm thấy người dùng
+			}
+		} catch (Exception e) {
+			model.addAttribute("message", "Có lỗi xảy ra: " + e.getMessage());
+			return "redirect:/admin/user"; // Quay lại trang danh sách nếu có lỗi
+		}
 	}
 
-
-	
-	
-	
-	
-	
-	
 }
