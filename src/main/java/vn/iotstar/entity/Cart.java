@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "Cart")
 @Data
@@ -29,12 +31,13 @@ public class Cart {
     private List<Order> orders;
 
     // Mối quan hệ với MilkTea thông qua CartMilkTea (N:M)
-    @ManyToMany
-    @JoinTable(
-        name = "CartMilkTea", 
-        joinColumns = @JoinColumn(name = "CartID"), 
-        inverseJoinColumns = @JoinColumn(name = "MilkTeaID")
-    )
-    private List<MilkTea> milkTeas;
+    
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+	@JsonManagedReference
+    private List<CartMilkTea> milkTeas;
+    @OneToOne
+    @JoinColumn(name = "userID")
+    private User user;
+    
 }
 
