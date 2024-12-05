@@ -11,16 +11,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import vn.iotstar.entity.Branch;
 import vn.iotstar.entity.BranchMilkTea;
 import vn.iotstar.entity.MilkTea;
 import vn.iotstar.entity.MilkTeaType;
-import vn.iotstar.entity.User;
 import vn.iotstar.model.BranchDto;
 import vn.iotstar.model.MilkTeaDto;
 import vn.iotstar.service.seller.IBranchMilkTeaService;
@@ -33,7 +34,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -85,11 +85,22 @@ public class SLHomeController {
 	}
 	
 	@GetMapping("/milkTeas")
-	public String listMilkTea(Model model) {
-		List<MilkTea> milkTeas = iMilkTeaService.findAll();
-		model.addAttribute("milkTeas", milkTeas);
-		return "seller/milkTea/list-MilkTea";
+	public String listMilkTea(Model model, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(required = false) Integer typeMilkTeaID) {
+	    List<MilkTeaType> listType = iMilkTeaTypeService.findAll();
+		Page<MilkTea> milkTeas;
+	    if (typeMilkTeaID == null) {
+	        milkTeas = iMilkTeaService.findAll(pageNo);
+	    } else {
+	        milkTeas = iMilkTeaService.findByMilkTeaType_MilkTeaTypeID(typeMilkTeaID, pageNo);
+	    }
+
+	    model.addAttribute("totalPage", milkTeas.getTotalPages());
+	    model.addAttribute("listType", listType);
+	    model.addAttribute("currentPage", pageNo);
+	    model.addAttribute("milkTeas", milkTeas);
+	    return "seller/milkTea/list-MilkTea";
 	}
+
 	
 	
 	@GetMapping("/add-branch")
@@ -218,5 +229,4 @@ public class SLHomeController {
 	    iBranchMilkTeaService.save(branchMilkTea);
 	    return "redirect:/seller/milkTeas"; // Chuyển hướng đến danh sách MilkTea
 	}
-	
 }

@@ -21,12 +21,16 @@ import groovy.transform.ToString;
 public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "branchid")
     private int branchID;
 
     @ManyToOne
     @JoinColumn(name = "UserID", referencedColumnName = "userID")
     private User user;
-
+    
+    @Column(columnDefinition = "nvarchar(max)")
+    private String branchName;
+    
     @Column(name = "Images")
     private String images;
 
@@ -75,7 +79,7 @@ public class Branch {
     private List<BranchMilkTea> branchMilkTeas;
     
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
-    private List<income> incomes;
+    private List<Income> incomes;
 
     
 }
