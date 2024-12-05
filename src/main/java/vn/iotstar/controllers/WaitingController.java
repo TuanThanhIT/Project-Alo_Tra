@@ -24,10 +24,10 @@ public class WaitingController {
 
             // Kiểm tra vai trò của người dùng và chuyển hướng tới trang phù hợp
             if (user.getRoleID() == 1) {
-                return "redirect:/user/home";  // Nếu là admin
+                return "redirect:/admin/home";  // Nếu là admin
             } 
             else if (user.getRoleID() == 2) {
-                return "redirect:/user/home";  // Nếu là người bán
+                return "redirect:/seller/home";  // Nếu là người bán
             }
             else if (user.getRoleID() == 3) {
                 return "redirect:/user/home";  // Nếu là người dùng
