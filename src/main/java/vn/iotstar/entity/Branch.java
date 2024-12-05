@@ -49,12 +49,11 @@ public class Branch {
     @Column(name = "CloseTime")
     private LocalTime closeTime;
 
-    @Column(name = "Active", nullable = false, columnDefinition = "int default 1")
-    private boolean active;
+    @Column(name = "Active", nullable = false)
+    private boolean active = true;
 
-    @ManyToOne
-    @JoinColumn(name = "RateID", referencedColumnName = "rateID")
-    private Rate rate;
+
+    
 
     // Mối quan hệ N:M với MilkTea thông qua bảng trung gian
     @ManyToMany

@@ -123,7 +123,7 @@ public class SLHomeController {
 
 	                if (!fileExtension.equals(".jpg") && !fileExtension.equals(".png") && !fileExtension.equals(".jpeg")) {
 	                    model.addAttribute("alert", "Chỉ chấp nhận ảnh JPG, PNG, JPEG");
-	                    return "milktea-form";
+	                    return "seller/branch/add-Branch";
 	                }
 
 	                String storageFileName = System.currentTimeMillis() + "_" + originalFileName;
@@ -141,7 +141,7 @@ public class SLHomeController {
 	        }
 	    } catch (Exception ex) {
 	        model.addAttribute("alert", "Có lỗi xảy ra khi upload ảnh: " + ex.getMessage());
-	        return "milktea-form";
+	        return "seller/branch/add-Branch";
 	    }
 		
 		Branch branch = new Branch();
@@ -183,7 +183,7 @@ public class SLHomeController {
 	                // Kiểm tra định dạng ảnh hợp lệ
 	                if (!fileExtension.equals(".jpg") && !fileExtension.equals(".png") && !fileExtension.equals(".jpeg")) {
 	                    model.addAttribute("alert", "Chỉ chấp nhận ảnh JPG, PNG, JPEG");
-	                    return "milktea-form";
+	                    return "seller/milkTea/add-MilkTea";
 	                }
 
 	                // Tạo tên file lưu trữ
@@ -205,7 +205,7 @@ public class SLHomeController {
 	        }
 	    } catch (Exception ex) {
 	        model.addAttribute("alert", "Có lỗi xảy ra khi upload ảnh: " + ex.getMessage());
-	        return "milktea-form";
+	        return "seller/milkTea/add-MilkTea";
 	    }
 
 	    // Lưu thông tin MilkTea vào cơ sở dữ liệu

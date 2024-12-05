@@ -10,6 +10,6 @@ public class WebImgConfig implements WebMvcConfigurer{
 	public void addResourceHandlers(ResourceHandlerRegistry registry)
 	{
 		registry.addResourceHandler("/uploads/**")
-				.addResourceLocations("file:D:/WebImgUpload/");
+				.addResourceLocations("file:E:/WebImgUpload/");
 	}
 }

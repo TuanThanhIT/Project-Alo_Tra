@@ -43,21 +43,22 @@ public class User {
     @Column(name = "Active", nullable = false)
     private boolean active;
 
+
     @Column(name = "Image", columnDefinition = "nvarchar(max)")
     private String image;
 
     @Column(name = "RoleID", nullable = false)
     private int roleID;
 
-    
+    // Mối quan hệ với Order (1:N)
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    
+    // Mối quan hệ với Rate (1:N)
     @OneToMany(mappedBy = "user")
     private List<Rate> rates;
 
-    
+    // Mối quan hệ với Shipper (1:N)
     @OneToMany(mappedBy = "user")
     private List<Shipper> shippers;
 
