@@ -39,30 +39,64 @@ public class CartController {
 	@Autowired
 	private ISizeService sizeServ;
 	@GetMapping("/addToCart")
-	public String addToCart(@RequestParam int id, @RequestParam int quantity, @RequestParam String size,
-			HttpSession session, Model model) {
-		User user = (User) session.getAttribute("account");
-		if (user == null) {
-			return "redirect:/login";
-		}
-		Cart cart = cartServ.findByUserId(user.getUserID()).get();
-		if (cart == null) {
-			cart = new Cart();
-			cart.setUser(user);
-			cart.setMilkTeas(new ArrayList<>());
-			cartServ.save(cart);
-		}
-		MilkTea milkTea = milkTeaServ.findById(id).orElseThrow(() -> new RuntimeException("MilkTea không tồn tại"));
-		CartMilkTea cartMilkTea = new CartMilkTea();
-		cartMilkTea.setMilkTea(milkTea);
-		cartMilkTea.setCart(cart);
-		cartMilkTea.setQuantityMilkTea(quantity);
-		Sizes Milksize = sizeServ.findByName(size);
-		cartMilkTea.setSize(Milksize);
-		cart.getMilkTeas().add(cartMilkTea);
-		cartServ.save(cart);
-		return "redirect:/home";
+	public String addToCart(@RequestParam int id, 
+	                        @RequestParam int quantity, 
+	                        @RequestParam String size,
+	                        HttpSession session, 
+	                        Model model) {
+	    // Lấy thông tin người dùng từ session
+	    User user = (User) session.getAttribute("account");
+	    if (user == null) {
+	        // Nếu user chưa đăng nhập, chuyển hướng về trang đăng nhập
+	        return "redirect:/login";
+	    }
+
+	    // Tìm giỏ hàng theo User ID
+	    Cart cart = cartServ.findByUserId(user.getUserID()).orElse(null);
+	    if (cart == null) {
+	        // Nếu giỏ hàng chưa tồn tại, tạo giỏ hàng mới
+	        cart = new Cart();
+	        cart.setUser(user);
+	        cart.setMilkTeas(new ArrayList<>());
+	        cartServ.save(cart);
+	    }
+
+	    // Tìm sản phẩm MilkTea
+	    MilkTea milkTea = milkTeaServ.findById(id)
+	            .orElseThrow(() -> new RuntimeException("MilkTea không tồn tại"));
+
+	    // Tìm kích thước Size
+	    Sizes milkSize = sizeServ.findByName(size);
+	    if (milkSize == null) {
+	        throw new RuntimeException("Kích thước không hợp lệ");
+	    }
+
+	    // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+	    Optional<CartMilkTea> existingCartMilkTea = cart.getMilkTeas().stream()
+	            .filter(cmt -> cmt.getMilkTea().getMilkTeaID() == id && cmt.getSize().equals(milkSize))
+	            .findFirst();
+
+	    if (existingCartMilkTea.isPresent()) {
+	        // Nếu sản phẩm đã tồn tại, tăng số lượng
+	        CartMilkTea cartMilkTea = existingCartMilkTea.get();
+	        cartMilkTea.setQuantityMilkTea(cartMilkTea.getQuantityMilkTea() + quantity);
+	    } else {
+	        // Nếu sản phẩm chưa tồn tại, thêm sản phẩm mới vào giỏ hàng
+	        CartMilkTea cartMilkTea = new CartMilkTea();
+	        cartMilkTea.setMilkTea(milkTea);
+	        cartMilkTea.setCart(cart);
+	        cartMilkTea.setQuantityMilkTea(quantity);
+	        cartMilkTea.setSize(milkSize);
+	        cart.getMilkTeas().add(cartMilkTea);
+	    }
+
+	    // Lưu lại giỏ hàng
+	    cartServ.save(cart);
+
+	    // Chuyển hướng về trang chủ
+	    return "redirect:/home";
 	}
+
 
 	@GetMapping({ "", "/" })
 	public String cartGet(HttpSession session, Model model) {
@@ -100,14 +134,36 @@ public class CartController {
 	    return "user/cart";
 	}
 
-	
 	@GetMapping("/remove")
-	public String removeItem(@RequestParam int id,HttpSession session) {
-		User user = (User) session.getAttribute("account");
-		Cart cart = cartServ.findByUserId(user.getUserID()).get();
-		CartMilkTea cMilkTea = cmilkTeaServ.findById(id).get();
-		cart.getMilkTeas().remove(cMilkTea);
-		cmilkTeaServ.deleteById(cMilkTea);
-		return "user/cart";
+	public String removeItem(@RequestParam int id, HttpSession session) {
+	    // Lấy thông tin người dùng từ session
+	    User user = (User) session.getAttribute("account");
+	    if (user == null) {
+	        // Nếu user chưa đăng nhập, chuyển hướng về trang đăng nhập
+	        return "redirect:/login";
+	    }
+
+	    // Tìm giỏ hàng theo User ID
+	    Cart cart = cartServ.findByUserId(user.getUserID()).orElse(null);
+	    if (cart == null) {
+	        throw new RuntimeException("Giỏ hàng không tồn tại");
+	    }
+
+	    // Tìm sản phẩm cần xóa (CartMilkTea) theo ID
+	    CartMilkTea cartMilkTea = cmilkTeaServ.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Sản phẩm không tồn tại trong giỏ hàng"));
+
+	    // Xóa sản phẩm khỏi danh sách trong giỏ hàng
+	    cart.getMilkTeas().removeIf(cmt -> cmt.getId() == id);
+
+	    // Xóa sản phẩm khỏi cơ sở dữ liệu
+	    cmilkTeaServ.deleteById(id);
+
+	    // Lưu lại giỏ hàng sau khi cập nhật
+	    cartServ.save(cart);
+
+	    // Chuyển hướng về trang giỏ hàng
+	    return "redirect:/cart";
 	}
+
 }

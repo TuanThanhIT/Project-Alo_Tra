@@ -11,6 +11,8 @@ public interface ICartMilkTeaService {
 
 	Optional<CartMilkTea> findById(int id);
 
-	void deleteById(CartMilkTea cmilk);
+	void deleteById(int id);
+
+	
 
 }

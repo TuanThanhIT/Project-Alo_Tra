@@ -36,9 +36,10 @@ public class CartMilkTeaServiceImpl implements ICartMilkTeaService {
 		return cartMilkTeaRepository.findById(id);
 	}
 	
+
 	@Override
-	public void deleteById(CartMilkTea cmilk)
+	public void deleteById(int id)
 	{
-		cartMilkTeaRepository.delete(cmilk);
+		cartMilkTeaRepository.deleteById(id);
 	}
 }

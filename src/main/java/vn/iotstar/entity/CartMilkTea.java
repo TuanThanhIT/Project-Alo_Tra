@@ -1,5 +1,7 @@
 package vn.iotstar.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,4 +32,15 @@ public class CartMilkTea {
     @OneToOne
     @JoinColumn(name = "SizeID", referencedColumnName = "sizeID")
     private Sizes size;
+    
+    // Tính tổng giá tiền (Không ánh xạ vào DB)
+    @Transient
+    private BigDecimal totalPrice;
+
+    public BigDecimal getTotalPrice() {
+        if (milkTea != null && milkTea.getPrice() != null) {
+            return milkTea.getPrice().multiply(BigDecimal.valueOf(quantityMilkTea));
+        }
+        return BigDecimal.ZERO;
+    }
 }
