@@ -20,7 +20,7 @@
 			
             <!-- Người quản lý -->
             <label for="name">Người quản lý:</label>
-            <input type="text" id="name" name="name" placeholder="Nhập tên của bạn">
+            <input type="text" th:text = "${user.fullName}" id="name" name="name" placeholder="Nhập tên của bạn">
 
             <!-- Địa chỉ chi nhánh -->
             <label for="address">Địa chỉ chi nhánh:</label>
