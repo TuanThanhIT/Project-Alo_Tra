@@ -26,4 +26,5 @@ public class Sizes {
     // Quan hệ 1-1 với CartMilkTea
     @OneToOne(mappedBy = "size", cascade = CascadeType.ALL)
     private CartMilkTea cartMilkTea;
+
 }

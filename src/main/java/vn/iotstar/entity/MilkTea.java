@@ -42,8 +42,18 @@ public class MilkTea {
 
     @Column(columnDefinition = "nvarchar(max)")
     private String introduction;
+    
+    @Transient
+    private boolean isFavorited; // Không lưu thuộc tính này vào database
 
+    // Getter và Setter cho isFavorited
+    public boolean isFavorited() {
+        return isFavorited;
+    }
 
+    public void setFavorited(boolean isFavorited) {
+        this.isFavorited = isFavorited;
+    }
 
     // Các getter và setter khác
 

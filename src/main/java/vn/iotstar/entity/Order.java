@@ -46,6 +46,5 @@ public class Order {
                 ", userID=" + (user != null ? user.getUserID() : "null") +
                 '}';
     }
-
 }
 

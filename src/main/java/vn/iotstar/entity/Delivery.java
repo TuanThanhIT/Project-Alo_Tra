@@ -31,4 +31,6 @@ public class Delivery {
     @OneToMany(mappedBy = "delivery")
     private List<Shipper> shippers;
 
+
 }
+

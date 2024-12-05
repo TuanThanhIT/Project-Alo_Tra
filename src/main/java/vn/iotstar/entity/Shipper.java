@@ -29,4 +29,6 @@ public class Shipper {
     @ManyToOne
     @JoinColumn(name = "DeliveryID", referencedColumnName = "deliveryID")
     private Delivery delivery;
+
 }
+

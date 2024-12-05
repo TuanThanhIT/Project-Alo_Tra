@@ -17,10 +17,10 @@ public interface IUserService {
 	User addUser(User user);
 
 	User login(String username, String password);
+
+	//boolean checkUserNameExists(String username);
 	
-	boolean checkUserNameExists(String username);
-	
-	boolean register(String fullName, String address, String phone, String email, String userName, String password, String image, int roleID);
+	//boolean register(String fullName, String address, String phone, String email, String userName, String password, String image, int roleID);
 
 	void delete(User entity);
 
@@ -29,5 +29,12 @@ public interface IUserService {
 	Page<User> findAll(Pageable pageable);
 
 	<S extends User> S save(S entity);
+
+
+	boolean existsByUserName(String username);
+
+	User getUserByUsername(String username);
+
+
 
 }

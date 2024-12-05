@@ -25,5 +25,4 @@ public class Status {
     private List<Order> orders;
 
     // Constructor không tham số
-    
 }

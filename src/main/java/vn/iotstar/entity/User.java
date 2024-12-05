@@ -43,7 +43,6 @@ public class User {
     @Column(name = "Active", nullable = false)
     private boolean active;
 
-
     @Column(name = "Image", columnDefinition = "nvarchar(max)")
     private String image;
 
@@ -79,6 +78,5 @@ public class User {
                 ", fullName='" + fullName + '\'' +
                 '}';
     }
-
 
 }

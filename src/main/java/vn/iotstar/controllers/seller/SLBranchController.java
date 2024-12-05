@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.iotstar.entity.Branch;
-import vn.iotstar.service.seller.IBranchService;
+import vn.iotstar.services.IBranchService;
+
 
 @RestController
 @RequestMapping("/sellers")

@@ -23,4 +23,5 @@ public class Role {
     // Mối quan hệ 1:N với User
     @OneToMany(mappedBy = "role")  // mappedBy trỏ đến thuộc tính "role" trong lớp User
     private List<User> users;
+
 }

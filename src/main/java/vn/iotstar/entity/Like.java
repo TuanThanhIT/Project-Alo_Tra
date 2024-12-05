@@ -30,3 +30,4 @@ public class Like {
     @Column(name = "LikedAt")
     private LocalDate likedAt; // Thời gian người dùng thích sản phẩm
 }
+

@@ -72,15 +72,20 @@ body {
 						<th>Close Time</th>
 						<th>Active</th>
 						<th>User</th>
-						<th>RateValue</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="branch : ${branches}">
 						<td th:text="${branch.branchID}"></td>
-						<td><img th:src="@{'/images/' + ${branch.images}}"
-							alt="Branch Image" width="50"></td>
+						<td>
+								<div class="col-md-4 text-center">
+									<div class="profile-image">
+										<img th:src="'/uploads/' + ${branch.images.split(',')[0]}"
+											alt="Milk Tea" width="100" height="100" />
+									</div>
+								</div>
+							</td>
 						<td th:text="${branch.address}"></td>
 						<td th:text="${branch.description}"></td>
 						<td th:text="${branch.introduction}"></td>
@@ -98,8 +103,7 @@ body {
 						</a></td>
 						<td
 							th:text="${branch.user != null ? branch.user.fullName : 'N/A'}"></td>
-						<td
-							th:text="${branch.rate != null ? branch.rate.rateValue : 'N/A'}"></td>
+						
 						<td> <!-- Icon xóa --> <a href="#"
 							th:href="@{'/admin/branch/delete/' + ${branch.branchID}}"
 							class="btn btn-outline-danger btn-sm"

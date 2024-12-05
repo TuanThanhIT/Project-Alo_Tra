@@ -34,5 +34,5 @@ public class Rate {
 
     @Column(name = "RateValue")
     private BigDecimal rateValue;
-
 }
+

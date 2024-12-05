@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import vn.iotstar.entity.User;
@@ -17,28 +18,25 @@ import vn.iotstar.services.IUserService;
 @Service
 public class UserServiceImpl implements IUserService{
 	
-	@Override
-	public <S extends User> S save(S entity) {
-		return userRepository.save(entity);
+	public List<User> findAll(Sort sort) {
+		return userRepository.findAll(sort);
 	}
-
-
-	@Override
 	public Page<User> findAll(Pageable pageable) {
 		return userRepository.findAll(pageable);
 	}
-
-
-	@Override
 	public long count() {
 		return userRepository.count();
 	}
-
-
-	@Override
+	public void deleteById(Integer id) {
+		userRepository.deleteById(id);
+	}
 	public void delete(User entity) {
 		userRepository.delete(entity);
 	}
+	public void deleteAll() {
+		userRepository.deleteAll();
+	}
+
 
 
 	@Autowired
@@ -47,8 +45,6 @@ public class UserServiceImpl implements IUserService{
 	public UserServiceImpl(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-	
-	
 	@Override
 	public User login(String username, String password) {
 	    Optional<User> userOptional = userRepository.findByUserName(username);
@@ -59,7 +55,12 @@ public class UserServiceImpl implements IUserService{
 	    
 	    return null;
 	}
-
+	
+	
+	@Override
+	public User getUserByUsername(String username) {
+        return userRepository.findByUserName(username).orElse(null); // Trả về null nếu không tìm thấy người dùng
+    }
 
 	@Override
 	public User addUser(User user) {
@@ -72,7 +73,6 @@ public class UserServiceImpl implements IUserService{
 		return userRepository.findAll();
 	}
 
-
 	@Override
 	public Optional<User> findById(Integer id) {
 		return userRepository.findById(id);
@@ -80,42 +80,15 @@ public class UserServiceImpl implements IUserService{
 
 
 	@Override
-	public boolean checkUserNameExists(String username) {
+	public boolean existsByUserName(String username) {
 		return userRepository.existsByUserName(username);
 	}
 
-
+	
+	
 	@Override
-	public boolean register(String fullName, String address, String phone, String email, String userName,
-			String password, String image, int roleID) 
-	{
-		if(checkUserNameExists(userName))
-		{
-			return false;
-		}
-		// Lấy ngày hiện tại
-		Date currentDate = new Date(System.currentTimeMillis());
-	
-		// Tạo đối tượng User với ngày hiện tại
-		return true;
+	public <S extends User> S save(S entity) {
+		return userRepository.save(entity);
 	}
-	
-	
-	
-	/*
-	public User updateUser(int id, User newUserDetails) {
-	    // Tìm đối tượng theo ID
-	    Optional<User> optionalUser = userRepository.findById(id);
-	    if (optionalUser.isPresent()) {
-	        User existingUser = optionalUser.get();
-	        
-	        // Cập nhật các trường khác nếu cần
-	        return userRepository.save(existingUser); // Cập nhật
-	    } else {
-	        throw new EntityNotFoundException("User not found with ID: " + id);
-	    }
-	    */
-	
 
-	
 }

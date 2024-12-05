@@ -12,25 +12,29 @@ import vn.iotstar.entity.User;
 @Controller
 @RequestMapping("/waiting")
 public class WaitingController {
-	    @GetMapping
-	    public String handleWaiting(HttpServletRequest request, HttpServletResponse response) {
-	        HttpSession session = request.getSession(false);
+    
+    @GetMapping
+    public String handleWaiting(HttpServletRequest request, HttpServletResponse response) {
+        // Lấy session hiện tại
+        HttpSession session = request.getSession(false);
 
-	        if (session != null && session.getAttribute("account") != null) {
-	            User user = (User) session.getAttribute("account");
+        // Kiểm tra xem session có tồn tại và "account" có phải là một User hay không
+        if (session != null && session.getAttribute("account") instanceof User) {
+            User user = (User) session.getAttribute("account");
 
-	            if (user.getRoleID() == 1) {
-	                return "redirect:/admin/home";
-	            } 
-	            else if(user.getRoleID() == 2) {
-	                return "redirect:/seller/home";
-	            }
-	            else if(user.getRoleID() == 3)
-	            {
-	            	return "redirect:/user/home";
-	            }
-	        }
+            // Kiểm tra vai trò của người dùng và chuyển hướng tới trang phù hợp
+            if (user.getRoleID() == 1) {
+                return "redirect:/user/home";  // Nếu là admin
+            } 
+            else if (user.getRoleID() == 2) {
+                return "redirect:/user/home";  // Nếu là người bán
+            }
+            else if (user.getRoleID() == 3) {
+                return "redirect:/user/home";  // Nếu là người dùng
+            }
+        }
 
-	        return "redirect:/login";
-	    }
+        // Nếu không có tài khoản người dùng trong session, chuyển hướng về trang đăng nhập
+        return "redirect:/login";
+    }
 }

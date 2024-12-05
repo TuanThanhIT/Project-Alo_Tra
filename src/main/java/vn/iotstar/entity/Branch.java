@@ -53,8 +53,6 @@ public class Branch {
     private boolean active = true;
 
 
-    
-
     // Mối quan hệ N:M với MilkTea thông qua bảng trung gian
     @ManyToMany
     @JoinTable(

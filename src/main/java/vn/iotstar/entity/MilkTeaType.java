@@ -22,8 +22,7 @@ public class MilkTeaType {
 
     // Mối quan hệ 1:N với MilkTea
     @OneToMany(mappedBy = "milkTeaType")
-    private List<MilkTea> milkTeas;
-    
-    
+    private List<MilkTea> milkTeas;    
     
 }
+

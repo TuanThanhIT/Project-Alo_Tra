@@ -24,3 +24,4 @@ public class Pays {
     @OneToMany(mappedBy = "pays") // mappedBy phải trỏ đến thuộc tính "pays" trong lớp Order
     private List<Order> orders;
 }
+
