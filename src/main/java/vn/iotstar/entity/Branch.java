@@ -46,7 +46,7 @@ public class Branch {
     private LocalTime closeTime;
 
     @Column(name = "Active", nullable = false, columnDefinition = "int default 1")
-    private int active;
+    private boolean active;
 
     @ManyToOne
     @JoinColumn(name = "RateID", referencedColumnName = "rateID")
