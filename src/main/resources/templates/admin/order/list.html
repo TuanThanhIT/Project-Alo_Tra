@@ -69,7 +69,6 @@ body {
 						<th>User</th>
 						<th>Cart</th>
 						<th>Status</th>
-						<th>Shipper</th>
 						<th>Payment Method</th>
 					</tr>
 				</thead>
@@ -78,12 +77,9 @@ body {
 						<td th:text="${order.orderID}"></td>
 						<td th:text="${order.user != null ? order.user.fullName : 'N/A'}"></td>
 						<td th:text="${order.cart != null ? order.cart.cartID : 'N/A'}"></td>
-						
-						
+
 						<td
 							th:text="${order.status != null ? order.status.statusName : 'N/A'}"></td>
-						<td
-							th:text="${order.shipper != null ? order.shipper.user.fullName : 'N/A'}"></td>
 						<td th:text="${order.pays != null ? order.pays.payName : 'N/A'}"></td>
 						
 					</tr>

@@ -27,16 +27,8 @@ public class Order {
 	private Cart cart; // Một đơn hàng thuộc về một giỏ hàng
 
 	@ManyToOne
-	@JoinColumn(name = "BranchID", referencedColumnName = "branchID")
-	private Branch branch;
-
-	@ManyToOne
 	@JoinColumn(name = "StatusID", referencedColumnName = "statusID")
 	private Status status;
-
-	@ManyToOne
-	@JoinColumn(name = "ShipperID", referencedColumnName = "shipID")
-	private Shipper shipper;
 
 	@ManyToOne
 	@JoinColumn(name = "PayID", referencedColumnName = "payID")
