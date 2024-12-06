@@ -78,5 +78,6 @@ public class Branch {
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
     private List<Income> incomes;
 
-    
+    @OneToOne(mappedBy = "branch", cascade = CascadeType.ALL)
+    private Shipper shipper;
 }

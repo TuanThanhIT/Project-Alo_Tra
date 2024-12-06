@@ -163,7 +163,7 @@ public class SLHomeController {
 		Branch branch = new Branch();
 		branch.setAddress(branchDto.getAddress());
 		branch.setOpenTime(branchDto.getOpenTime());
-		branch.setCloseTime(branch.getCloseTime());
+		branch.setCloseTime(branchDto.getCloseTime());
 		branch.setIntroduction(branchDto.getIntroduction());
 		branch.setDescription(branchDto.getDescription());
 

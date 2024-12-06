@@ -43,17 +43,12 @@
 
                         <!-- Delivery Fee -->
                         <div class="mb-3">
-                            <label for="deliveryFee" class="form-label">Phí vận chuyển:</label>
-                            <input type="number" class="form-control" id="deliveryFee" name="deliveryFee" 
-                                th:value="${delivery.deliveryFee}" placeholder="Phí vận chuyển" required step="0.01" min="0">
+                            <label for="extraCost" class="form-label">Phí vận chuyển:</label>
+                            <input type="number" class="form-control" id="extraCost" name="extraCost" 
+                                th:value="${delivery.extraCost}" placeholder="Phí vận chuyển" required step="0.01" min="0">
                         </div>
 
-                        <!-- Apply Area -->
-                        <div class="mb-3">
-                            <label for="applyArea" class="form-label">Khu vực áp dụng:</label>
-                            <input type="text" class="form-control" id="applyArea" name="applyArea" 
-                                th:value="${delivery.applyArea}" placeholder="Khu vực áp dụng" required>
-                        </div>
+                        
                     </div>
 
                     <div class="card-footer text-muted">

@@ -23,12 +23,13 @@ public class Shipper {
     @JoinColumn(name = "RateID", referencedColumnName = "rateID")
     private Rate rate;
 
-    @Column(name = "DeliverTimes")
-    private int deliverTimes;
-
     @ManyToOne
     @JoinColumn(name = "DeliveryID", referencedColumnName = "deliveryID")
     private Delivery delivery;
+    
+    @OneToOne
+    @JoinColumn(name = "BranchID", referencedColumnName = "branchID")
+    private Branch branch;
 
 }
 
