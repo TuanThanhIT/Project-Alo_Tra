@@ -1,18 +1,23 @@
 package vn.iotstar.model;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.iotstar.entity.Rate;
-import vn.iotstar.entity.User;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShipperModel {
     private int shipID;
-    private Rate rate;
-    private int deliverTimes;
+    private Integer userId;
+    private String userName;
+    private String deliveryName;
+    private BigDecimal rateValue;
+    private String address;
+
 	private Boolean isEdit = false;
 
 }
