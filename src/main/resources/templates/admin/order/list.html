@@ -46,6 +46,19 @@ body {
 	display: flex;
 	justify-content: center;
 }
+/* Thu hẹp thông báo và cho nó xuống header */
+.alert {
+	margin-top: 20px; /* Khoảng cách từ header xuống */
+	position: fixed; /* Dính vào màn hình */
+	top: 70px; /* Vị trí từ trên cùng màn hình */
+	left: 50%; /* Canh giữa theo chiều ngang */
+	transform: translateX(-50%);
+	z-index: 1050;
+	width: auto;
+	max-width: 80%;
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+}
 </style>
 </head>
 <body>
@@ -56,6 +69,7 @@ body {
 		role="alert">
 		<i th:text="${message}"></i>
 	</div>
+		<br>
 
 	<div class="container mt-5">
 		<h1 class="text-center mb-4">Order List</h1>

@@ -28,4 +28,9 @@ public class CartService implements ICartService{
 	{
 		return cartRepo.save(entity);
 	}
+
+	@Override
+	public Long getTotalProductCount() {
+		return cartRepo.getTotalProductCount();
+	}
 }	

@@ -40,53 +40,34 @@
 								th:value="${shipper.shipID}" readonly="readonly"
 								placeholder="Shipper ID">
 						</div>
-<!-- 
-						Người vận chuyển
+
+						<!-- Chọn chi nhánh -->
+						<div class="mb-3">
+							<label for="branchID" class="form-label">Chi nhánh:</label> <select
+								name="branchID" id="branchID" class="form-control">
+								<option th:each="branch : ${branches}"
+									th:value="${branch.branchID}" th:text="${branch.address}"
+									th:selected="${shipper.branchID == branch.branchID}">
+								</option>
+							</select>
+						</div>
+
+						<!-- Thêm các trường khác nếu cần -->
 						<div class="mb-3">
 							<label for="userName" class="form-label">Người vận
 								chuyển:</label> <input type="text" class="form-control" id="userName"
-								name="userName"
-								th:value="${shipper.userName != null ? shipper.userName : ''}"
+								name="userName" th:value="${shipper.userName}"
 								placeholder="Người vận chuyển">
-
 						</div>
 
-						Nhà vận chuyển
-						<div class="mb-3">
-							<label for="deliveryName" class="form-label">Nhà vận
-								chuyển:</label> <input type="text" class="form-control"
-								id="deliveryName" name="deliveryName"
-								th:value="${shipper.deliveryName != null ? shipper.deliveryName : ''}"
-								placeholder="Nhà vận chuyển">
-						</div>
-
-					
-						<div class="mb-3">
-							<label for="rateValue" class="form-label">Đánh giá:</label> <input
-								type="number" class="form-control" id="rateValue"
-								name="rateValue"
-								th:value="${shipper.rateValue != null ? shipper.rateValue : 0}"
-								min="0" max="5" placeholder="Đánh giá (0-5)">
-						</div -->>
-
-						
-					<select name="branchID" id="branchID">
-    <option th:each="branch : ${branches}" 
-            th:value="${branch.branchID}" 
-            th:text="${branch.address}">
-    </option>
-</select>
-
-
-
+						<!-- Các trường dữ liệu khác nếu có -->
 					</div>
 
 					<div class="card-footer text-muted">
 						<a href="#" th:href="@{/admin/shipper/add}"
-							class="btn btn-secondary"> <i class="fas fa-plus"></i> New
-						</a> <a href="#" th:href="@{/admin/shipper}" class="btn btn-success">
-							<i class="fas fa-bars"></i> List Shippers
-						</a>
+							class="btn btn-secondary">New</a> <a href="#"
+							th:href="@{/admin/shipper}" class="btn btn-success">List
+							Shippers</a>
 						<button type="submit" class="btn btn-primary">
 							<i class="fas fa-save"></i> <span
 								th:text="${shipper.isEdit ? 'Update' : 'Save'}"></span>
@@ -94,6 +75,7 @@
 					</div>
 				</div>
 			</form>
+
 		</div>
 	</section>
 

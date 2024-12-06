@@ -35,6 +35,9 @@ public interface IUserService {
 
 	User getUserByUsername(String username);
 
+    long countByRole(String role);
+    long countShipperRole();
+    long countSellerRole();
 
 
 }

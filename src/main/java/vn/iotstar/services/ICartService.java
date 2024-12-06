@@ -9,6 +9,7 @@ public interface ICartService {
 	Optional<Cart> findByUserId(int id);
 
 	<S extends Cart> S save(S entity);
+    Long getTotalProductCount();
 
 	
 

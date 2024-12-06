@@ -12,6 +12,8 @@ import vn.iotstar.entity.Rate;
 @NoArgsConstructor
 public class ShipperModel {
     private int shipID;
+    private int branchID;
+
     private Integer userId;
     private String userName;
     private String deliveryName;
