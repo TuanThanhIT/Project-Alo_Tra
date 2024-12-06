@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import vn.iotstar.entity.User;
@@ -17,6 +18,16 @@ import vn.iotstar.services.IUserService;
 
 @Service
 public class UserServiceImpl implements IUserService{
+	
+	@Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	public UserServiceImpl(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 	
 	public List<User> findAll(Sort sort) {
 		return userRepository.findAll(sort);
@@ -39,23 +50,22 @@ public class UserServiceImpl implements IUserService{
 
 
 
-	@Autowired
-	UserRepository userRepository;
-
-	public UserServiceImpl(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	
+	
 	@Override
 	public User login(String username, String password) {
-	    Optional<User> userOptional = userRepository.findByUserName(username);
-	    
-	    if (userOptional.isPresent() && password.equals(userOptional.get().getPassword())) {
-	        return userOptional.get();
-	    }
-	    
-	    return null;
-	}
-	
+        Optional<User> userOptional = userRepository.findByUserName(username);
+        
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Sử dụng passwordEncoder để kiểm tra mật khẩu đã mã hóa
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user; // Nếu mật khẩu hợp lệ, trả về user
+            }
+        }
+        
+        return null;  // Nếu không tìm thấy user hoặc mật khẩu không hợp lệ
+    }
 	
 	@Override
 	public User getUserByUsername(String username) {
@@ -90,5 +100,20 @@ public class UserServiceImpl implements IUserService{
 	public <S extends User> S save(S entity) {
 		return userRepository.save(entity);
 	}
+	
+	@Override
+	public boolean existsByEmail(String email) {
+		return userRepository.existsByEmail(email);
+	}
+	
+	
+	@Override
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
+	
+	
+	
+	
 
 }

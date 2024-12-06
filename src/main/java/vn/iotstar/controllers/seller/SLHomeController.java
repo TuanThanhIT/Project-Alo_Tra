@@ -76,15 +76,8 @@ public class SLHomeController {
 	@GetMapping("/revenue")
 	public String revenue(HttpServletRequest request) {
 		// Lấy thông tin user từ session trực tiếp
-		HttpSession session = request.getSession(false); // Lấy session nếu có
-		User user = (User) session.getAttribute("account"); // Lấy thông tin user từ session
-
-		// Kiểm tra xem user có tồn tại và role của user có phải là admin (roleID == 1)
-		if (user != null && user.getRoleID() == 2) {
+		
 			return "seller/revenue/revenue";
-		} else {
-			return "user/error"; // Nếu không phải admin hoặc không có user thì trả về trang lỗi
-		}
 		
 	}
 

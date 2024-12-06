@@ -36,13 +36,6 @@ public class UserController {
 	public String listCategories(@RequestParam(defaultValue = "0") int page, ModelMap model,
 			HttpServletRequest request) {
 
-		// Lấy thông tin user từ session trực tiếp
-		HttpSession session = request.getSession(false); // Lấy session nếu có
-		User user = (User) session.getAttribute("account"); // Lấy thông tin user từ session
-
-		// Kiểm tra xem user có tồn tại và role của user có phải là admin (roleID == 1)
-		if (user != null && user.getRoleID() == 1) {
-
 			// Sử dụng pageable để giới hạn số sản phẩm hiển thị trên mỗi trang
 			Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
 			Page<User> milkTeaTypesPage = iUserService.findAll(pageable);
@@ -52,9 +45,6 @@ public class UserController {
 			model.addAttribute("currentPage", page); // Trang hiện tại
 			model.addAttribute("totalPages", milkTeaTypesPage.getTotalPages()); // Tổng số trang
 			return "admin/user/list"; // View name
-		} else {
-			return "user/error"; // Nếu không phải admin hoặc không có user thì trả về trang lỗi
-		}
 	}
 
 //	@RequestMapping("toggleActive/{userID}")

@@ -96,3 +96,83 @@ h1 {
 	margin-right: 20px; /* Khoảng cách giữa các radio button */
 }
 
+.alert {
+	border-radius: 5px;
+	padding: 15px;
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.alert .icon {
+	font-size: 1.5rem;
+	margin-right: 15px;
+}
+
+.alert-danger {
+	background-color: #f8d7da;
+	color: #721c24;
+	border-color: #f5c6cb;
+}
+
+.alert-success {
+	background-color: #d4edda;
+	color: #155724;
+	border-color: #c3e6cb;
+}
+
+.alert-warning {
+	background-color: #fff3cd;
+	color: #856404;
+	border-color: #ffeeba;
+}
+
+.alert-info {
+	background-color: #d1ecf1;
+	color: #0c5460;
+	border-color: #bee5eb;
+}
+
+.alert .icon-error {
+	color: #e74c3c;
+}
+
+.alert .icon-success {
+	color: #28a745;
+}
+
+.alert .icon-warning {
+	color: #ffc107;
+}
+
+.alert .icon-info {
+	color: #17a2b8;
+}
+
+.form-label {
+	font-weight: bold;
+	color: #495057;
+}
+
+input {
+	border-radius: 8px;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+	padding: 10px;
+	font-size: 1rem;
+	border: 1px solid #ced4da;
+}
+
+button {
+	width: 100%;
+	padding: 12px;
+	background-color: #007bff;
+	border: none;
+	color: white;
+	font-size: 1.1rem;
+	border-radius: 8px;
+	transition: background-color 0.3s;
+}
+
+button:hover {
+	background-color: #0056b3;
+}
