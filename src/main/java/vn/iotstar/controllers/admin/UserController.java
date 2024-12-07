@@ -1,6 +1,5 @@
 package vn.iotstar.controllers.admin;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import vn.iotstar.entity.MilkTeaType;
 import vn.iotstar.entity.User;
 import vn.iotstar.services.IUserService;
 

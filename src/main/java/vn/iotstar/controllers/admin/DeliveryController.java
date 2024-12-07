@@ -21,8 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 import vn.iotstar.entity.Delivery;
-import vn.iotstar.entity.MilkTeaType;
-import vn.iotstar.model.DeliveryModel;
 import vn.iotstar.model.DeliveryModel;
 import vn.iotstar.services.IDeliveryService;
 

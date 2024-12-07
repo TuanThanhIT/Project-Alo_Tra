@@ -2,14 +2,12 @@ package vn.iotstar.controllers.user;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,10 +15,8 @@ import jakarta.servlet.http.HttpSession;
 import vn.iotstar.entity.Cart;
 import vn.iotstar.entity.CartMilkTea;
 import vn.iotstar.entity.MilkTea;
-import vn.iotstar.entity.MilkTeaType;
 import vn.iotstar.entity.Sizes;
 import vn.iotstar.entity.User;
-
 import vn.iotstar.services.ICartMilkTeaService;
 import vn.iotstar.services.ICartService;
 import vn.iotstar.services.IMilkTeaService;
