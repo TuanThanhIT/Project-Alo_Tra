@@ -104,4 +104,9 @@ public class UserServiceImpl implements IUserService {
 		return userRepository.countSellerRole();
 	}
 
+	@Override
+	public List<User> findByRoleID(int roleID) {
+		return userRepository.findByRoleID(roleID);
+	}
+
 }

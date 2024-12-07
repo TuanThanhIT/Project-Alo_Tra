@@ -1,5 +1,7 @@
 package vn.iotstar.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +29,7 @@ public class Shipper {
     @JoinColumn(name = "DeliveryID", referencedColumnName = "deliveryID")
     private Delivery delivery;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "BranchID", referencedColumnName = "branchID")
     private Branch branch;
 

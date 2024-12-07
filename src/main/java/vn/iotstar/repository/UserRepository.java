@@ -1,5 +1,6 @@
 package vn.iotstar.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,7 @@ import vn.iotstar.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer>{
 	Optional<User> findByUserName(String userName);
     boolean existsByUserName(String username);
+    List<User> findByRoleID(int roleID);
     
     @Query("SELECT COUNT(u) FROM User u WHERE u.role.roleName = :role")
     long countByRole(String role);

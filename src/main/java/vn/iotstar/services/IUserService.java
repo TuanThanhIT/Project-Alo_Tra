@@ -38,6 +38,7 @@ public interface IUserService {
     long countByRole(String role);
     long countShipperRole();
     long countSellerRole();
+    List<User> findByRoleID(int roleID);
 
 
 }
