@@ -1,9 +1,12 @@
 package vn.iotstar.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vn.iotstar.enums.OrderStatus;
 
 @Entity
 @Table(name = "Orders")
@@ -26,21 +29,13 @@ public class Order {
 	@JoinColumn(name = "CartID", referencedColumnName = "cartID")
 	private Cart cart; // Một đơn hàng thuộc về một giỏ hàng
 
-	@ManyToOne
-	@JoinColumn(name = "BranchID", referencedColumnName = "branchID")
-	private Branch branch;
+	@Enumerated(EnumType.STRING)
+	private OrderStatus status;
 
-	@ManyToOne
-	@JoinColumn(name = "StatusID", referencedColumnName = "statusID")
-	private Status status;
-
-	@ManyToOne
-	@JoinColumn(name = "ShipperID", referencedColumnName = "shipID")
-	private Shipper shipper;
-
-	@ManyToOne
-	@JoinColumn(name = "PayID", referencedColumnName = "payID")
-	private Pays pays; // Thuộc tính trỏ đến Pay
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payID")
+	@JsonManagedReference
+	private Pays payment;
 
 	@Override
 	public String toString() {

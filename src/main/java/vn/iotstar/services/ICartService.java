@@ -10,6 +10,8 @@ public interface ICartService {
 
 	<S extends Cart> S save(S entity);
 
+	void deleteAllItem(int uid);
+
 	
 
 }

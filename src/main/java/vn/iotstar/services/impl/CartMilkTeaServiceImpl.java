@@ -22,24 +22,28 @@ public class CartMilkTeaServiceImpl implements ICartMilkTeaService {
 		BigDecimal totalPrice = BigDecimal.ZERO; // Khởi tạo giá trị mặc định
 
 		for (CartMilkTea cartMilkTea : cartMilkTeas) {
-			BigDecimal price = cartMilkTea.getMilkTea().getPrice(); // Lấy giá
-			BigDecimal quantity = BigDecimal.valueOf(cartMilkTea.getQuantityMilkTea()); // Chuyển số lượng thành
-																						// BigDecimal
-			totalPrice = totalPrice.add(price.multiply(quantity)); // Cộng giá vào tổng tiền
+			if (cartMilkTea.getMilkTea() != null && cartMilkTea.getMilkTea().getPrice() != null) {
+				BigDecimal basePrice = cartMilkTea.getMilkTea().getPrice(); // Giá cơ bản
+				BigDecimal sizeExtraPrice = cartMilkTea.getSize() != null
+						&& cartMilkTea.getSize().getExtraCost() != null ? cartMilkTea.getSize().getExtraCost()
+								: BigDecimal.ZERO; // Giá cộng thêm của size
+				BigDecimal itemPrice = basePrice.add(sizeExtraPrice); // Giá cho một sản phẩm (bao gồm size)
+				totalPrice = totalPrice.add(itemPrice.multiply(BigDecimal.valueOf(cartMilkTea.getQuantityMilkTea()))); // Tổng
+																														// giá
+			}
 		}
+	return totalPrice;
 
-		return totalPrice;
 	}
+
 	@Override
-	public Optional<CartMilkTea> findById(int id)
-	{
+	public Optional<CartMilkTea> findById(int id) {
 		return cartMilkTeaRepository.findById(id);
 	}
-	
 
 	@Override
-	public void deleteById(int id)
-	{
+	public void deleteById(int id) {
 		cartMilkTeaRepository.deleteById(id);
 	}
+
 }
