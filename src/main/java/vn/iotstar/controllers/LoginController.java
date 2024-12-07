@@ -83,17 +83,26 @@ public class LoginController {
 		// Kiểm tra thông tin đăng nhập
 		User user = userService.login(username, password);
 		if (user != null) {
-			HttpSession session = request.getSession(true);
-			session.setAttribute("account", user);
+			if(user.isActive() == true)
+			{
+				HttpSession session = request.getSession(true);
+				session.setAttribute("account", user);
 
-			// Nếu chọn nhớ mật khẩu thì lưu cookie
-			if (isRememberMe) {
-				saveRememberMe(response, username, password);
-			} else {
-				deleteRememberMeCookie(response); // Nếu không chọn thì xóa cookie
+				// Nếu chọn nhớ mật khẩu thì lưu cookie
+				if (isRememberMe) {
+					saveRememberMe(response, username, password);
+				} else {
+					deleteRememberMeCookie(response); // Nếu không chọn thì xóa cookie
+				}
+
+				return "redirect:/user/home";
 			}
-
-			return "redirect:/user/home";
+			else
+			{
+				alertMsg = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên để xử lý.";
+				model.addAttribute("alert", alertMsg);
+				return "login";
+			}
 		} else {
 			alertMsg = "Tài khoản hoặc mật khẩu không đúng";
 			model.addAttribute("alert", alertMsg);
