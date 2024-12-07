@@ -86,8 +86,10 @@
 										th:href="@{/user/product/detail/{id}(id=${milkTea.milkTeaID})}"
 										class="btn btn-primary rounded-pill py-2 px-4 m-2"> Xem
 										Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
-									</a> <a href="#" class="btn btn-dark rounded-pill py-2 px-4 m-2">
-										Thêm vào giỏ <i class="fa fa-cart-plus ms-2"></i>
+									</a> <a
+										th:href="@{/cart/addToCart(id=${milkTea.milkTeaID}, quantity=1, size='M')}"
+										class="btn btn-dark rounded-pill py-2 px-4 m-2"> Thêm vào
+										giỏ <i class="fa fa-cart-plus ms-2"></i>
 									</a> <input type="hidden" class="milkTeaID"
 										th:value="${milkTea.milkTeaID}" /> <input type="hidden"
 										class="userID" th:value="${user.userID}" />
