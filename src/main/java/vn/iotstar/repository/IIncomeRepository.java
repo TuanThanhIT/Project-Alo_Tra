@@ -17,4 +17,8 @@ public interface IIncomeRepository extends JpaRepository<Income, Integer>{
             "FROM Income i WHERE YEAR(i.date) = :year " +
             "GROUP BY MONTH(i.date) ORDER BY month")
     List<Object[]> findMonthlyIncome(int year);
+    
+    // Truy vấn tính tổng thu nhập cho mỗi branch
+    @Query("SELECT i.branch.branchID, SUM(i.value) FROM Income i GROUP BY i.branch.branchID")
+    List<Object[]> findTotalIncomeByBranch();
 }

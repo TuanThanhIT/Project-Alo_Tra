@@ -70,18 +70,18 @@
 </div>
 
 
-            <!-- Đánh giá -->
+           <!--   Đánh giá 
             <div class="mb-3">
                 <label for="rateValue" class="form-label">Đánh giá:</label>
                 <div id="rateValue" class="form-control" readonly>
-                    <!-- Hiển thị sao đầy -->
+                    Hiển thị sao đầy
                     <i th:each="star : ${#numbers.sequence(1, shipper.rateValue != null ? shipper.rateValue : 3)}" 
                        class="bi bi-star-fill text-warning"></i>
-                    <!-- Hiển thị sao rỗng -->
+                    Hiển thị sao rỗng
                     <i th:each="emptyStar : ${#numbers.sequence(shipper.rateValue != null ? shipper.rateValue + 1 : 4, 5)}" 
                        class="bi bi-star"></i>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <div class="card-footer text-muted">

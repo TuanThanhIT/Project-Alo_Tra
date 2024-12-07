@@ -1,8 +1,12 @@
 package vn.iotstar.controllers.admin;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -97,9 +101,38 @@ public class HomeController {
 			    } catch (JsonProcessingException e) {
 			        e.printStackTrace();
 			    }
+			
+			    ///bar chart
+			 // Lấy dữ liệu từ cơ sở dữ liệu
+			    List<Object[]> branchIncome = iIncomeService.findTotalIncomeByBranch();
 
-		    
+			    // Lưu trữ dữ liệu doanh thu của từng chi nhánh
+			    List<Map<String, Object>> branchIncomeData = new ArrayList<>();
+			    if (branchIncome != null && !branchIncome.isEmpty()) { // Kiểm tra nếu dữ liệu không null hoặc rỗng
+			        for (Object[] row : branchIncome) {
+			            try {
+			                int branchId = (int) row[0];  // ID chi nhánh
+			                double income = (double) row[1];  // Doanh thu chi nhánh
 
+			                // Tạo đối tượng lưu trữ dữ liệu doanh thu
+			                Map<String, Object> data = new HashMap<>();
+			                data.put("branchId", branchId);
+			                data.put("income", income);
+			                branchIncomeData.add(data);
+			            } catch (ClassCastException | ArrayIndexOutOfBoundsException ex) {
+			                ex.printStackTrace(); // Log lỗi nếu dữ liệu không đúng định dạng
+			            }
+			        }
+			    }
+
+			    // Chuyển mảng dữ liệu thành chuỗi JSON để sử dụng trong view
+			    ObjectMapper objectMapper2 = new ObjectMapper();
+			    try {
+			        String branchIncomeJson = objectMapper2.writeValueAsString(branchIncomeData);
+			        model.addAttribute("branchIncomeJson", branchIncomeJson);
+			    } catch (JsonProcessingException e) {
+			        e.printStackTrace(); // Log lỗi JSON
+			    }
 
 			return "admin/index"; // Tên View
 		} else {

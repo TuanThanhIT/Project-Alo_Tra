@@ -20,7 +20,7 @@ public class Shipper {
     @ManyToOne
     @JoinColumn(name = "UserID", referencedColumnName = "userID")
     private User user;
-
+    
     @ManyToOne
     @JoinColumn(name = "RateID", referencedColumnName = "rateID")
     private Rate rate;

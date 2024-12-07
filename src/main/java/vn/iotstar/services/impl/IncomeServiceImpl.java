@@ -28,4 +28,9 @@ public class IncomeServiceImpl implements IIncomeService {
 		return iIncomeRepository.findMonthlyIncome(year);
 	}
 
+	@Override
+	public List<Object[]> findTotalIncomeByBranch() {
+		return iIncomeRepository.findTotalIncomeByBranch();
+	}
+
 }

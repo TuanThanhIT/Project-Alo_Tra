@@ -26,6 +26,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
+
 <style>
 #wrapper {
 	margin-left: 6cm;
@@ -203,7 +204,7 @@ body {
 											<canvas id="incomeChart" width="400" height="200"></canvas>
 										</div>
 
-									<script>
+										<script>
     // Lấy dữ liệu từ Controller và chuyển thành mảng
     var months = JSON.parse(/*[[${monthsJson}]]*/ '[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]');  // Mảng tháng từ controller
     var totalIncomePerMonth = JSON.parse('[[${totalIncomeJson}]]');  // Chuyển chuỗi JSON thành mảng
@@ -264,7 +265,6 @@ body {
 
 									</div>
 
-
 								</div>
 							</div>
 
@@ -298,60 +298,12 @@ body {
 
 							<!-- Content Column -->
 							<div class="col-lg-6 mb-4">
-
-								<!-- Project Card Example -->
-								<div class="card shadow mb-4">
-									<div class="card-header py-3">
-										<h6 class="m-0 font-weight-bold text-primary">Projects</h6>
-									</div>
-									<div class="card-body">
-										<h4 class="small font-weight-bold">
-											Server Migration <span class="float-right">20%</span>
-										</h4>
-										<div class="progress mb-4">
-											<div class="progress-bar bg-danger" role="progressbar"
-												style="width: 20%" aria-valuenow="20" aria-valuemin="0"
-												aria-valuemax="100"></div>
-										</div>
-										<h4 class="small font-weight-bold">
-											Sales Tracking <span class="float-right">40%</span>
-										</h4>
-										<div class="progress mb-4">
-											<div class="progress-bar bg-warning" role="progressbar"
-												style="width: 40%" aria-valuenow="40" aria-valuemin="0"
-												aria-valuemax="100"></div>
-										</div>
-										<h4 class="small font-weight-bold">
-											Customer Database <span class="float-right">60%</span>
-										</h4>
-										<div class="progress mb-4">
-											<div class="progress-bar" role="progressbar"
-												style="width: 60%" aria-valuenow="60" aria-valuemin="0"
-												aria-valuemax="100"></div>
-										</div>
-										<h4 class="small font-weight-bold">
-											Payout Details <span class="float-right">80%</span>
-										</h4>
-										<div class="progress mb-4">
-											<div class="progress-bar bg-info" role="progressbar"
-												style="width: 80%" aria-valuenow="80" aria-valuemin="0"
-												aria-valuemax="100"></div>
-										</div>
-										<h4 class="small font-weight-bold">
-											Account Setup <span class="float-right">Complete!</span>
-										</h4>
-										<div class="progress">
-											<div class="progress-bar bg-success" role="progressbar"
-												style="width: 100%" aria-valuenow="100" aria-valuemin="0"
-												aria-valuemax="100"></div>
-										</div>
-									</div>
-								</div>
-
-
-
+								<h3>Biểu đồ doanh thu theo chi nhánh</h3>
+								<canvas id="branchBarChart" width="800" height="400"></canvas>
+							
 							</div>
-
+							<!-- bar chart  -->
+							
 							<div class="col-lg-6 mb-4">
 
 								<!-- Illustrations -->
@@ -475,7 +427,7 @@ body {
 		<script>
     var ctx = document.getElementById('roleChart').getContext('2d');
     var roleChart = new Chart(ctx, {
-        type: 'pie',
+        type: 'doughnut', // Thay 'pie' thành 'doughnut' để tạo vòng cung
         data: {
             labels: ['User', 'Seller', 'Shipper'], // Các vai trò
             datasets: [{
@@ -517,10 +469,77 @@ body {
                         size: 14
                     }
                 }
-            }
+            },
+            cutout: '70%', // Tạo vòng cung (cắt bỏ phần giữa của biểu đồ)
         }
     });
 </script>
+
+
+
+	 <script>
+        // Dữ liệu JSON được truyền từ Controller
+        const branchIncomeData = JSON.parse('${branchIncomeJson}');
+
+        // Tách ID chi nhánh và doanh thu
+        const branchLabels = branchIncomeData.map(data => `Chi nhánh ${data.branchId}`);
+        const branchIncomes = branchIncomeData.map(data => data.income);
+
+        // Thiết lập biểu đồ
+        const canvas = document.getElementById('branchBarChart');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+
+            // Khởi tạo biểu đồ cột
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: branchLabels, // Tên các chi nhánh
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: branchIncomes, // Dữ liệu doanh thu
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)', // Màu cột
+                        borderColor: 'rgba(75, 192, 192, 1)', // Màu viền
+                        borderWidth: 1 // Độ dày viền
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let value = context.raw;
+                                    return new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND'
+                                    }).format(value);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND'
+                                    }).format(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+								
 
 	</div>
 </body>
