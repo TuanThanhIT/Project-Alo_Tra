@@ -76,37 +76,64 @@ public class SLHomeController {
 	@GetMapping("/revenue")
 	public String revenue(HttpServletRequest request) {
 		// Lấy thông tin user từ session trực tiếp
-		
+		HttpSession session = request.getSession(false); // Lấy session nếu có
+		User user = (User) session.getAttribute("account"); // Lấy thông tin user từ session
+
+		// Kiểm tra xem user có tồn tại và role của user có phải là admin (roleID == 1)
+		if (user != null && user.getRoleID() == 2) {
 			return "seller/revenue/revenue";
+		} else {
+			return "user/error"; // Nếu không phải admin hoặc không có user thì trả về trang lỗi
+		}
 		
 	}
 
 	@GetMapping("/branch")
-	public String branch(Model model) {
-		Optional<Branch> branchOptional = iBranhService.findById(1);
-		if (branchOptional.isPresent()) {
-			model.addAttribute("branch", branchOptional.get());
-		} else {
-			model.addAttribute("branch", new Branch());
-		}
-		return "seller/branch/branchhome";
+	public String branch(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+	    User user = (User) session.getAttribute("account");
+	    
+	    // Kiểm tra nếu BranchID là null
+	    if (iBranhService.getBranchID(user.getUserID()) == null) {
+	        // Redirect đến endpoint add-branch
+	        return "redirect:/seller/add-branch";
+	    }
+	    
+	    // Lấy branch nếu tồn tại
+	    Optional<Branch> branchOptional = iBranhService.findById(iBranhService.getBranchID(user.getUserID()));
+	    if (branchOptional.isPresent()) {
+	        model.addAttribute("branch", branchOptional.get());
+	    } else {
+	        model.addAttribute("branch", new Branch());
+	    }
+	    
+	    return "seller/branch/branchhome";
 	}
 
 	@GetMapping("/milkTeas")
 	public String listMilkTea(Model model, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(required = false) Integer typeMilkTeaID) {
+			@RequestParam(required = false) Integer typeMilkTeaID, HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+	    User user = (User) session.getAttribute("account");
+	    
+	    // Kiểm tra nếu BranchID là null
+	    if (iBranhService.getBranchID(user.getUserID()) == null) {
+	        // Redirect đến endpoint add-branch
+	        return "redirect:/seller/add-branch";
+	    }
+	    Optional<Branch> branchOptional = iBranhService.findById(iBranhService.getBranchID(user.getUserID()));
+		Branch enBranch = branchOptional.get();
 		List<MilkTeaType> listType = iMilkTeaTypeService.findAll();
-		Page<MilkTea> milkTeas;
-		if (typeMilkTeaID == null) {
-			milkTeas = iMilkTeaService.findAll(pageNo);
-		} else {
-			milkTeas = iMilkTeaService.findByMilkTeaType_MilkTeaTypeID(typeMilkTeaID, pageNo);
-		}
-
-		model.addAttribute("totalPage", milkTeas.getTotalPages());
+		Page<BranchMilkTea> brMilkTea;
+		brMilkTea = iBranchMilkTeaService.getBranchMilkTeaByBranch(enBranch, pageNo);
+		if (brMilkTea == null) {
+			return "redirect:/seller/add-MilkTea";
+		} 
+		
+		model.addAttribute("totalPage", brMilkTea.getTotalPages());
 		model.addAttribute("listType", listType);
 		model.addAttribute("currentPage", pageNo);
-		model.addAttribute("milkTeas", milkTeas);
+		model.addAttribute("milkTeas", brMilkTea);
 		return "seller/milkTea/list-MilkTea";
 	}
 
@@ -116,9 +143,14 @@ public class SLHomeController {
 		model.addAttribute("branch", branch);
 		return "seller/Branch/add-Branch";
 	}
-
+	@GetMapping("/update-branch/{id}")
+	public String updateBranch(@RequestParam("id") int theid, Model model ) {
+		Optional<Branch> branch = iBranhService.findById(theid);
+		model.addAttribute("branch", branch);
+		return "seller/Branch/update-Branch";
+	}
 	@PostMapping("/saveBranch")
-	public String saveBranch(@ModelAttribute BranchDto branchDto, Model model) {
+	public String saveBranch(@ModelAttribute BranchDto branchDto, Model model, HttpServletRequest request) {
 		String uploadDirectory = PathConstants.UPLOAD_DIRECTORY;
 		List<String> storedFileNames = new ArrayList<>();
 
@@ -152,13 +184,18 @@ public class SLHomeController {
 			model.addAttribute("alert", "Có lỗi xảy ra khi upload ảnh: " + ex.getMessage());
 			return "seller/branch/add-Branch";
 		}
-
+		
 		Branch branch = new Branch();
 		branch.setAddress(branchDto.getAddress());
 		branch.setOpenTime(branchDto.getOpenTime());
 		branch.setCloseTime(branchDto.getCloseTime());
 		branch.setIntroduction(branchDto.getIntroduction());
 		branch.setDescription(branchDto.getDescription());
+		
+		HttpSession session = request.getSession(false);
+		User user = (User) session.getAttribute("account");
+		
+		branch.setUser(user);		
 
 		branch.setImages(String.join(",", storedFileNames));
 
@@ -177,7 +214,7 @@ public class SLHomeController {
 	}
 
 	@PostMapping("/milktea/save")
-	public String saveMilkTea(@ModelAttribute MilkTeaDto milkTeaDto, Model model) {
+	public String saveMilkTea(@ModelAttribute MilkTeaDto milkTeaDto, Model model, HttpServletRequest request) {
 		String uploadDirectory = PathConstants.UPLOAD_DIRECTORY; // Thư mục lưu ảnh
 		List<String> storedFileNames = new ArrayList<>(); // Danh sách tên ảnh lưu trong DB
 
@@ -233,10 +270,16 @@ public class SLHomeController {
 		iMilkTeaService.save(milkTea); // Gọi service lưu vào DB
 		model.addAttribute("success", "Thêm trà sữa thành công!");
 
-		Optional<Branch> branch = iBranhService.findById(1);
-		Branch enBranch = branch.get();
+		HttpSession session = request.getSession(false);
+	    User user = (User) session.getAttribute("account");
+	    
+	    // Lấy branch nếu tồn tại
+	    Optional<Branch> branchOptional = iBranhService.findById(iBranhService.getBranchID(user.getUserID()));
+		Branch enBranch = branchOptional.get();
 		BranchMilkTea branchMilkTea = new BranchMilkTea(enBranch, milkTea);
 		iBranchMilkTeaService.save(branchMilkTea);
 		return "redirect:/seller/milkTeas"; // Chuyển hướng đến danh sách MilkTea
 	}
+	
+	
 }

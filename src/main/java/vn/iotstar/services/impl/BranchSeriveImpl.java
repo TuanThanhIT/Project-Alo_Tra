@@ -18,10 +18,10 @@ import vn.iotstar.services.IBranchService;
 
 @Service
 public class BranchSeriveImpl implements IBranchService {
-		
+
 	@Autowired
 	BranchRepository branchRepository;
-	
+
 	@Override
 	public <S extends Branch> S save(S entity) {
 		return branchRepository.save(entity);
@@ -52,7 +52,6 @@ public class BranchSeriveImpl implements IBranchService {
 		branchRepository.deleteById(id);
 	}
 
-	
 	@Override
 	public void delete(Branch entity) {
 		branchRepository.delete(entity);
@@ -62,11 +61,6 @@ public class BranchSeriveImpl implements IBranchService {
 	public void deleteAll() {
 		branchRepository.deleteAll();
 	}
-
-	
-
-	
-	
 
 	@Override
 	public List<MilkTea> findMilkTeaByBranchID(int branchID) {
@@ -123,5 +117,10 @@ public class BranchSeriveImpl implements IBranchService {
 		// Trả về kết quả phân trang
 		return new PageImpl<>(list, pageable, branchRepository.searchBranchInCity(keyword, cityName).size());
 	}
-	
+
+	@Override
+	public Integer getBranchID(int userid) {
+		return branchRepository.findBranchIDByUserID(userid);
+	}
+
 }
