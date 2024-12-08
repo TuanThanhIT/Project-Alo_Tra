@@ -110,8 +110,8 @@
                                     </li>
                                 </ul>
 
-                                <a th:href="${listCart != null && !#lists.isEmpty(listCart) ? '@{/checkout/preview}' : 'javascript:void(0);'}"
-                                   th:attr="disabled=${listCart == null || #lists.isEmpty(listCart) ? 'disabled' : null}"
+                                <a th:href="@{/user/checkout/preview}"
+                                 
                                    class="btn btn-primary btn-block waves-effect waves-light">
                                     Thanh Toán
                                 </a>

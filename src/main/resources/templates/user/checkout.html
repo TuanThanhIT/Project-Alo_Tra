@@ -3,6 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{user/layout-user.html}">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
@@ -15,12 +16,11 @@
 <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
 
-<title>Document</title>
+<title>Checkout</title>
 </head>
 <body>
 	<section layout:fragment="content">
 		<div class="container">
-
 
 			<!--Section: Block Content-->
 			<section class="mt-5 mb-4">
@@ -97,11 +97,13 @@
 									</li>
 								</ul>
 
-								<form method="post" th:action="@{/checkout/checkout-COD}">
-									<input type="hidden" name="shippingPrice"
-										id="hiddenShippingPrice" value="0">
-									<button type="submit"
-										class="btn btn-primary btn-block waves-effect waves-light">Pay
+								<!-- Form to submit checkout data -->
+								<form method="post" th:action="@{/user/checkout/checkout-COD}">
+									<!-- Hidden input fields to pass values to controller -->
+									<input type="hidden" name="shippingPrice" id="hiddenShippingPrice" value="0">
+									<input type="hidden" name="deliveryId" id="hiddenDeliveryId" value="">
+
+									<button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Pay
 										Now</button>
 								</form>
 							</div>
@@ -120,27 +122,25 @@
 		function updateShippingCost() {
 			const select = document.getElementById('deliveryId');
 			const selectedOption = select.options[select.selectedIndex];
-			const shippingPrice = parseInt(selectedOption
-					.getAttribute('data-delivery'));
+			
+			// Get the shipping price (extra cost) from the selected option
+			const shippingPrice = parseFloat(selectedOption.getAttribute('data-delivery'));
 
-			// Update hidden input with selected shipping price
+			// Update hidden input for shipping price
 			document.getElementById('hiddenShippingPrice').value = shippingPrice;
 
-			// Update shipping cost on the page
-			document.getElementById('shippingCost').innerText = shippingPrice
-					.toLocaleString()
-					+ 'đ';
+			// Update hidden input for deliveryId
+			document.getElementById('hiddenDeliveryId').value = selectedOption.value;
 
-			// Calculate new total
-			const total = parseInt(document
-					.querySelector('[th\\:text="${total}"]').textContent
-					.replace(/[^\d]/g, ''));
+			// Update the displayed shipping cost
+			document.getElementById('shippingCost').innerText = shippingPrice.toLocaleString() + 'đ';
+
+			// Calculate the new total (including shipping)
+			const total = parseInt(document.querySelector('[th\\:text="${total}"]').textContent.replace(/[^\d]/g, ''));
 			const totalWithShipping = total + shippingPrice;
 
-			// Update total with shipping on the page
-			document.getElementById('totalWithShipping').innerText = totalWithShipping
-					.toLocaleString()
-					+ 'đ';
+			// Update the displayed total with shipping cost
+			document.getElementById('totalWithShipping').innerText = totalWithShipping.toLocaleString() + 'đ';
 		}
 	</script>
 

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -22,6 +23,7 @@ public class Pays {
     @Column(name = "PayMethod", columnDefinition = "nvarchar(255)")
     private String payMethod;
     
+    private BigDecimal total;
 
     @OneToOne(mappedBy = "payment")
 	@JsonBackReference
