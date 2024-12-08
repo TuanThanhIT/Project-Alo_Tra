@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import vn.iotstar.entity.Branch;
 import vn.iotstar.entity.BranchMilkTea;
+import vn.iotstar.entity.MilkTea;
 import vn.iotstar.services.IBranchMilkTeaService;
 
 @Service
@@ -46,5 +47,10 @@ public class BranchMilkTeaServiceImpl implements IBranchMilkTeaService{
 		Pageable pageable = PageRequest.of(pageNo-1, 3);
         return iBranchMilkTeaRepository.findByBranch(branch, pageable);
     }
+	
+	@Override
+	public BranchMilkTea getBranchMilkTea(Branch branch, MilkTea milkTea) {
+	    return iBranchMilkTeaRepository.findBranchMilkTeaByBranchAndMilkTea(branch, milkTea);
+	}
 }
 

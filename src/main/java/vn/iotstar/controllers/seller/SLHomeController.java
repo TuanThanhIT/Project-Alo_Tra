@@ -322,6 +322,17 @@ public class SLHomeController {
 			BranchMilkTea branchMilkTea = new BranchMilkTea(enBranch, milkTea, milkTeaDto.getStockQuantity());
 			iBranchMilkTeaService.save(branchMilkTea);
 		}
+		else {
+			HttpSession session = request.getSession(false);
+		    User user = (User) session.getAttribute("account");
+		    
+		    // Lấy branch nếu tồn tại
+		    Optional<Branch> branchOptional = iBranhService.findById(iBranhService.getBranchID(user.getUserID()));
+			Branch enBranch = branchOptional.get();
+			BranchMilkTea branchMilkTea = iBranchMilkTeaService.getBranchMilkTea(enBranch, milkTea);
+			branchMilkTea.setStockQuantity(milkTeaDto.getStockQuantity());
+			iBranchMilkTeaService.save(branchMilkTea);
+		}
 		return "redirect:/seller/milkTeas"; // Chuyển hướng đến danh sách MilkTea
 	}
 	

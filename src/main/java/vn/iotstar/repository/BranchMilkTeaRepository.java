@@ -9,9 +9,16 @@ import org.springframework.stereotype.Repository;
 
 import vn.iotstar.entity.Branch;
 import vn.iotstar.entity.BranchMilkTea;
+import vn.iotstar.entity.MilkTea;
 
 @Repository
 public interface BranchMilkTeaRepository extends JpaRepository<BranchMilkTea, Integer> {
 	@Query("SELECT bm FROM BranchMilkTea bm WHERE bm.branch = :branch")
 	Page<BranchMilkTea> findByBranch(@Param("branch") Branch branch, Pageable pageable);
+	
+	@Query("SELECT bmt FROM BranchMilkTea bmt WHERE bmt.branch = :branch AND bmt.milkTea = :milkTea")
+    BranchMilkTea findBranchMilkTeaByBranchAndMilkTea(
+        @Param("branch") Branch branch,
+        @Param("milkTea") MilkTea milkTea
+    );
 }
