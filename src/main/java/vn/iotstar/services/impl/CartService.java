@@ -40,7 +40,11 @@ public class CartService implements ICartService{
 	{
 		return cartRepo.save(entity);
 	}
-	
+
+	@Override
+	public Long getTotalProductCount() {
+		return cartRepo.getTotalProductCount();
+	}	
 	@Override
 	public void deleteAllItem(int uid) {
 		Cart cart = this.findByUserId(uid).get();
@@ -65,5 +69,10 @@ public class CartService implements ICartService{
 			 
 	        
 		}
+	}
+	@Override
+	public Optional<Cart> findByUserId1(int id)
+	{
+		return cartRepo.findByUserId(id);
 	}
 }	

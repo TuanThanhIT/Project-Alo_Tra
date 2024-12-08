@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layout-admin.html}">
+
+<head>
+<link rel="stylesheet" href="/css/headerAdmin.css">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>SB Admin 2 - Dashboard</title>
+
+<!-- Custom fonts for this template-->
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+	type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="css/sb-admin-2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+
+<style>
+#wrapper {
+	margin-left: 6cm;
+}
+
+body {
+	padding-top: 5px;
+	/* Điều chỉnh giá trị để tạo khoảng cách giữa header và nội dung */
+}
+
+#wrapper {
+	margin-top: 80px;
+	/* Điều chỉnh giá trị tùy theo chiều cao của header */
+}
+</style>
+
+
+</head>
+
+<body id="page-top">
+	<div layout:fragment="content">
+		<!-- Page Wrapper -->
+		<div id="wrapper">
+
+
+
+			<!-- Content Wrapper -->
+			<div id="content-wrapper" class="d-flex flex-column">
+
+				<!-- Main Content -->
+				<div id="content">
+
+
+
+					<!-- Begin Page Content -->
+					<div class="container-fluid">
+
+						<!-- Page Heading -->
+						<div
+							class="d-sm-flex align-items-center justify-content-between mb-4">
+							<h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+							<a href="#"
+								class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+								class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+						</div>
+
+						<!-- Content Row -->
+						<div class="row">
+							<!-- Số lượt khách hàng -->
+							<div class="col-xl-3 col-md-6 mb-4">
+								<div class="card border-left-primary shadow-lg py-3 card-hover">
+									<div class="card-body">
+										<div class="row no-gutters align-items-center">
+											<div class="col mr-2">
+												<div
+													class="text-xs font-weight-bold text-primary text-uppercase mb-1">Số
+													lượt khách hàng</div>
+												<div class="h5 mb-0 font-weight-bold text-gray-800"
+													th:text="${countUser}"></div>
+											</div>
+											<div class="col-auto">
+												<i class="fas fa-users fa-2x text-gray-300"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Tổng thu nhập (năm) -->
+							<div class="col-xl-3 col-md-6 mb-4">
+								<div class="card border-left-success shadow-lg py-3 card-hover">
+									<div class="card-body">
+										<div class="row no-gutters align-items-center">
+											<div class="col mr-2">
+												<div
+													class="text-xs font-weight-bold text-success text-uppercase mb-1">Tổng
+													thu nhập (năm)</div>
+												<div class="h5 mb-0 font-weight-bold text-gray-800"
+													th:text="${income}"></div>
+											</div>
+											<div class="col-auto">
+												<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Tổng chi nhánh -->
+							<div class="col-xl-3 col-md-6 mb-4">
+								<div class="card border-left-info shadow-lg py-3 card-hover">
+									<div class="card-body">
+										<div class="row no-gutters align-items-center">
+											<div class="col mr-2">
+												<div
+													class="text-xs font-weight-bold text-info text-uppercase mb-1">Tổng
+													chi nhánh</div>
+												<div class="row no-gutters align-items-center">
+													<div class="col-auto">
+														<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
+															th:text="${totalBranch}"></div>
+													</div>
+													<div class="col">
+														<div class="progress progress-sm mr-2">
+															<div class="progress-bar bg-info" role="progressbar"
+																style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+																aria-valuemax="100"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-auto">
+												<i class="fas fa-store-alt fa-2x text-gray-300"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Tổng sản phẩm bán ra -->
+							<div class="col-xl-3 col-md-6 mb-4">
+								<div class="card border-left-warning shadow-lg py-3 card-hover">
+									<div class="card-body">
+										<div class="row no-gutters align-items-center">
+											<div class="col mr-2">
+												<div
+													class="text-xs font-weight-bold text-warning text-uppercase mb-1">Tổng
+													sản phẩm bán ra</div>
+												<div class="h5 mb-0 font-weight-bold text-gray-800"
+													th:text="${totalCart}"></div>
+											</div>
+											<div class="col-auto">
+												<i class="fas fa-cogs fa-2x text-gray-300"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Content Row -->
+
+
+						<div class="row">
+
+							<!-- Area Chart -->
+							<div class="col-xl-8 col-lg-7">
+								<div class="card shadow mb-4">
+									<!-- Card Header - Dropdown -->
+									<div
+										class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+										<h6 class="m-0 font-weight-bold text-primary">Earnings
+											Overview</h6>
+										<div class="dropdown no-arrow">
+											<a class="dropdown-toggle" href="#" role="button"
+												id="dropdownMenuLink" data-toggle="dropdown"
+												aria-haspopup="true" aria-expanded="false"> <i
+												class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+											</a>
+											<div
+												class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+												aria-labelledby="dropdownMenuLink">
+												<div class="dropdown-header">Dropdown Header:</div>
+												<a class="dropdown-item" href="#">Action</a> <a
+													class="dropdown-item" href="#">Another action</a>
+												<div class="dropdown-divider"></div>
+												<a class="dropdown-item" href="#">Something else here</a>
+											</div>
+										</div>
+									</div>
+									<!-- Card Body -->
+									<div class="card-body">
+										<div class="text-center mt-4">
+											<h2>Doanh thu theo tháng</h2>
+											<canvas id="incomeChart" width="400" height="200"></canvas>
+										</div>
+
+										<script>
+    // Lấy dữ liệu từ Controller và chuyển thành mảng
+    var months = JSON.parse(/*[[${monthsJson}]]*/ '[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]');  // Mảng tháng từ controller
+    var totalIncomePerMonth = JSON.parse('[[${totalIncomeJson}]]');  // Chuyển chuỗi JSON thành mảng
+
+    console.log("Months:", months);  // Kiểm tra dữ liệu tháng
+    console.log("Total Income Per Month:", totalIncomePerMonth);  // Kiểm tra dữ liệu doanh thu
+
+    // Cấu hình biểu đồ
+    var ctx = document.getElementById('incomeChart').getContext('2d');
+    var incomeLineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: months,  // Các tháng
+            datasets: [{
+                label: 'Doanh thu (VNĐ)',
+                data: totalIncomePerMonth,  // Dữ liệu doanh thu
+                borderColor: 'rgba(75, 192, 192, 1)',  // Màu đường
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Màu nền
+                borderWidth: 2,
+                tension: 0.3,
+                pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.raw.toLocaleString('vi-VN') + ' VNĐ';  // Định dạng VNĐ
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Tháng'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Doanh thu (VNĐ)'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+
+									</div>
+
+								</div>
+							</div>
+
+							<!-- Pie Chart -->
+							<div class="col-xl-4 col-lg-5">
+								<div class="card shadow mb-4">
+									<!-- Card Header - Dropdown -->
+									<!-- Tạo không gian để hiển thị biểu đồ tròn -->
+									<div class="card border-left-info shadow h-100 py-2">
+										<div class="card-body">
+											<div class="row no-gutters align-items-center">
+												<div class="col mr-2">
+													<div
+														class="text-xs font-weight-bold text-info text-uppercase mb-1">Phân
+														bố vai trò</div>
+													<canvas id="roleChart"></canvas>
+													<!-- Biểu đồ tròn -->
+												</div>
+												<div class="col-auto">
+													<i class="fas fa-chart-pie fa-2x text-gray-300"></i>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Content Row -->
+						<div class="row">
+
+							<!-- Content Column -->
+							<div class="col-lg-6 mb-4">
+								<h3>Biểu đồ doanh thu theo chi nhánh</h3>
+								<canvas id="branchBarChart" width="800" height="400"></canvas>
+							
+							</div>
+							<!-- bar chart  -->
+							
+							<div class="col-lg-6 mb-4">
+
+								<!-- Illustrations -->
+								<div class="card shadow mb-4">
+									<div class="card-header py-3">
+										<h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+									</div>
+									<div class="card-body">
+										<div class="text-center">
+											<img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
+												style="width: 25rem;" src="img/undraw_posting_photo.svg"
+												alt="...">
+										</div>
+										<p>
+											Add some quality, svg illustrations to your project courtesy
+											of <a target="_blank" rel="nofollow"
+												href="https://undraw.co/">unDraw</a>, a constantly updated
+											collection of beautiful svg images that you can use
+											completely free and without attribution!
+										</p>
+										<a target="_blank" rel="nofollow" href="https://undraw.co/">Browse
+											Illustrations on unDraw &rarr;</a>
+									</div>
+								</div>
+
+								<!-- Approach -->
+								<div class="card shadow mb-4">
+									<div class="card-header py-3">
+										<h6 class="m-0 font-weight-bold text-primary">Development
+											Approach</h6>
+									</div>
+									<div class="card-body">
+										<p>SB Admin 2 makes extensive use of Bootstrap 4 utility
+											classes in order to reduce CSS bloat and poor page
+											performance. Custom CSS classes are used to create custom
+											components and custom utility classes.</p>
+										<p class="mb-0">Before working with this theme, you should
+											become familiar with the Bootstrap framework, especially the
+											utility classes.</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+					<!-- /.container-fluid -->
+
+				</div>
+				<!-- End of Main Content -->
+
+				<!-- Footer -->
+				<footer class="sticky-footer bg-white">
+					<div class="container my-auto">
+						<div class="copyright text-center my-auto">
+							<span>Copyright &copy; Your Website 2021</span>
+						</div>
+					</div>
+				</footer>
+				<!-- End of Footer -->
+
+			</div>
+			<!-- End of Content Wrapper -->
+
+		</div>
+		<!-- End of Page Wrapper -->
+
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded" href="#page-top"> <i
+			class="fas fa-angle-up"></i>
+		</a>
+
+		<!-- Logout Modal-->
+		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Ready to
+							Leave?</h5>
+						<button class="close" type="button" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">Select "Logout" below if you are
+						ready to end your current session.</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button"
+							data-dismiss="modal">Cancel</button>
+						<a class="btn btn-primary" href="login.html">Logout</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript-->
+		<script src="vendor/jquery/jquery.min.js"></script>
+		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+		<!-- Core plugin JavaScript-->
+		<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+		<!-- Custom scripts for all pages-->
+		<script src="js/sb-admin-2.min.js"></script>
+
+		<!-- Page level plugins -->
+		<script src="vendor/chart.js/Chart.min.js"></script>
+
+		<!-- Page level custom scripts -->
+		<script src="js/demo/chart-area-demo.js"></script>
+		<script src="js/demo/chart-pie-demo.js"></script>
+
+
+
+
+		<!-- Biểu đồ tròn -->
+		<!-- Script để vẽ biểu đồ tròn -->
+		<canvas id="roleChart" width="400" height="400"></canvas>
+
+		<script>
+    var ctx = document.getElementById('roleChart').getContext('2d');
+    var roleChart = new Chart(ctx, {
+        type: 'doughnut', // Thay 'pie' thành 'doughnut' để tạo vòng cung
+        data: {
+            labels: ['User', 'Seller', 'Shipper'], // Các vai trò
+            datasets: [{
+                label: 'Số lượng người dùng',
+                data: [
+                    /*${countUser}*/ [[${countUser}]], // Thay thế bằng giá trị từ controller
+                    /*${countSeller}*/ [[${countSeller}]], // Thay thế bằng giá trị từ controller
+                    /*${countShipper}*/ [[${countShipper}]] // Thay thế bằng giá trị từ controller
+                ],
+                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+                borderColor: ['#ffffff', '#ffffff', '#ffffff'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw;
+                        }
+                    }
+                },
+                datalabels: {
+                    color: '#ffffff',
+                    formatter: function(value, context) {
+                        var total = context.dataset.data.reduce(function(sum, currentValue) {
+                            return sum + currentValue;
+                        }, 0);
+                        var percentage = (value / total * 100).toFixed(2);
+                        return percentage + '%'; // Hiển thị tỷ lệ phần trăm
+                    },
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    }
+                }
+            },
+            cutout: '70%', // Tạo vòng cung (cắt bỏ phần giữa của biểu đồ)
+        }
+    });
+</script>
+
+
+
+	 <script>
+        // Dữ liệu JSON được truyền từ Controller
+        const branchIncomeData = JSON.parse('${branchIncomeJson}');
+
+        // Tách ID chi nhánh và doanh thu
+        const branchLabels = branchIncomeData.map(data => `Chi nhánh ${data.branchId}`);
+        const branchIncomes = branchIncomeData.map(data => data.income);
+
+        // Thiết lập biểu đồ
+        const canvas = document.getElementById('branchBarChart');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+
+            // Khởi tạo biểu đồ cột
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: branchLabels, // Tên các chi nhánh
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: branchIncomes, // Dữ liệu doanh thu
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)', // Màu cột
+                        borderColor: 'rgba(75, 192, 192, 1)', // Màu viền
+                        borderWidth: 1 // Độ dày viền
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let value = context.raw;
+                                    return new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND'
+                                    }).format(value);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return new Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND'
+                                    }).format(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+								
+
+	</div>
+</body>
+
+</html>

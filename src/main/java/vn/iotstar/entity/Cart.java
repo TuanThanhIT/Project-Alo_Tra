@@ -32,7 +32,7 @@ public class Cart {
 
     // Mối quan hệ với MilkTea thông qua CartMilkTea (N:M)
     
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL,orphanRemoval = true)
 	@JsonManagedReference
     private List<CartMilkTea> milkTeas;
     @OneToOne

@@ -32,10 +32,11 @@ public class BranchMilkTea {
     @Column(name = "StockQuantity")
     private int stockQuantity; // Số lượng trong kho
 
-	public BranchMilkTea(Branch branch, MilkTea milkTea) {
+	public BranchMilkTea(Branch branch, MilkTea milkTea, int stockQuantity) {
 		super();
 		this.branch = branch;
 		this.milkTea = milkTea;
+		this.stockQuantity = stockQuantity;
 	}
     
     

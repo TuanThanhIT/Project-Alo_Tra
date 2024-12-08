@@ -36,6 +36,10 @@ public interface IUserService {
 
 	User getUserByUsername(String username);
 
+    long countByRole(String role);
+    long countShipperRole();
+    long countSellerRole();
+    List<User> findByRoleID(int roleID);
 	boolean existsByEmail(String email);
 
 	User findByEmail(String email);

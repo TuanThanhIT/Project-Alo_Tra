@@ -42,6 +42,7 @@ public class UserController {
 			model.addAttribute("currentPage", page); // Trang hiện tại
 			model.addAttribute("totalPages", milkTeaTypesPage.getTotalPages()); // Tổng số trang
 			return "admin/user/list"; // View name
+
 	}
 
 //	@RequestMapping("toggleActive/{userID}")

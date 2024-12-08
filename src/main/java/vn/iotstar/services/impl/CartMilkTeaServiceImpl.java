@@ -42,6 +42,10 @@ public class CartMilkTeaServiceImpl implements ICartMilkTeaService {
 	
 
 	@Override
+	public <S extends CartMilkTea> S save(S entity) {
+		return cartMilkTeaRepository.save(entity);
+	}
+	@Override
 	public void deleteById(int id)
 	{
 		cartMilkTeaRepository.deleteById(id);

@@ -13,6 +13,8 @@ public interface ICartMilkTeaService {
 
 	void deleteById(int id);
 
+	<S extends CartMilkTea> S save(S entity);
+
 	
 
 }

@@ -7,13 +7,14 @@ import vn.iotstar.entity.MilkTeaType;
 import java.math.BigDecimal;
 
 public class MilkTeaDto {
-
+	private Integer milkTeaID;
     private String milkTeaName;
     private MilkTeaType milkTeaType; 
     private BigDecimal price;
     private BigDecimal discountPrice;
     private String description;
     private String introduction;
+    private Integer stockQuantity;
 
     private MultipartFile[] images; // Dùng mảng để nhận nhiều ảnh
 	public String getMilkTeaName() {
@@ -57,6 +58,18 @@ public class MilkTeaDto {
 	}
 	public void setImages(MultipartFile[] images) {
 		this.images = images;
+	}
+	public Integer getMilkTeaID() {
+		return milkTeaID;
+	}
+	public void setMilkTeaID(Integer milkTeaID) {
+		this.milkTeaID = milkTeaID;
+	}
+	public Integer getStockQuantity() {
+		return stockQuantity;
+	}
+	public void setStockQuantity(Integer stockQuantity) {
+		this.stockQuantity = stockQuantity;
 	}
 	public MilkTeaDto() {
 	}

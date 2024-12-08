@@ -15,10 +15,9 @@ import vn.iotstar.entity.User;
 import vn.iotstar.repository.UserRepository;
 import vn.iotstar.services.IUserService;
 
-
 @Service
-public class UserServiceImpl implements IUserService{
-	
+public class UserServiceImpl implements IUserService {
+
 	@Autowired
 	UserRepository userRepository;
 	
@@ -32,26 +31,28 @@ public class UserServiceImpl implements IUserService{
 	public List<User> findAll(Sort sort) {
 		return userRepository.findAll(sort);
 	}
+
 	public Page<User> findAll(Pageable pageable) {
 		return userRepository.findAll(pageable);
 	}
+
 	public long count() {
 		return userRepository.count();
 	}
+
 	public void deleteById(Integer id) {
 		userRepository.deleteById(id);
 	}
+
 	public void delete(User entity) {
 		userRepository.delete(entity);
 	}
+
 	public void deleteAll() {
 		userRepository.deleteAll();
 	}
 
 
-
-	
-	
 	@Override
 	public User login(String username, String password) {
         Optional<User> userOptional = userRepository.findByUserName(username);
@@ -69,14 +70,13 @@ public class UserServiceImpl implements IUserService{
 	
 	@Override
 	public User getUserByUsername(String username) {
-        return userRepository.findByUserName(username).orElse(null); // Trả về null nếu không tìm thấy người dùng
-    }
+		return userRepository.findByUserName(username).orElse(null); // Trả về null nếu không tìm thấy người dùng
+	}
 
 	@Override
 	public User addUser(User user) {
-	    return userRepository.save(user); // Thêm mới
+		return userRepository.save(user); // Thêm mới
 	}
-
 
 	@Override
 	public List<User> findAll() {
@@ -88,14 +88,11 @@ public class UserServiceImpl implements IUserService{
 		return userRepository.findById(id);
 	}
 
-
 	@Override
 	public boolean existsByUserName(String username) {
 		return userRepository.existsByUserName(username);
 	}
 
-	
-	
 	@Override
 	public <S extends User> S save(S entity) {
 		return userRepository.save(entity);
@@ -116,4 +113,24 @@ public class UserServiceImpl implements IUserService{
 	
 	
 
+	@Override
+	public long countByRole(String role) {
+		return userRepository.countByRole(role);
+	}
+
+	@Override
+	public long countShipperRole() {
+		return userRepository.countShipperRole();
+	}
+
+	@Override
+	public long countSellerRole() {
+		return userRepository.countSellerRole();
+	}
+
+	@Override
+	public List<User> findByRoleID(int roleID) {
+		return userRepository.findByRoleID(roleID);
+	}
 }
+
