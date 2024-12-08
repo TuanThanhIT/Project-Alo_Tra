@@ -41,100 +41,89 @@ public class CartController {
 
 	@GetMapping("/addToCart")
 	public String addToCart(@RequestParam int id, @RequestParam int quantity, @RequestParam String size,
-	                        HttpSession session, Model model) {
-	    // Lấy thông tin người dùng từ session
-	    User user = (User) session.getAttribute("account");
-	    if (user == null) {
-	        return "redirect:/login"; // Chuyển hướng về trang đăng nhập
-	    }
-
-	    // Tìm giỏ hàng theo User ID
-	    Cart cart = cartServ.findByUserId1(user.getUserID()).orElse(null);
-	    if (cart == null) {
-	        cart = new Cart();
-	        cart.setUser(user);
-	        cart.setMilkTeas(new ArrayList<>());
-	        cartServ.save(cart);
-	    }
-
-	    // Tìm sản phẩm MilkTea
-	    MilkTea milkTea = milkTeaServ.findById(id).orElseThrow(() -> new RuntimeException("MilkTea không tồn tại"));
-
-	    // Tìm kích thước Size
-	    Sizes milkSize = sizeServ.findByName(size);
-	    if (milkSize == null) {
-	        throw new RuntimeException("Kích thước không hợp lệ");
-	    }
-
-	    // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
-	    Optional<CartMilkTea> existingCartMilkTea = cart.getMilkTeas().stream()
-	            .filter(cmt -> cmt.getMilkTea().getMilkTeaID() == id && cmt.getSize().getSizeID() == milkSize.getSizeID())
-	            .findFirst();
-
-	    if (existingCartMilkTea.isPresent()) {
-	        // Nếu sản phẩm đã tồn tại, tăng số lượng
-	        CartMilkTea cartMilkTea = existingCartMilkTea.get();
-	        cartMilkTea.setQuantityMilkTea(cartMilkTea.getQuantityMilkTea() + quantity);
-	    } else {
-	        // Nếu sản phẩm chưa tồn tại, thêm sản phẩm mới vào giỏ hàng
-	        CartMilkTea cartMilkTea = new CartMilkTea();
-	        cartMilkTea.setMilkTea(milkTea);
-	        cartMilkTea.setCart(cart);
-	        cartMilkTea.setQuantityMilkTea(quantity);
-	        cartMilkTea.setSize(milkSize);
-	        cart.getMilkTeas().add(cartMilkTea);
-	    }
-
-	    // Cập nhật tổng số lượng sản phẩm và tổng giá tiền của giỏ hàng
-	    cart.setTotalProduct(cart.getMilkTeas().stream().mapToInt(CartMilkTea::getQuantityMilkTea).sum());
-	    cart.setTotalCost(cart.getMilkTeas().stream()
-	            .map(cmt -> cmt.getMilkTea().getPrice()
-	                    .add(cmt.getSize().getExtraCost())
-	                    .multiply(BigDecimal.valueOf(cmt.getQuantityMilkTea())))
-	            .reduce(BigDecimal.ZERO, BigDecimal::add));
-
-	    // Lưu lại giỏ hàng
-	    cartServ.save(cart);
-
-	    // Chuyển hướng về trang giỏ hàng
-	    return "redirect:/cart";
-	}
-
-
-	@GetMapping({ "", "/" })
-	public String cartGet(HttpSession session, Model model) {
-	/*	// Lấy thông tin User từ session
+			HttpSession session, Model model) {
+		// Lấy thông tin người dùng từ session
 		User user = (User) session.getAttribute("account");
-
 		if (user == null) {
-			// Nếu không có user trong session, chuyển hướng đến trang đăng nhập hoặc xử lý
-			// phù hợp
-			return "redirect:/login";
+			return "redirect:/login"; // Chuyển hướng về trang đăng nhập
 		}
 
-		// Tìm kiếm Cart bằng User ID
-		Optional<Cart> cartOptional = cartServ.findByUserId(user.getUserID());
-		Cart cart;
-
-		if (cartOptional.isPresent()) {
-			// Nếu Cart tồn tại
-			cart = cartOptional.get();
-		} else {
-			// Nếu không tìm thấy Cart, tạo mới Cart
+		// Tìm giỏ hàng theo User ID
+		Cart cart = cartServ.findByUserId1(user.getUserID()).orElse(null);
+		if (cart == null) {
 			cart = new Cart();
 			cart.setUser(user);
 			cart.setMilkTeas(new ArrayList<>());
-			cartServ.save(cart); // Lưu Cart mới vào cơ sở dữ liệu
+			cartServ.save(cart);
 		}
 
-		// Thêm danh sách MilkTeas vào model
-		model.addAttribute("listCart", cart.getMilkTeas());
+		// Tìm sản phẩm MilkTea
+		MilkTea milkTea = milkTeaServ.findById(id).orElseThrow(() -> new RuntimeException("MilkTea không tồn tại"));
 
-		// Tính tổng giá tiền và thêm vào model
-		BigDecimal totalPrice = cmilkTeaServ.calculateTotalPrice(cart.getCartID());
-		cart.setTotalCost(totalPrice);
-		model.addAttribute("total", totalPrice);*/
-		
+		// Tìm kích thước Size
+		Sizes milkSize = sizeServ.findByName(size);
+		if (milkSize == null) {
+			throw new RuntimeException("Kích thước không hợp lệ");
+		}
+
+		// Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+		Optional<CartMilkTea> existingCartMilkTea = cart.getMilkTeas().stream().filter(
+				cmt -> cmt.getMilkTea().getMilkTeaID() == id && cmt.getSize().getSizeID() == milkSize.getSizeID())
+				.findFirst();
+
+		if (existingCartMilkTea.isPresent()) {
+			// Nếu sản phẩm đã tồn tại, tăng số lượng
+			CartMilkTea cartMilkTea = existingCartMilkTea.get();
+			cartMilkTea.setQuantityMilkTea(cartMilkTea.getQuantityMilkTea() + quantity);
+		} else {
+			// Nếu sản phẩm chưa tồn tại, thêm sản phẩm mới vào giỏ hàng
+			CartMilkTea cartMilkTea = new CartMilkTea();
+			cartMilkTea.setMilkTea(milkTea);
+			cartMilkTea.setCart(cart);
+			cartMilkTea.setQuantityMilkTea(quantity);
+			cartMilkTea.setSize(milkSize);
+			cart.getMilkTeas().add(cartMilkTea);
+		}
+
+		// Cập nhật tổng số lượng sản phẩm và tổng giá tiền của giỏ hàng
+		cart.setTotalProduct(cart.getMilkTeas().stream().mapToInt(CartMilkTea::getQuantityMilkTea).sum());
+		cart.setTotalCost(cart.getMilkTeas().stream()
+				.map(cmt -> cmt.getMilkTea().getPrice().add(cmt.getSize().getExtraCost())
+						.multiply(BigDecimal.valueOf(cmt.getQuantityMilkTea())))
+				.reduce(BigDecimal.ZERO, BigDecimal::add));
+
+		// Lưu lại giỏ hàng
+		cartServ.save(cart);
+
+		// Chuyển hướng về trang giỏ hàng
+		return "redirect:/user/cart";
+	}
+
+	@GetMapping({ "", "/" })
+	public String cartGet(HttpSession session, Model model) {
+		/*
+		 * // Lấy thông tin User từ session User user = (User)
+		 * session.getAttribute("account");
+		 * 
+		 * if (user == null) { // Nếu không có user trong session, chuyển hướng đến
+		 * trang đăng nhập hoặc xử lý // phù hợp return "redirect:/login"; }
+		 * 
+		 * // Tìm kiếm Cart bằng User ID Optional<Cart> cartOptional =
+		 * cartServ.findByUserId(user.getUserID()); Cart cart;
+		 * 
+		 * if (cartOptional.isPresent()) { // Nếu Cart tồn tại cart =
+		 * cartOptional.get(); } else { // Nếu không tìm thấy Cart, tạo mới Cart cart =
+		 * new Cart(); cart.setUser(user); cart.setMilkTeas(new ArrayList<>());
+		 * cartServ.save(cart); // Lưu Cart mới vào cơ sở dữ liệu }
+		 * 
+		 * // Thêm danh sách MilkTeas vào model model.addAttribute("listCart",
+		 * cart.getMilkTeas());
+		 * 
+		 * // Tính tổng giá tiền và thêm vào model BigDecimal totalPrice =
+		 * cmilkTeaServ.calculateTotalPrice(cart.getCartID());
+		 * cart.setTotalCost(totalPrice); model.addAttribute("total", totalPrice);
+		 */
+
 		User user = (User) session.getAttribute("account");
 
 		if (user == null) {
@@ -157,54 +146,41 @@ public class CartController {
 			cart.setMilkTeas(new ArrayList<>());
 			cartServ.save(cart); // Lưu Cart mới vào cơ sở dữ liệu
 		}
-		
+
 		/*
-		// Tạo Size giả
-        Sizes size = new Sizes();
-        size.setSizeID(1);
-        size.setSizeName("L");
-        size.setExtraCost(new BigDecimal("10.00")); // Giá thêm của Size
-	    // Tạo giả MilkTea
-	    MilkTea milkTea1 = new MilkTea();
-	    milkTea1.setMilkTeaID(1);
-	    milkTea1.setMilkTeaName("Matcha Milk Tea");
-	    milkTea1.setPrice(BigDecimal.valueOf(50.00));
-
-	    MilkTea milkTea2 = new MilkTea();
-	    milkTea2.setMilkTeaID(2);
-	    milkTea2.setMilkTeaName("Chocolate Milk Tea");
-	    milkTea2.setPrice(BigDecimal.valueOf(60.00));
-
-	    // Tạo giả CartMilkTea
-	    CartMilkTea cartMilkTea1 = new CartMilkTea();
-	    cartMilkTea1.setId(1);
-	    cartMilkTea1.setMilkTea(milkTea1);
-	    cartMilkTea1.setQuantityMilkTea(2); // 2 ly
-	    cartMilkTea1.setSize(size);
-	    cartMilkTea1.setTotalPrice(cartMilkTea1.getTotalPrice()); // Tính tổng giá
-
-	    CartMilkTea cartMilkTea2 = new CartMilkTea();
-	    cartMilkTea2.setId(2);
-	    cartMilkTea2.setMilkTea(milkTea2);
-	    cartMilkTea2.setQuantityMilkTea(1); // 1 ly
-	    cartMilkTea2.setSize(size);
-	    cartMilkTea2.setTotalPrice(cartMilkTea2.getTotalPrice()); // Tính tổng giá
-
-	    // Tạo giả Cart
-	 
-	    cart.setCartID(1);
-	    cart.setUser(user);
-	    cart.setMilkTeas(List.of(cartMilkTea1, cartMilkTea2)); // Gắn danh sách MilkTeas
-	    cart.setTotalCost(
-	        cartMilkTea1.getTotalPrice().add(cartMilkTea2.getTotalPrice()) // Tổng tiền
-	    );
-	    
-	    //System.out.println("Cart: " + cart);
-	    //System.out.println("List Cart MilkTea: " + cart.getMilkTeas());*/
-	    // Đưa dữ liệu giả vào model
-	    model.addAttribute("listCart", cart.getMilkTeas());
-	    model.addAttribute("total", cart.getTotalCost());
-	    
+		 * // Tạo Size giả Sizes size = new Sizes(); size.setSizeID(1);
+		 * size.setSizeName("L"); size.setExtraCost(new BigDecimal("10.00")); // Giá
+		 * thêm của Size // Tạo giả MilkTea MilkTea milkTea1 = new MilkTea();
+		 * milkTea1.setMilkTeaID(1); milkTea1.setMilkTeaName("Matcha Milk Tea");
+		 * milkTea1.setPrice(BigDecimal.valueOf(50.00));
+		 * 
+		 * MilkTea milkTea2 = new MilkTea(); milkTea2.setMilkTeaID(2);
+		 * milkTea2.setMilkTeaName("Chocolate Milk Tea");
+		 * milkTea2.setPrice(BigDecimal.valueOf(60.00));
+		 * 
+		 * // Tạo giả CartMilkTea CartMilkTea cartMilkTea1 = new CartMilkTea();
+		 * cartMilkTea1.setId(1); cartMilkTea1.setMilkTea(milkTea1);
+		 * cartMilkTea1.setQuantityMilkTea(2); // 2 ly cartMilkTea1.setSize(size);
+		 * cartMilkTea1.setTotalPrice(cartMilkTea1.getTotalPrice()); // Tính tổng giá
+		 * 
+		 * CartMilkTea cartMilkTea2 = new CartMilkTea(); cartMilkTea2.setId(2);
+		 * cartMilkTea2.setMilkTea(milkTea2); cartMilkTea2.setQuantityMilkTea(1); // 1
+		 * ly cartMilkTea2.setSize(size);
+		 * cartMilkTea2.setTotalPrice(cartMilkTea2.getTotalPrice()); // Tính tổng giá
+		 * 
+		 * // Tạo giả Cart
+		 * 
+		 * cart.setCartID(1); cart.setUser(user); cart.setMilkTeas(List.of(cartMilkTea1,
+		 * cartMilkTea2)); // Gắn danh sách MilkTeas cart.setTotalCost(
+		 * cartMilkTea1.getTotalPrice().add(cartMilkTea2.getTotalPrice()) // Tổng tiền
+		 * );
+		 * 
+		 * //System.out.println("Cart: " + cart);
+		 * //System.out.println("List Cart MilkTea: " + cart.getMilkTeas());
+		 */
+		// Đưa dữ liệu giả vào model
+		model.addAttribute("listCart", cart.getMilkTeas());
+		model.addAttribute("total", cart.getTotalCost());
 
 		return "user/cart";
 	}
@@ -238,16 +214,13 @@ public class CartController {
 	            .map(CartMilkTea::getTotalPrice)
 	            .reduce(BigDecimal.ZERO, BigDecimal::add);
 	    cart.setTotalCost(newTotal);
-
+	 // Xóa sản phẩm khỏi cơ sở dữ liệu
+	    System.out.println(id);
+	    cmilkTeaServ.deleteById(id);
 	    // Lưu lại giỏ hàng sau khi cập nhật
 	    cartServ.save(cart);
-
-	    // Xóa sản phẩm khỏi cơ sở dữ liệu
-	    cmilkTeaServ.deleteById(id);
-
 	    // Chuyển hướng về trang giỏ hàng
-	    return "redirect:/cart";
+	    return "redirect:/user/cart";
 	}
-
 
 }

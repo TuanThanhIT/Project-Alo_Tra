@@ -1,3 +1,30 @@
+const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      searchBtn = body.querySelector(".search-box"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+
+
+toggle.addEventListener("click" , () =>{
+    sidebar.classList.toggle("close");
+})
+
+searchBtn.addEventListener("click" , () =>{
+    sidebar.classList.remove("close");
+})
+
+modeSwitch.addEventListener("click" , () =>{
+    body.classList.toggle("dark");
+    
+    if(body.classList.contains("dark")){
+        modeText.innerText = "Light mode";
+    }else{
+        modeText.innerText = "Dark mode";
+        
+    }
+});
+
 function openSidebar() {
     document.getElementById("sidebar").style.width = "250px";
     document.getElementById("overlay").style.display = "block"; // Hiển thị overlay
@@ -55,86 +82,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
         districtSelect.addEventListener("change", function () {
             wardSelect.innerHTML = '<option value="" selected>Chọn phường xã</option>';
+			
+			if (this.value !== "") {
+			                const selectedCity = data.find(city => city.Id === citySelect.value);
+			                const selectedDistrict = selectedCity.Districts.find(district => district.Id === this.value);
 
-            if (this.value !== "") {
-                const selectedCity = data.find(city => city.Id === citySelect.value);
-                const selectedDistrict = selectedCity.Districts.find(district => district.Id === this.value);
+			                selectedDistrict.Wards.forEach(ward => {
+			                    const option = new Option(ward.Name, ward.Id);
+			                    wardSelect.appendChild(option);
+			                });
+			            }
 
-                selectedDistrict.Wards.forEach(ward => {
-                    const option = new Option(ward.Name, ward.Id);
-                    wardSelect.appendChild(option);
-                });
-            }
+			            updateAddress();
+			        });
 
-            updateAddress();
-        });
+			        wardSelect.addEventListener("change", updateAddress);
+			    }
 
-        wardSelect.addEventListener("change", updateAddress);
-    }
+			    function updateAddress() {
+			        const city = citySelect.options[citySelect.selectedIndex]?.text || "";
+			        const district = districtSelect.options[districtSelect.selectedIndex]?.text || "";
+			        const ward = wardSelect.options[wardSelect.selectedIndex]?.text || "";
 
-    function updateAddress() {
-        const city = citySelect.options[citySelect.selectedIndex]?.text || "";
-        const district = districtSelect.options[districtSelect.selectedIndex]?.text || "";
-        const ward = wardSelect.options[wardSelect.selectedIndex]?.text || "";
+			        addressInput.value = `${ward}, ${district}, ${city}`.replace(/, $/, "").replace(/^, /, "");
+			    }
+			});
 
-        addressInput.value = `${ward}, ${district}, ${city}`.replace(/, $/, "").replace(/^, /, "");
-    }
-});
+			// Hàm cắt chuỗi trước dấu phẩy đầu tiên
+			function getStringBeforeComma(inputString) {
+			    if (!inputString) return ""; // Kiểm tra chuỗi rỗng hoặc null
+			    const index = inputString.indexOf(","); // Tìm vị trí dấu ","
+			    if (index === -1) return inputString; // Nếu không có dấu ",", trả về toàn bộ chuỗi
+			    return inputString.substring(0, index); // Cắt chuỗi từ đầu đến dấu ","
+			}
 
-// Hàm cắt chuỗi trước dấu phẩy đầu tiên
-function getStringBeforeComma(inputString) {
-    if (!inputString) return ""; // Kiểm tra chuỗi rỗng hoặc null
-    const index = inputString.indexOf(","); // Tìm vị trí dấu ","
-    if (index === -1) return inputString; // Nếu không có dấu ",", trả về toàn bộ chuỗi
-    return inputString.substring(0, index); // Cắt chuỗi từ đầu đến dấu ","
-}
+			// Lưu giá trị chuỗi trước dấu phẩy vào thẻ hidden
+			document.addEventListener("DOMContentLoaded", () => {
+			    const imageElement = document.getElementById("milkTeaImage");
+			    const hiddenElement = document.getElementById("hiddenValue");
+			    const outputElement = document.getElementById("output");
 
-// Lưu giá trị chuỗi trước dấu phẩy vào thẻ hidden
-document.addEventListener("DOMContentLoaded", () => {
-    const imageElement = document.getElementById("milkTeaImage");
-    const hiddenElement = document.getElementById("hiddenValue");
-    const outputElement = document.getElementById("output");
+			    // Lấy giá trị từ thuộc tính `data-image`
+			    const imageValue = imageElement.getAttribute("data-image");
 
-    // Lấy giá trị từ thuộc tính `data-image`
-    const imageValue = imageElement.getAttribute("data-image");
+			    // Cắt chuỗi trước dấu phẩy đầu tiên
+			    const result = getStringBeforeComma(imageValue);
 
-    // Cắt chuỗi trước dấu phẩy đầu tiên
-    const result = getStringBeforeComma(imageValue);
+			    // Lưu kết quả vào thẻ hidden
+			    hiddenElement.value = result;
 
-    // Lưu kết quả vào thẻ hidden
-    hiddenElement.value = result;
+			    // Hiển thị kết quả (nếu cần)
+			    outputElement.textContent = result;
 
-    // Hiển thị kết quả (nếu cần)
-    outputElement.textContent = result;
-
-    console.log("Giá trị lưu trong thẻ hidden:", hiddenElement.value);
-});
-
-const body = document.querySelector('body'),
-      sidebar = body.querySelector('nav'),
-      toggle = body.querySelector(".toggle"),
-      searchBtn = body.querySelector(".search-box"),
-      modeSwitch = body.querySelector(".toggle-switch"),
-      modeText = body.querySelector(".mode-text");
-
-
-toggle.addEventListener("click" , () =>{
-    sidebar.classList.toggle("close");
-})
-
-searchBtn.addEventListener("click" , () =>{
-    sidebar.classList.remove("close");
-})
-
-modeSwitch.addEventListener("click" , () =>{
-    body.classList.toggle("dark");
-    
-    if(body.classList.contains("dark")){
-        modeText.innerText = "Light mode";
-    }else{
-        modeText.innerText = "Dark mode";
-        
-    }
-});
-
-
+			    console.log("Giá trị lưu trong thẻ hidden:", hiddenElement.value);
+			});

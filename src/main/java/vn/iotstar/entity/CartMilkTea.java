@@ -2,6 +2,8 @@ package vn.iotstar.entity;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +25,8 @@ public class CartMilkTea {
 
     @ManyToOne
     @JoinColumn(name = "CartID", referencedColumnName = "cartID")
+    @JsonBackReference
+
     private Cart cart; // Foreign key to Cart
 
     @Column(name = "QuantityMilkTea")

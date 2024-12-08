@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Add MilkTea</title>
+<title>Update MilkTea</title>
 <link rel="stylesheet" href="/css/seller.css">
 <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
 	rel="stylesheet">
@@ -14,7 +14,7 @@
 <body>
 	<div layout:fragment="content">
 		<div class="container mt-5">
-			<h2 class="text-center mb-4">Thêm Món Trà Sữa</h2>
+			<h2 class="text-center mb-4">Cập nhật thông tin Trà Sữa</h2>
 			<form th:action="@{/seller/milktea/save}" th:object="${milkTea}"
 				method="post" enctype="multipart/form-data" class="background">
 				<!-- MilkTea Name -->
@@ -52,12 +52,6 @@
 						class="form-control" id="discountPrice"
 						placeholder="Nhập giá khuyến mãi" />
 				</div>
-				
-				<div class="col-md-6">
-					<label for="stockQuantity" class="form-label">Hàng tồn kho</label> 
-					    <input type="number" name="stockQuantity" class="form-control" id="stockQuantity" placeholder="Nhập số hàng tồn kho" />
-
-				</div>
 
 				<!-- Description -->
 				<div class="col-12">
@@ -79,11 +73,12 @@
 						type="file" name="images" id="images" class="form-control"
 						multiple />
 				</div>
-
+				<input type="hidden" th:field="*{milkTeaID}" />
 				<!-- Submit Button -->
 				<div class="col-12 text-center">
 					<button type="submit" class="btn btn-primary">Lưu</button>
 				</div>
+				
 			</form>
 		</div>
 
