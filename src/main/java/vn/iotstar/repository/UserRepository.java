@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import vn.iotstar.entity.User;
+import vn.iotstar.models.UserDto;
 
 
 @Repository
@@ -19,9 +20,12 @@ public interface UserRepository extends JpaRepository<User, Integer>{
     @Query("SELECT COUNT(u) FROM User u WHERE u.role.roleName = :role")
     long countByRole(String role);
     
-    @Query("SELECT COUNT(u) FROM User u WHERE u.role.roleName = 'Shipper'")
+    @Query("SELECT COUNT(u) FROM User u WHERE u.role.roleName = 'SHIPPER'")
     long countShipperRole();
 
-    @Query("SELECT COUNT(u) FROM User u WHERE u.role.roleName = 'Seller'")
+    @Query("SELECT COUNT(u) FROM User u WHERE u.role.roleName = 'SELLER'")
     long countSellerRole();
+    boolean existsByEmail(String email);
+    User findByEmail(String email);
+
 }
