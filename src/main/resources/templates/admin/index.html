@@ -299,7 +299,7 @@ body {
 							<!-- Content Column -->
 							<div class="col-lg-6 mb-4">
 								<h3>Biểu đồ doanh thu theo chi nhánh</h3>
-								<canvas id="branchBarChart" width="800" height="400"></canvas>
+<canvas id="branchIncomeChart" width="400" height="400"></canvas>
 							
 							</div>
 							<!-- bar chart  -->
@@ -477,69 +477,74 @@ body {
 
 
 
-	 <script>
-        // Dữ liệu JSON được truyền từ Controller
-        const branchIncomeData = JSON.parse('${branchIncomeJson}');
 
-        // Tách ID chi nhánh và doanh thu
-        const branchLabels = branchIncomeData.map(data => `Chi nhánh ${data.branchId}`);
-        const branchIncomes = branchIncomeData.map(data => data.income);
+       <!--   Dữ liệu giả (thay thế cho dữ liệu từ Controller)
+          const branchIncomeData = [
+            { branchId: 1, income: 1000000 }, // Chi nhánh 1
+            { branchId: 2, income: 2000000 }, // Chi nhánh 2
+            { branchId: 3, income: 1500000 }, // Chi nhánh 3
+            { branchId: 4, income: 2500000 }  // Chi nhánh 4
+        ];   -->
 
-        // Thiết lập biểu đồ
-        const canvas = document.getElementById('branchBarChart');
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
+<script>
+    // Dữ liệu giả
+   const branchIncomeData = [
+        { branchId: 1, income: 1000000 }, // Chi nhánh 1
+        { branchId: 2, income: 2000000 }, // Chi nhánh 2
+        { branchId: 3, income: 1500000 }, // Chi nhánh 3
+        { branchId: 4, income: 2500000 }  // Chi nhánh 4
+    ]; 
+   const branchLabels = branchIncomeData.map(data => 'Chi nhánh ' + data.branchId); // Tên chi nhánh
+   const branchIncomes = branchIncomeData.map(data => data.income); // Doanh thu
 
-            // Khởi tạo biểu đồ cột
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: branchLabels, // Tên các chi nhánh
-                    datasets: [{
-                        label: 'Doanh thu (VNĐ)',
-                        data: branchIncomes, // Dữ liệu doanh thu
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)', // Màu cột
-                        borderColor: 'rgba(75, 192, 192, 1)', // Màu viền
-                        borderWidth: 1 // Độ dày viền
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let value = context.raw;
-                                    return new Intl.NumberFormat('vi-VN', {
-                                        style: 'currency',
-                                        currency: 'VND'
-                                    }).format(value);
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return new Intl.NumberFormat('vi-VN', {
-                                        style: 'currency',
-                                        currency: 'VND'
-                                    }).format(value);
-                                }
-                            }
+    // Nhận dữ liệu từ controller (branchLabels và branchIncomes)
+    /* const branchLabels = JSON.parse('[[${branchLabelsJson}]]');
+    const branchIncomes = JSON.parse('[[${branchIncomesJson}]]');
+ */
+    // Vẽ biểu đồ cột (bar chart)
+    const ctxBranch = document.getElementById('branchIncomeChart').getContext('2d');
+    const branchIncomeChart = new Chart(ctxBranch, {
+        type: 'bar', // Biểu đồ cột
+        data: {
+            labels: branchLabels, // Tên chi nhánh
+            datasets: [{
+                label: 'Doanh thu (VNĐ)', // Nhãn dữ liệu
+                data: branchIncomes, // Dữ liệu doanh thu theo chi nhánh
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'], // Màu sắc các cột
+                borderColor: ['#FF6384AA', '#36A2EBAA', '#FFCE56AA', '#4BC0C0AA'], // Màu viền các cột
+                borderWidth: 1 // Độ rộng viền cột
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.raw.toLocaleString('vi-VN') + ' VNĐ'; // Định dạng VNĐ
                         }
                     }
                 }
-            });
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Chi nhánh' // Tiêu đề trục X
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Doanh thu (VNĐ)' // Tiêu đề trục Y
+                    }
+                }
+            }
         }
-    </script>
-								
+    });
+</script>
+
 
 	</div>
 </body>
