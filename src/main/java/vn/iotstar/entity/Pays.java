@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "Pays")
 @Data
@@ -17,11 +19,12 @@ public class Pays {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int payID;
 
-    @Column(name = "PayName", columnDefinition = "nvarchar(255)")
-    private String payName;
+    @Column(name = "PayMethod", columnDefinition = "nvarchar(255)")
+    private String payMethod;
+    
 
-    // Mối quan hệ 1:N với Order
-    @OneToMany(mappedBy = "pays") // mappedBy phải trỏ đến thuộc tính "pays" trong lớp Order
-    private List<Order> orders;
+    @OneToOne(mappedBy = "payment")
+	@JsonBackReference
+	private Order order;
 }
 

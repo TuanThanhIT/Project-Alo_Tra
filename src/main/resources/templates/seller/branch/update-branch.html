@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add-Branch</title>
+<title>Update-Branch</title>
 <link rel="stylesheet" href="/css/seller.css">
 <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
 	rel="stylesheet">
@@ -17,8 +17,8 @@
 <body>
 	<div layout:fragment="content">
 		<form class="add-branch__background" action="#"
-			th:action="@{/seller/saveBranch}" th:object="${branch}" method="POST"
-			enctype="multipart/form-data">
+			th:action="@{/seller/saveBranch/{id}(id=${branch.branchid})}"
+			th:object="${branch}" method="POST" enctype="multipart/form-data">
 			<h1 class="add-branch__title">Nhập thông tin chi nhánh</h1>
 			<hr class="add-branch__divider">
 			<div class="add-branch__row">
@@ -56,7 +56,7 @@
 					placeholder="Nhập mô tả chi nhánh" th:field="*{description}"
 					class="add-branch__textarea"></textarea>
 			</div>
-			<input type="hidden" th:field="*{branchID}" />
+			<input type="hidden" th:field="*{branchid}" />
 			<div class="add-branch__form-group">
 				<label for="images" class="form-label">Ảnh:</label> <input
 					type="file" id="images" class="add-branch__file-input"

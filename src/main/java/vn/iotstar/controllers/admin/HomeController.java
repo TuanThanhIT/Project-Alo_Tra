@@ -40,103 +40,97 @@ public class HomeController {
 	ICartService cartService;
 
 	@RequestMapping("")
-	public String listCategories(ModelMap model, HttpServletRequest request) {
+	public String listCategories(ModelMap model) {
 		// Lấy thông tin user từ session trực tiếp
-		HttpSession session = request.getSession(false); // Lấy session nếu có
-		User user = (User) session.getAttribute("account"); // Lấy thông tin user từ session
-		// Kiểm tra xem user có tồn tại và role của user có phải là admin (roleID == 1)
-		if (user != null && user.getRoleID() == 1) {
-			long countUser = iUserService.countByRole("User");
-			model.addAttribute("countUser", countUser); 
 
-			double totalIncome = iIncomeService.sumIncomeValue();
+		long countUser = iUserService.countByRole("USER");
+		model.addAttribute("countUser", countUser);
 
-			// Định dạng số với đơn vị VNĐ
-			NumberFormat format = NumberFormat.getInstance(new Locale("vi", "VN"));
-			String formattedIncome = format.format(totalIncome) + " VNĐ";
-			model.addAttribute("income", formattedIncome); // Thêm vào model
+		double totalIncome = iIncomeService.sumIncomeValue();
 
-			long totalBranch = branchService.count();
-			model.addAttribute("totalBranch", totalBranch); // Thêm vào model
+		// Định dạng số với đơn vị VNĐ
+		NumberFormat format = NumberFormat.getInstance(new Locale("vi", "VN"));
+		String formattedIncome = format.format(totalIncome) + " VNĐ";
+		model.addAttribute("income", formattedIncome); // Thêm vào model
 
-			long totalCart = cartService.getTotalProductCount();
-			model.addAttribute("totalCart", totalCart); // Thêm vào model
-			
-			//////////// session chart//////////////
-			//pie chart
-			long countSeller = iUserService.countByRole("Seller");
-			model.addAttribute("countSeller", countSeller); 
-			long countShipper = iUserService.countByRole("Shipper");
-			model.addAttribute("countShipper", countShipper); 
-			
-			// line graph
-			 int[] months = new int[12];
-			    double[] totalIncomePerMonth = new double[12];
+		long totalBranch = branchService.count();
+		model.addAttribute("totalBranch", totalBranch); // Thêm vào model
 
-			    // Khởi tạo tháng và doanh thu mặc định là 0
-			    for (int i = 0; i < 12; i++) {
-			        months[i] = i + 1;
-			        totalIncomePerMonth[i] = 0;
-			    }
+		long totalCart = cartService.getTotalProductCount();
+		model.addAttribute("totalCart", totalCart); // Thêm vào model
 
-			    // Giả sử đây là dữ liệu lấy từ cơ sở dữ liệu
-			    List<Object[]> monthlyIncome = iIncomeService.findMonthlyIncome(2024);
+		//////////// session chart//////////////
+		// pie chart
+		long countSeller = iUserService.countByRole("SELLER");
+		model.addAttribute("countSeller", countSeller);
+		long countShipper = iUserService.countByRole("SHIPPER");
+		model.addAttribute("countShipper", countShipper);
 
-			    // Gán doanh thu vào các tháng tương ứng
-			    for (Object[] row : monthlyIncome) {
-			        int month = (int) row[0];  // Lấy tháng
-			        double income = (double) row[1];  // Lấy doanh thu
-			        totalIncomePerMonth[month - 1] = income;  // Gán doanh thu vào tháng tương ứng
-			    }
+		// line graph
+		int[] months = new int[12];
+		double[] totalIncomePerMonth = new double[12];
 
-			    // Chuyển mảng thành chuỗi JSON để sử dụng trong view
-			    ObjectMapper objectMapper = new ObjectMapper();
-			    try {
-			        String monthsJson = objectMapper.writeValueAsString(months);
-			        String totalIncomeJson = objectMapper.writeValueAsString(totalIncomePerMonth);
-
-			        // Thêm dữ liệu vào model
-			        model.addAttribute("monthsJson", monthsJson);
-			        model.addAttribute("totalIncomeJson", totalIncomeJson);
-			    } catch (JsonProcessingException e) {
-			        e.printStackTrace();
-			    }
-			
-			    ///bar chart
-			 // Lấy dữ liệu từ cơ sở dữ liệu
-			    List<Object[]> branchIncome = iIncomeService.findTotalIncomeByBranch();
-
-			    // Lưu trữ dữ liệu doanh thu của từng chi nhánh
-			    List<Map<String, Object>> branchIncomeData = new ArrayList<>();
-			    if (branchIncome != null && !branchIncome.isEmpty()) { // Kiểm tra nếu dữ liệu không null hoặc rỗng
-			        for (Object[] row : branchIncome) {
-			            try {
-			                int branchId = (int) row[0];  // ID chi nhánh
-			                double income = (double) row[1];  // Doanh thu chi nhánh
-
-			                // Tạo đối tượng lưu trữ dữ liệu doanh thu
-			                Map<String, Object> data = new HashMap<>();
-			                data.put("branchId", branchId);
-			                data.put("income", income);
-			                branchIncomeData.add(data);
-			            } catch (ClassCastException | ArrayIndexOutOfBoundsException ex) {
-			                ex.printStackTrace(); // Log lỗi nếu dữ liệu không đúng định dạng
-			            }
-			        }
-			    }
-
-			    // Chuyển mảng dữ liệu thành chuỗi JSON để sử dụng trong view
-			    ObjectMapper objectMapper2 = new ObjectMapper();
-			    try {
-			        String branchIncomeJson = objectMapper2.writeValueAsString(branchIncomeData);
-			        model.addAttribute("branchIncomeJson", branchIncomeJson);
-			    } catch (JsonProcessingException e) {
-			        e.printStackTrace(); // Log lỗi JSON
-			    }
-
-			return "admin/index"; // Tên View
-		} else {
-			return "user/error"; // Nếu không phải admin hoặc không có user thì trả về trang lỗi
+		// Khởi tạo tháng và doanh thu mặc định là 0
+		for (int i = 0; i < 12; i++) {
+			months[i] = i + 1;
+			totalIncomePerMonth[i] = 0;
 		}
+
+		// Giả sử đây là dữ liệu lấy từ cơ sở dữ liệu
+		List<Object[]> monthlyIncome = iIncomeService.findMonthlyIncome(2024);
+
+		// Gán doanh thu vào các tháng tương ứng
+		for (Object[] row : monthlyIncome) {
+			int month = (int) row[0]; // Lấy tháng
+			double income = (double) row[1]; // Lấy doanh thu
+			totalIncomePerMonth[month - 1] = income; // Gán doanh thu vào tháng tương ứng
+		}
+
+		// Chuyển mảng thành chuỗi JSON để sử dụng trong view
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			String monthsJson = objectMapper.writeValueAsString(months);
+			String totalIncomeJson = objectMapper.writeValueAsString(totalIncomePerMonth);
+
+			// Thêm dữ liệu vào model
+			model.addAttribute("monthsJson", monthsJson);
+			model.addAttribute("totalIncomeJson", totalIncomeJson);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+		/// bar chart
+		// Lấy dữ liệu từ cơ sở dữ liệu
+		List<Object[]> branchIncome = iIncomeService.findTotalIncomeByBranch();
+
+		// Lưu trữ dữ liệu doanh thu của từng chi nhánh
+		List<Map<String, Object>> branchIncomeData = new ArrayList<>();
+		if (branchIncome != null && !branchIncome.isEmpty()) { // Kiểm tra nếu dữ liệu không null hoặc rỗng
+			for (Object[] row : branchIncome) {
+				try {
+					int branchId = (int) row[0]; // ID chi nhánh
+					double income = (double) row[1]; // Doanh thu chi nhánh
+
+					// Tạo đối tượng lưu trữ dữ liệu doanh thu
+					Map<String, Object> data = new HashMap<>();
+					data.put("branchId", branchId);
+					data.put("income", income);
+					branchIncomeData.add(data);
+				} catch (ClassCastException | ArrayIndexOutOfBoundsException ex) {
+					ex.printStackTrace(); // Log lỗi nếu dữ liệu không đúng định dạng
+				}
+			}
+		}
+
+		// Chuyển mảng dữ liệu thành chuỗi JSON để sử dụng trong view
+		ObjectMapper objectMapper2 = new ObjectMapper();
+		try {
+			String branchIncomeJson = objectMapper2.writeValueAsString(branchIncomeData);
+			model.addAttribute("branchIncomeJson", branchIncomeJson);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace(); // Log lỗi JSON
+		}
+
+		return "admin/index"; // Tên View
 	}
 }

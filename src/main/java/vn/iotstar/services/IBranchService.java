@@ -27,7 +27,6 @@ public interface IBranchService {
 
 	<S extends Branch> S save(S entity);
 
-
 	List<MilkTea> findMilkTeaByBranchID(int branchID);
 
 	List<Branch> findByAddressContaining(String cityName);
@@ -41,5 +40,7 @@ public interface IBranchService {
 	Page<Branch> findByAddressContaining(String cityName, Integer pageNo);
 
 	Page<Branch> searchBranchInCity(String keyword, String cityId, Integer pageNo);
-	
-	}
+
+	Integer getBranchID(int userid);
+
+}

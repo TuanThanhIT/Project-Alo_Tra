@@ -1,6 +1,5 @@
 package vn.iotstar.controllers.admin;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import vn.iotstar.entity.MilkTeaType;
 import vn.iotstar.entity.User;
 import vn.iotstar.services.IUserService;
 
@@ -36,8 +33,6 @@ public class UserController {
 	public String listCategories(@RequestParam(defaultValue = "0") int page, ModelMap model,
 			HttpServletRequest request) {
 
-		
-
 			// Sử dụng pageable để giới hạn số sản phẩm hiển thị trên mỗi trang
 			Pageable pageable = PageRequest.of(page, 5); // 5 sản phẩm mỗi trang
 			Page<User> milkTeaTypesPage = iUserService.findAll(pageable);
@@ -47,7 +42,7 @@ public class UserController {
 			model.addAttribute("currentPage", page); // Trang hiện tại
 			model.addAttribute("totalPages", milkTeaTypesPage.getTotalPages()); // Tổng số trang
 			return "admin/user/list"; // View name
-		
+
 	}
 
 //	@RequestMapping("toggleActive/{userID}")
