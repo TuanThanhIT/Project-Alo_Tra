@@ -38,10 +38,21 @@ public class CartMilkTea {
     private BigDecimal totalPrice;
 
     public BigDecimal getTotalPrice() {
-        if (milkTea != null && milkTea.getPrice() != null) {
-            return milkTea.getPrice().multiply(BigDecimal.valueOf(quantityMilkTea));
-        }
-        return BigDecimal.ZERO;
+    	 BigDecimal basePrice = BigDecimal.ZERO;
+    	    BigDecimal sizeExtraCost = BigDecimal.ZERO;
+
+    	    // Giá cơ bản từ MilkTea
+    	    if (milkTea != null && milkTea.getPrice() != null) {
+    	        basePrice = milkTea.getPrice();
+    	    }
+
+    	    // Giá bổ sung từ Size
+    	    if (size != null && size.getExtraCost() != null) {
+    	        sizeExtraCost = size.getExtraCost();
+    	    }
+
+    	    // Tổng giá = (Giá MilkTea + Giá Size) * Số lượng
+    	    return basePrice.add(sizeExtraCost).multiply(BigDecimal.valueOf(quantityMilkTea));
     }
 }
 

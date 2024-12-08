@@ -12,6 +12,8 @@ public interface ICartService {
 
 	void deleteAllItem(int uid);
 
+	Optional<Cart> findByUserId1(int id);
+
 	
 
 }

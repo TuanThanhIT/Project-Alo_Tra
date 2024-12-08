@@ -16,25 +16,7 @@ public class CartMilkTeaServiceImpl implements ICartMilkTeaService {
 	@Autowired
 	private CartMilkTeaRepository cartMilkTeaRepository;
 
-	@Override
-	public BigDecimal calculateTotalPrice(int cartId) {
-		List<CartMilkTea> cartMilkTeas = cartMilkTeaRepository.findByCartCartID(cartId);
-		BigDecimal totalPrice = BigDecimal.ZERO; // Khởi tạo giá trị mặc định
-
-		for (CartMilkTea cartMilkTea : cartMilkTeas) {
-			if (cartMilkTea.getMilkTea() != null && cartMilkTea.getMilkTea().getPrice() != null) {
-				BigDecimal basePrice = cartMilkTea.getMilkTea().getPrice(); // Giá cơ bản
-				BigDecimal sizeExtraPrice = cartMilkTea.getSize() != null
-						&& cartMilkTea.getSize().getExtraCost() != null ? cartMilkTea.getSize().getExtraCost()
-								: BigDecimal.ZERO; // Giá cộng thêm của size
-				BigDecimal itemPrice = basePrice.add(sizeExtraPrice); // Giá cho một sản phẩm (bao gồm size)
-				totalPrice = totalPrice.add(itemPrice.multiply(BigDecimal.valueOf(cartMilkTea.getQuantityMilkTea()))); // Tổng
-																														// giá
-			}
-		}
-	return totalPrice;
-
-	}
+	
 
 	@Override
 	public Optional<CartMilkTea> findById(int id) {

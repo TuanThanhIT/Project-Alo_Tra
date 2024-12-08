@@ -58,9 +58,14 @@ public class CartService implements ICartService {
 			}
 			item.setQuantityMilkTea(0);
 			
-			cartMilkTRepo.save(item);
-			 
+			cartMilkTRepo.save(item);			 
 	        
 		}
+	}
+	
+	@Override
+	public Optional<Cart> findByUserId1(int id)
+	{
+		return cartRepo.findByUserId(id);
 	}
 }

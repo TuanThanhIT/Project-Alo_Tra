@@ -26,6 +26,7 @@ import vn.iotstar.services.ICartService;
 import vn.iotstar.services.IDeliveryService;
 import vn.iotstar.services.IMilkTeaService;
 import vn.iotstar.services.IOrderService;
+import vn.iotstar.services.IPayService;
 import vn.iotstar.services.ISizeService;
 
 @Controller
@@ -44,7 +45,8 @@ public class CheckOutController {
 
 	@Autowired
 	private IOrderService orderServ;
-
+	@Autowired
+	private IPayService paysServ;
 	@Autowired
 	private IDeliveryService deliServ;
 
@@ -53,15 +55,14 @@ public class CheckOutController {
 		// Lấy thông tin người dùng từ session
 		User user = (User) session.getAttribute("account");
 		// Tìm giỏ hàng theo User ID
-		Cart cart = cartServ.findByUserId(user.getUserID()).orElse(null);
+		Cart cart = cartServ.findByUserId1(user.getUserID()).orElse(null);
 
 		List<CartMilkTea> cmilkTea = cart.getMilkTeas();
 
 		model.addAttribute("listcart", cmilkTea);
 
-		// Tính tổng giá tiền và thêm vào model
-		BigDecimal totalPrice = cmilkTeaServ.calculateTotalPrice(cart.getCartID());
-		model.addAttribute("total", totalPrice);
+		
+		model.addAttribute("total", cart.getTotalCost());
 
 		List<Delivery> listDeli = deliServ.findAll();
 
@@ -70,44 +71,68 @@ public class CheckOutController {
 		return "user/checkout";
 	}
 
-	@PostMapping("/checkout-COD")
-	public String payNow(HttpSession session, Model model, @RequestParam("address") String address,
-			@RequestParam(required = false) Integer deliveryId) {
-		// Lấy thông tin người dùng từ session
-		User user = (User) session.getAttribute("account");
-		Cart cart = cartServ.findByUserId(user.getUserID()).orElse(null);
-		Order order = new Order();
-		order.setCart(cart);
-		order.setShipAddress(address);
-		order.setUser(user);
-		order.setStatus(OrderStatus.PENDING);
+	 @PostMapping("/checkout-COD")
+	    public String payNow(HttpSession session, Model model, 
+	                         @RequestParam("address") String address,
+	                         @RequestParam(required = false) Integer deliveryId) {
+	        
+	        // Lấy thông tin người dùng từ session
+	        User user = (User) session.getAttribute("account");
+	        if (user == null) {
+	            // Nếu người dùng chưa đăng nhập, chuyển hướng về trang đăng nhập
+	            return "redirect:/login";
+	        }
 
-		Pays payment = new Pays();
-		payment.setPayMethod("COD");
-		order.setPayment(payment);
+	        // Tìm giỏ hàng của người dùng
+	        Cart cart = cartServ.findByUserId1(user.getUserID()).orElse(null);
+	        if (cart == null) {
+	            // Nếu không tìm thấy giỏ hàng, trả về trang lỗi hoặc xử lý theo yêu cầu
+	            model.addAttribute("error", "Giỏ hàng không tồn tại");
+	            return "error";
+	        }
 
-		cartServ.deleteAllItem(user.getUserID());
-		orderServ.save(order);
+	        // Lấy phí vận chuyển từ DeliveryService (giả sử người dùng đã chọn phương thức giao hàng)
+	        Delivery delivery = deliServ.findById(deliveryId).orElse(null);
+	        if (delivery == null) {
+	            // Nếu không có thông tin phương thức giao hàng, có thể trả về lỗi hoặc thông báo
+	            model.addAttribute("error", "Phương thức giao hàng không hợp lệ");
+	            return "error";
+	        }
 
-		return "redirect:/user/home";
-	}
-	
+	        // Tính tổng tiền từ giỏ hàng và cộng thêm phí vận chuyển
+	        BigDecimal totalCost = cart.getTotalCost(); // Giả sử có phương thức để tính tổng tiền giỏ hàng
+	        BigDecimal totalWithShipping = totalCost.add(delivery.getExtraCost()); // Tổng tiền cộng phí vận chuyển
+
+	        // Tạo đối tượng đơn hàng mới
+	        Order order = new Order();
+	        order.setCart(cart);
+	        order.setShipAddress(address);
+	        order.setUser(user);
+	        order.setStatus(OrderStatus.PENDING); // Đơn hàng đang chờ xử lý
+
+	        // Tạo đối tượng thanh toán (COD)
+	        Pays payment = new Pays();
+	        payment.setPayMethod("COD"); // Phương thức thanh toán COD
+	        payment.setTotal(totalWithShipping); // Lưu tổng tiền (bao gồm phí ship)
+
+	        // Thiết lập thanh toán cho đơn hàng
+	        order.setPayment(payment);
+
+	        // Lưu đơn hàng và thanh toán vào cơ sở dữ liệu
+	        orderServ.save(order);
+	        paysServ.save(payment); // Lưu phương thức thanh toán
+
+	        // Xóa tất cả sản phẩm trong giỏ hàng sau khi thanh toán
+	        cartServ.deleteAllItem(user.getUserID());
+
+	        // Chuyển hướng người dùng đến trang thành công
+	        return "redirect:/user/home";
+	    }
 	@PostMapping("/checkout-by-VNPay")
-	public String payVN(HttpSession session, Model model, @RequestParam("address") String address,
-			@RequestParam(required = false) Integer deliveryId) {
+	public String payVN(HttpSession session, Model model, 
+            @RequestParam("address") String address,
+            @RequestParam(required = false) Integer deliveryId) {
 		return null;
 	}
-/*
-	@GetMapping("/checkout/product/{milkTeaID}")
-	public String checkoutSingleProduct(Model model, HttpSession session, @PathVariable("milkTeaID") int milkTeaID, @RequestParam int quantity, @RequestParam String size ) {
-		// Lấy thông tin người dùng từ session
-		User user = (User) session.getAttribute("account");
-		MilkTea mTea = milkTeaServ.findById(milkTeaID).get();
-		
-		List<Delivery> listDeli = deliServ.findAll();
-		
-		model.addAttribute("product",mTea);
-		model.addAttribute("listDeli",listDeli);
-		return null;
-	}*/
+
 }

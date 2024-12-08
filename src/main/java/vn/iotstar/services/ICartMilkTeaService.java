@@ -7,7 +7,6 @@ import vn.iotstar.entity.CartMilkTea;
 
 public interface ICartMilkTeaService {
 
-	BigDecimal calculateTotalPrice(int cartId);
 
 	Optional<CartMilkTea> findById(int id);
 
