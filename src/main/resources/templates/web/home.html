@@ -88,9 +88,8 @@
 				<div class="collapse navbar-collapse" id="navbarCollapse">
 					<div class="navbar-nav ms-auto">
 						<a href="index.html" class="nav-item nav-link active">Trang
-							Chủ</a> <a href="#"
-							class="nav-item nav-link">Sản Phẩm</a> <a href="#"
-							class="nav-item nav-link">Cửa Hàng</a> <a href="#"
+							Chủ</a> <a href="#" class="nav-item nav-link">Sản Phẩm</a> <a
+							href="#" class="nav-item nav-link">Cửa Hàng</a> <a href="#"
 							class="nav-item nav-link">Liên Hệ</a>
 					</div>
 				</div>
@@ -314,7 +313,9 @@
 						lựa chọn cho mọi người. Bạn có thể tùy chỉnh độ ngọt, lượng đá,
 						hay thậm chí là chọn trà xanh, trà đen hoặc trà ô long để phù hợp
 						với khẩu vị của mình.</p>
-					<a href="https://oola.vn/lich-su-phat-trien-cua-tra-sua/" class="btn btn-primary rounded-pill py-3 px-5" target="_blank">Khám Phá Thêm</a>
+					<a href="https://oola.vn/lich-su-phat-trien-cua-tra-sua/"
+						class="btn btn-primary rounded-pill py-3 px-5" target="_blank">Khám
+						Phá Thêm</a>
 
 				</div>
 			</div>
@@ -406,8 +407,7 @@
 				<div class="modal-body">
 					<!-- 16:9 aspect ratio -->
 					<div class="ratio ratio-16x9">
-						<iframe class="embed-responsive-item"
-							src="" id="video"
+						<iframe class="embed-responsive-item" src="" id="video"
 							allowfullscreen allowscriptaccess="always" allow="autoplay"></iframe>
 					</div>
 				</div>
@@ -528,67 +528,20 @@
 					trà sữa</h1>
 			</div>
 			<div class="row g-4">
-				<!-- Cửa hàng 1 -->
-				<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+				<!-- Lặp qua danh sách chi nhánh -->
+				<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s"
+					th:each="branch : ${listBranch}">
 					<div class="store-item position-relative text-center">
-						<img class="img-fluid" src="/img/store1.jpg"
-							alt="Cửa Hàng AloTra Quận 1" />
+						<img th:src="'/uploads/' + ${branch.images.split(',')[0]}"
+							alt="BranchMilkTea" class="img-fluid" width="240" height="150" />
 						<div class="p-4">
-							<h4 class="mb-3">AloTra Quận 1</h4>
-							<p>Không gian hiện đại, tọa lạc tại trung tâm thành phố.</p>
+							<h4 class="mb-3" th:text="${branch.branchName}"></h4>
+							<p th:text="${branch.introduction}"></p>
 						</div>
 						<div class="store-overlay">
-							<a href="#" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-								Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-				<!-- Cửa hàng 2 -->
-				<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-					<div class="store-item position-relative text-center">
-						<img class="img-fluid" src="/img/store2.jpg"
-							alt="Cửa Hàng AloTra Bình Thạnh" />
-						<div class="p-4">
-							<h4 class="mb-3">AloTra Bình Thạnh</h4>
-							<p>Không gian ấm cúng với hương vị trà sữa đặc biệt.</p>
-						</div>
-						<div class="store-overlay">
-							<a href="#" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-								Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-				<!-- Cửa hàng 3 -->
-				<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-					<div class="store-item position-relative text-center">
-						<img class="img-fluid" src="/img/store3.jpg"
-							alt="Cửa Hàng AloTra Phú Nhuận" />
-						<div class="p-4">
-							<h4 class="mb-3">AloTra Phú Nhuận</h4>
-							<p>Thiết kế sang trọng và dịch vụ tận tâm, lý tưởng để hẹn
-								hò.</p>
-						</div>
-						<div class="store-overlay">
-							<a href="#" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-								Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-				<!-- Cửa hàng 4 -->
-				<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-					<div class="store-item position-relative text-center">
-						<img class="img-fluid" src="/img/store4.jpg"
-							alt="Cửa Hàng AloTra Gò Vấp" />
-						<div class="p-4">
-							<h4 class="mb-3">AloTra Gò Vấp</h4>
-							<p>Không gian rộng rãi, phù hợp cho nhóm bạn và gia đình.</p>
-						</div>
-						<div class="store-overlay">
-							<a href="#" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-								Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
+							<a th:href="@{/user/branch/detail/{id}(id=${branch.branchID})}"
+								class="btn btn-primary rounded-pill py-2 px-4 m-2"> Xem Chi
+								Tiết <i class="fa fa-arrow-right ms-2"></i>
 							</a>
 						</div>
 					</div>
@@ -596,8 +549,8 @@
 			</div>
 			<!-- Button Xem thêm cửa hàng -->
 			<div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-				<a href="/login" class="btn btn-primary rounded-pill py-3 px-5"> Xem
-					thêm cửa hàng </a>
+				<a href="/login" class="btn btn-primary rounded-pill py-3 px-5">
+					Xem thêm cửa hàng </a>
 			</div>
 		</div>
 	</div>

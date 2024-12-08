@@ -120,7 +120,7 @@ public class UProductController {
 			saotb = saotb.setScale(1, RoundingMode.HALF_UP); // Làm tròn đến 1 chữ số thập phân
 		}
 		
-		List<MilkTea> listMilkTeaRelateTo = milkTeaService.findByMilkTeaIDNot(id);
+		List<MilkTea> listMilkTeaRelateTo = milkTeaService.findByMilkTeaTypeAndMilkTeaIDNot(milkTea.getMilkTeaType(),id);
 		model.addAttribute("numberOfRates", numberOfRates);
 		model.addAttribute("milkTea", milkTea);
 		model.addAttribute("listRate", listRate);
