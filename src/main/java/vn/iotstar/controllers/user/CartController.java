@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -185,52 +186,48 @@ public class CartController {
 		return "user/cart";
 	}
 
-	@GetMapping("/remove")
-	public String removeItem(@RequestParam int id, HttpSession session) {
-	    // Lấy thông tin người dùng từ session
-	    User user = (User) session.getAttribute("account");
-	    if (user == null) {
-	        return "redirect:/login";
-	    }
+	@GetMapping("/remove/{id}")
+	public String removeItem(@PathVariable("id") int id, HttpSession session) {
 
-	    // Tìm giỏ hàng theo User ID
-	    Cart cart = cartServ.findByUserId1(user.getUserID())
-	            .orElseThrow(() -> new RuntimeException("Giỏ hàng không tồn tại"));
+		// Lấy thông tin người dùng từ session
+		User user = (User) session.getAttribute("account");
+		if (user == null) {
+			return "redirect:/login";
+		}
 
-	    // Tìm sản phẩm cần xóa (CartMilkTea) theo ID
-	    CartMilkTea cartMilkTea = cmilkTeaServ.findById(id)
-	            .orElseThrow(() -> new RuntimeException("Sản phẩm không tồn tại trong giỏ hàng"));
+		// Tìm giỏ hàng theo User ID
+		Cart cart = cartServ.findByUserId1(user.getUserID())
+				.orElseThrow(() -> new RuntimeException("Giỏ hàng không tồn tại"));
 
-	    // Kiểm tra sản phẩm có thuộc giỏ hàng của người dùng hay không
-	    if (!cart.getMilkTeas().contains(cartMilkTea)) {
-	        throw new RuntimeException("Sản phẩm không thuộc giỏ hàng của người dùng");
-	    }
+		// Tìm sản phẩm cần xóa (CartMilkTea) theo ID
+		CartMilkTea cartMilkTea = cmilkTeaServ.findById(id)
+				.orElseThrow(() -> new RuntimeException("Sản phẩm không tồn tại trong giỏ hàng"));
 
-	    // Xóa sản phẩm khỏi danh sách trong giỏ hàng
-	    cart.getMilkTeas().remove(cartMilkTea);
+		// Kiểm tra sản phẩm có thuộc giỏ hàng của người dùng hay không
+		if (!cart.getMilkTeas().contains(cartMilkTea)) {
+			throw new RuntimeException("Sản phẩm không thuộc giỏ hàng của người dùng");
+		}
 
-	    // Cập nhật lại tổng giá trị giỏ hàng
-	    BigDecimal newTotal = cart.getMilkTeas().stream()
-	            .map(CartMilkTea::getTotalPrice)
-	            .reduce(BigDecimal.ZERO, BigDecimal::add);
-	    cart.setTotalCost(newTotal);
+		// Xóa sản phẩm khỏi danh sách trong giỏ hàng
+		cart.getMilkTeas().remove(cartMilkTea);
 
-	    // Cập nhật lại số lượng sản phẩm trong giỏ hàng
-	    cart.setTotalProduct(cart.getMilkTeas().size()); // Cập nhật số lượng sản phẩm trong giỏ hàng
+		// Cập nhật lại tổng giá trị giỏ hàng
+		BigDecimal newTotal = cart.getMilkTeas().stream().map(CartMilkTea::getTotalPrice).reduce(BigDecimal.ZERO,
+				BigDecimal::add);
+		cart.setTotalCost(newTotal);
 
-	    // Xóa sản phẩm khỏi cơ sở dữ liệu
-	    System.out.println(id);
-	    cmilkTeaServ.deleteById(id); // Xóa sản phẩm khỏi cơ sở dữ liệu
+		// Cập nhật lại số lượng sản phẩm trong giỏ hàng
+		cart.setTotalProduct(cart.getMilkTeas().size()); // Cập nhật số lượng sản phẩm trong giỏ hàng
 
-	    // Lưu lại giỏ hàng sau khi cập nhật
-	    cartServ.save(cart);
+		// Xóa sản phẩm khỏi cơ sở dữ liệu
+		System.out.println(id);
+		cmilkTeaServ.deleteByIdCustom(id); // Xóa sản phẩm khỏi cơ sở dữ liệu
 
-	    // Cập nhật lại giỏ hàng trong session
-	    session.setAttribute("cart", cart);
+		// Lưu lại giỏ hàng sau khi cập nhật
+		cartServ.save(cart);
 
-	    // Chuyển hướng về trang giỏ hàng
-	    return "redirect:/user/cart";
+		// Chuyển hướng về trang giỏ hàng
+		return "redirect:/user/cart";
 	}
-
 
 }

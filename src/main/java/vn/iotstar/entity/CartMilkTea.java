@@ -32,8 +32,7 @@ public class CartMilkTea {
     @Column(name = "QuantityMilkTea")
     private int quantityMilkTea;
 
-    // Quan hệ 1-1 với Sizes
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "SizeID", referencedColumnName = "sizeID")
     private Sizes size;
     

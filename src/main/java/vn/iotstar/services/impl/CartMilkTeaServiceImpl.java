@@ -13,6 +13,14 @@ import vn.iotstar.services.ICartMilkTeaService;
 
 @Service
 public class CartMilkTeaServiceImpl implements ICartMilkTeaService {
+
+	
+
+	@Override
+	public void deleteByIdCustom(int id) {
+		cartMilkTeaRepository.deleteByIdCustom(id);
+	}
+
 	@Autowired
 	private CartMilkTeaRepository cartMilkTeaRepository;
 
@@ -40,10 +48,16 @@ public class CartMilkTeaServiceImpl implements ICartMilkTeaService {
 		return cartMilkTeaRepository.findById(id);
 	}
 	
-
 	@Override
-	public void deleteById(int id)
-	{
+	public void deleteById(Integer id) {
 		cartMilkTeaRepository.deleteById(id);
 	}
+	
+	@Override
+	public void delete(CartMilkTea entity) {
+		cartMilkTeaRepository.delete(entity);
+	}
+	
+
+	
 }
