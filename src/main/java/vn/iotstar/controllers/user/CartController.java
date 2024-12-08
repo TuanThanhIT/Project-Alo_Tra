@@ -214,13 +214,23 @@ public class CartController {
 	            .map(CartMilkTea::getTotalPrice)
 	            .reduce(BigDecimal.ZERO, BigDecimal::add);
 	    cart.setTotalCost(newTotal);
-	 // Xóa sản phẩm khỏi cơ sở dữ liệu
+
+	    // Cập nhật lại số lượng sản phẩm trong giỏ hàng
+	    cart.setTotalProduct(cart.getMilkTeas().size()); // Cập nhật số lượng sản phẩm trong giỏ hàng
+
+	    // Xóa sản phẩm khỏi cơ sở dữ liệu
 	    System.out.println(id);
-	    cmilkTeaServ.deleteById(id);
+	    cmilkTeaServ.deleteById(id); // Xóa sản phẩm khỏi cơ sở dữ liệu
+
 	    // Lưu lại giỏ hàng sau khi cập nhật
 	    cartServ.save(cart);
+
+	    // Cập nhật lại giỏ hàng trong session
+	    session.setAttribute("cart", cart);
+
 	    // Chuyển hướng về trang giỏ hàng
 	    return "redirect:/user/cart";
 	}
+
 
 }
