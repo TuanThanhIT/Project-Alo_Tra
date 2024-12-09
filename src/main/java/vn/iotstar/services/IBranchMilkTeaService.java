@@ -23,5 +23,7 @@ public interface IBranchMilkTeaService {
 
 	BranchMilkTea getBranchMilkTea(Branch branch, MilkTea milkTea);
 
+	Integer findSellQuantityByMilkTeaID(int milkTeaID);
+
 
 }

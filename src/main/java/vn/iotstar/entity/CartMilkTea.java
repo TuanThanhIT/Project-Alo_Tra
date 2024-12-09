@@ -41,8 +41,8 @@ public class CartMilkTea {
     private BigDecimal totalPrice;
 
     public BigDecimal getTotalPrice() {
-        if (milkTea != null && milkTea.getPrice() != null) {
-            return milkTea.getPrice().multiply(BigDecimal.valueOf(quantityMilkTea));
+        if (milkTea != null && milkTea.getDiscountPrice() != null) {
+            return milkTea.getDiscountPrice().multiply(BigDecimal.valueOf(quantityMilkTea));
         }
         return BigDecimal.ZERO;
     }

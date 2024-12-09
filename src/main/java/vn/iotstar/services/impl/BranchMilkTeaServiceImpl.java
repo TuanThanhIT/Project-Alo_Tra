@@ -52,5 +52,12 @@ public class BranchMilkTeaServiceImpl implements IBranchMilkTeaService{
 	public BranchMilkTea getBranchMilkTea(Branch branch, MilkTea milkTea) {
 	    return iBranchMilkTeaRepository.findBranchMilkTeaByBranchAndMilkTea(branch, milkTea);
 	}
+
+	@Override
+	public Integer findSellQuantityByMilkTeaID(int milkTeaID) {
+		return iBranchMilkTeaRepository.findSellQuantityByMilkTeaID(milkTeaID);
+	}
+	
+	
 }
 
