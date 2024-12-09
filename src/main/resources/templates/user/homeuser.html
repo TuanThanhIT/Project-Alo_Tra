@@ -155,87 +155,43 @@
 						chạy</p>
 					<h1 class="display-6">Trà sữa bán chạy nhất</h1>
 				</div>
-				<div class="row g-4">
-					<!-- Trà sữa trân châu đường đen -->
-					<div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+				<div class="row g-5">
+					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s"
+						th:each="milkTea : ${listMilkTea}">
 						<div class="store-item position-relative text-center">
-							<img class="img-fluid" src="/img/store-product1.jpg"
-								alt="Trà sữa trân châu đường đen" />
+							<img th:src="'/uploads/' + ${milkTea.image.split(',')[0]}"
+								alt="Milk Tea" class="img-fluid" />
 							<div class="p-4">
-								<div class="text-center mb-3">
-									<small class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small>
-								</div>
-								<h4 class="mb-3">Trà Sữa Trân Châu Đường Đen</h4>
-								<p>Trà sữa đậm đà kết hợp với trân châu đường đen thơm ngon,
-									hấp dẫn.</p>
-								<h4 class="text-primary">₫50,000</h4>
+								<h4 class="mb-3" th:text="${milkTea.milkTeaName}">Tên trà
+									sữa</h4>
+								<p th:text="${milkTea.introduction}">Giới thiệu sản phẩm</p>
+								<h4 class="text-primary"
+									th:text="${milkTea.discountPrice.intValue()} + '₫'">Giá</h4>
 							</div>
 							<div class="store-overlay">
-								<a href="" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-									Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
-								</a> <a href="" class="btn btn-dark rounded-pill py-2 px-4 m-2">
-									Thêm vào giỏ <i class="fa fa-cart-plus ms-2"></i>
+								<a
+									th:href="@{/user/product/detail/{id}(id=${milkTea.milkTeaID})}"
+									class="btn btn-primary rounded-pill py-2 px-4 m-2"> Xem Chi
+									Tiết <i class="fa fa-arrow-right ms-2"></i>
+								</a> <a
+									th:href="@{/user/cart/addToCart(id=${milkTea.milkTeaID}, quantity=1, size='M')}"
+									class="btn btn-dark rounded-pill py-2 px-4 m-2"> Thêm vào
+									giỏ <i class="fa fa-cart-plus ms-2"></i>
 								</a>
+								<!-- Nút yêu thích -->
+								<button class="btn rounded-pill py-2 px-4 m-2 favorite-button"
+									th:classappend="${milkTea.isFavorited ? 'btn-outline-danger active' : 'btn-outline-danger'}"
+									th:data-favorite="${milkTea.isFavorited ? 'true' : 'false'}"
+									data-milktea-id="${milkTea.milkTeaID}"
+									data-user-id="${user.userID}">
+									<i class="fa fa-heart me-2"></i> <span
+										th:text="${milkTea.isFavorited ? 'Đã yêu thích' : 'Yêu thích'}">Yêu
+										thích</span>
+								</button>
 							</div>
 						</div>
 					</div>
-					<!-- Trà sữa khoai môn -->
-					<div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-						<div class="store-item position-relative text-center">
-							<img class="img-fluid" src="/img/store-product2.jpg"
-								alt="Trà sữa khoai môn" />
-							<div class="p-4">
-								<div class="text-center mb-3">
-									<small class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small>
-								</div>
-								<h4 class="mb-3">Trà Sữa Khoai Môn</h4>
-								<p>Trà sữa khoai môn thơm ngon, béo ngậy, một hương vị ngọt
-									ngào và dễ chịu.</p>
-								<h4 class="text-primary">₫55,000</h4>
-							</div>
-							<div class="store-overlay">
-								<a href="" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-									Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
-								</a> <a href="" class="btn btn-dark rounded-pill py-2 px-4 m-2">
-									Thêm vào giỏ <i class="fa fa-cart-plus ms-2"></i>
-								</a>
-							</div>
-						</div>
-					</div>
-					<!-- Trà sữa xoài kem cheese -->
-					<div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-						<div class="store-item position-relative text-center">
-							<img class="img-fluid" src="/img/store-product4.jpg"
-								alt="Trà sữa xoài kem cheese" />
-							<div class="p-4">
-								<div class="text-center mb-3">
-									<small class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small> <small
-										class="fa fa-star text-primary"></small>
-								</div>
-								<h4 class="mb-3">Trà Sữa Xoài Kem Cheese</h4>
-								<p>Sự kết hợp tuyệt vời giữa vị xoài ngọt ngào và kem cheese
-									béo ngậy.</p>
-								<h4 class="text-primary">₫60,000</h4>
-							</div>
-							<div class="store-overlay">
-								<a href="" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-									Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
-								</a> <a href="" class="btn btn-dark rounded-pill py-2 px-4 m-2">
-									Thêm vào giỏ <i class="fa fa-cart-plus ms-2"></i>
-								</a>
-							</div>
-						</div>
-					</div>
+					<!-- Kết thúc vòng lặp -->
 					<!-- Button Xem thêm -->
 					<div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
 						<a th:href="@{/user/product}"
@@ -258,80 +214,33 @@
 						trà sữa</h1>
 				</div>
 				<div class="row g-4">
-					<!-- Cửa hàng 1 -->
-					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+					<!-- Lặp qua danh sách chi nhánh -->
+					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s"
+						th:each="branch : ${listBranch}">
 						<div class="store-item position-relative text-center">
-							<img class="img-fluid" src="/img/store1.jpg"
-								alt="Cửa Hàng AloTra Quận 1" />
+							<img th:src="'/uploads/' + ${branch.images.split(',')[0]}"
+								alt="BranchMilkTea" class="img-fluid" width="240" height="150" />
 							<div class="p-4">
-								<h4 class="mb-3">AloTra Quận 1</h4>
-								<p>Không gian hiện đại, tọa lạc tại trung tâm thành phố.</p>
+								<h4 class="mb-3" th:text="${branch.branchName}"></h4>
+								<p th:text="${branch.introduction}"></p>
 							</div>
 							<div class="store-overlay">
-								<a href="#" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-									Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
+								<a th:href="@{/user/branch/detail/{id}(id=${branch.branchID})}"
+									class="btn btn-primary rounded-pill py-2 px-4 m-2"> Xem Chi
+									Tiết <i class="fa fa-arrow-right ms-2"></i>
 								</a>
 							</div>
 						</div>
 					</div>
-					<!-- Cửa hàng 2 -->
-					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-						<div class="store-item position-relative text-center">
-							<img class="img-fluid" src="/img/store2.jpg"
-								alt="Cửa Hàng AloTra Bình Thạnh" />
-							<div class="p-4">
-								<h4 class="mb-3">AloTra Bình Thạnh</h4>
-								<p>Không gian ấm cúng với hương vị trà sữa đặc biệt.</p>
-							</div>
-							<div class="store-overlay">
-								<a href="#" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-									Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
-								</a>
-							</div>
-						</div>
+					<!-- Button Xem thêm cửa hàng -->
+					<div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
+						<a th:href="@{/user/branch}"
+							class="btn btn-primary rounded-pill py-3 px-5"> Xem thêm cửa
+							hàng </a>
 					</div>
-					<!-- Cửa hàng 3 -->
-					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-						<div class="store-item position-relative text-center">
-							<img class="img-fluid" src="/img/store3.jpg"
-								alt="Cửa Hàng AloTra Phú Nhuận" />
-							<div class="p-4">
-								<h4 class="mb-3">AloTra Phú Nhuận</h4>
-								<p>Thiết kế sang trọng và dịch vụ tận tâm, lý tưởng để hẹn
-									hò.</p>
-							</div>
-							<div class="store-overlay">
-								<a href="#" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-									Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
-								</a>
-							</div>
-						</div>
-					</div>
-					<!-- Cửa hàng 4 -->
-					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-						<div class="store-item position-relative text-center">
-							<img class="img-fluid" src="/img/store4.jpg"
-								alt="Cửa Hàng AloTra Gò Vấp" />
-							<div class="p-4">
-								<h4 class="mb-3">AloTra Gò Vấp</h4>
-								<p>Không gian rộng rãi, phù hợp cho nhóm bạn và gia đình.</p>
-							</div>
-							<div class="store-overlay">
-								<a href="#" class="btn btn-primary rounded-pill py-2 px-4 m-2">
-									Xem Chi Tiết <i class="fa fa-arrow-right ms-2"></i>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- Button Xem thêm cửa hàng -->
-				<div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-					<a th:href="@{/user/branch}" class="btn btn-primary rounded-pill py-3 px-5"> Xem
-						thêm cửa hàng </a>
 				</div>
 			</div>
 		</div>
-
 	</section>
 
 </body>

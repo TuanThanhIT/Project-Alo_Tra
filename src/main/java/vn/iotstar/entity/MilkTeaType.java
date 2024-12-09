@@ -22,7 +22,19 @@ public class MilkTeaType {
 
     // Mối quan hệ 1:N với MilkTea
     @OneToMany(mappedBy = "milkTeaType")
-    private List<MilkTea> milkTeas;    
+    private List<MilkTea> milkTeas;
+    
+    // thêm để sửa stack overflow
+	@Override
+	public String toString() {
+	    return "MilkTeaType{" +
+	            "milkTeaTypeID=" + milkTeaTypeID +
+	            ", milkTeaTypeName='" + milkTeaTypeName + '\'' +
+	            ", milkTeasCount=" + (milkTeas != null ? milkTeas.size() : "null") + // Chỉ hiển thị số lượng MilkTea
+	            '}';
+	}
+
+
     
 }
 

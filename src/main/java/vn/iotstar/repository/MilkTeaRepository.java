@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import vn.iotstar.entity.MilkTea;
+import vn.iotstar.entity.MilkTeaType;
 
 @Repository
 public interface MilkTeaRepository extends JpaRepository<MilkTea, Integer> {
@@ -17,7 +18,7 @@ public interface MilkTeaRepository extends JpaRepository<MilkTea, Integer> {
 
 	Page<MilkTea> findByMilkTeaType_MilkTeaTypeID(int milkTeaTypeID, Pageable pageable);
 
-	List<MilkTea> findByMilkTeaIDNot(int milkTeaID);
+	List<MilkTea> findByMilkTeaTypeAndMilkTeaIDNot(MilkTeaType milkTeaType, int milkTeaID);
 
 	@Query("SELECT c FROM MilkTea c WHERE c.milkTeaName LIKE %:keyword%")
 	List<MilkTea> searchMilkTea(@Param("keyword") String keyword);

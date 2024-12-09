@@ -28,6 +28,7 @@ import vn.iotstar.entity.MilkTea;
 import vn.iotstar.entity.MilkTeaType;
 import vn.iotstar.entity.Rate;
 import vn.iotstar.entity.User;
+import vn.iotstar.services.IBranchMilkTeaService;
 import vn.iotstar.services.ILikeService;
 import vn.iotstar.services.IMilkTeaService;
 import vn.iotstar.services.IMilkTeaTypeService;
@@ -51,6 +52,9 @@ public class UProductController {
 
 	@Autowired
 	private ILikeService likeService;
+	
+	@Autowired
+	private IBranchMilkTeaService branchMilkTeaService;
 
 	@GetMapping
 	public String ShowProductPage(@RequestAttribute(name = "user", required = false) User user,
@@ -105,7 +109,7 @@ public class UProductController {
 		BigDecimal saotb;
 		Optional<MilkTea> OptMilkTea = milkTeaService.findById(id);
 		MilkTea milkTea = OptMilkTea.get();
-
+		
 		List<Rate> listRate = rateService.findByMilkTea(milkTea);
 		int numberOfRates = listRate.size();
 		if (numberOfRates == 0) {
@@ -119,13 +123,14 @@ public class UProductController {
 			saotb = new BigDecimal(tongsao / (double) numberOfRates); // Ép kiểu để chia chính xác
 			saotb = saotb.setScale(1, RoundingMode.HALF_UP); // Làm tròn đến 1 chữ số thập phân
 		}
-		
-		List<MilkTea> listMilkTeaRelateTo = milkTeaService.findByMilkTeaIDNot(id);
+		int sellQuantity = branchMilkTeaService.findSellQuantityByMilkTeaID(id);
+		List<MilkTea> listMilkTeaRelateTo = milkTeaService.findByMilkTeaTypeAndMilkTeaIDNot(milkTea.getMilkTeaType(),id);
 		model.addAttribute("numberOfRates", numberOfRates);
 		model.addAttribute("milkTea", milkTea);
 		model.addAttribute("listRate", listRate);
 		model.addAttribute("saotb", saotb);
 		model.addAttribute("listMilkTeaRelateTo", listMilkTeaRelateTo);
+		model.addAttribute("sellQuantity", sellQuantity);
 		return "user/productdetail";
 	}
 

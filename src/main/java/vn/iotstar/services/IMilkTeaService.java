@@ -8,8 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import vn.iotstar.entity.MilkTea;
+import vn.iotstar.entity.MilkTeaType;
 
 public interface IMilkTeaService {
+
 
 	void delete(MilkTea entity);
 
@@ -23,7 +25,6 @@ public interface IMilkTeaService {
 
 	List<MilkTea> findByMilkTeaType_MilkTeaTypeID(int milkTeaTypeID);
 
-	List<MilkTea> findByMilkTeaIDNot(int milkTeaID);
 
 	Page<MilkTea> findAll(Integer pageNo);
 
@@ -42,6 +43,8 @@ public interface IMilkTeaService {
 	long count();
 
 	Page<MilkTea> findAll(Pageable pageable);
+
+	List<MilkTea> findByMilkTeaTypeAndMilkTeaIDNot(MilkTeaType milkTeaType, int milkTeaID);
 
 	List<MilkTea> findByMilkTeaNameContaining(String keyword);
 

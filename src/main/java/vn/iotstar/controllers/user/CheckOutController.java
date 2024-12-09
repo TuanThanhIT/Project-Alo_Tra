@@ -135,7 +135,7 @@ public class CheckOutController {
 	     cartServ.deleteAllItem(user.getUserID());
 
 	     // Chuyển hướng người dùng đến trang thành công
-	     return "redirect:/user/home";
+	     return "redirect:/user/packages";
 	 }
 
 	@PostMapping("/checkout-by-VNPay")
