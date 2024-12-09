@@ -25,4 +25,6 @@ public interface IOrderService {
 
 	<S extends Order> S save(S entity);
 
+	List<Order> findByUserId(int userId);
+
 }
