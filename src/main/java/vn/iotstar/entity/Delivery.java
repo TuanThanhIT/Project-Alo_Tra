@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.format.annotation.NumberFormat;
+
 @Entity
 @Table(name = "Delivery")
 @Data
@@ -25,6 +27,7 @@ public class Delivery {
     private String deliveryType;
 
     @Column(name = "ExtraCost")
+    @NumberFormat(style = NumberFormat.Style.CURRENCY)
     private BigDecimal extraCost;  // Change from double to BigDecimal for precision
 
     // Mối quan hệ với Shipper (1:N)

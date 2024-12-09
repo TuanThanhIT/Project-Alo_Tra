@@ -89,7 +89,7 @@ public class CartController {
 		// Cập nhật tổng số lượng sản phẩm và tổng giá tiền của giỏ hàng
 		cart.setTotalProduct(cart.getMilkTeas().stream().mapToInt(CartMilkTea::getQuantityMilkTea).sum());
 		cart.setTotalCost(cart.getMilkTeas().stream()
-				.map(cmt -> cmt.getMilkTea().getPrice().add(cmt.getSize().getExtraCost())
+				.map(cmt -> cmt.getMilkTea().getDiscountPrice().add(cmt.getSize().getExtraCost())
 						.multiply(BigDecimal.valueOf(cmt.getQuantityMilkTea())))
 				.reduce(BigDecimal.ZERO, BigDecimal::add));
 
