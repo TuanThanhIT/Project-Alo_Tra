@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import vn.iotstar.entity.Branch;
+import vn.iotstar.entity.MilkTea;
 import vn.iotstar.entity.MilkTeaType;
 import vn.iotstar.entity.User;
+import vn.iotstar.services.IBranchMilkTeaService;
 import vn.iotstar.services.IIncomeService;
 import vn.iotstar.services.IMilkTeaTypeService;
 import vn.iotstar.services.IUserService;
@@ -31,6 +33,9 @@ public class UHomeController {
     
 	@Autowired
 	private IIncomeService iIncomeService;
+	
+	@Autowired 
+	private IBranchMilkTeaService branchMilkTeaService;
     
     @GetMapping("home")
     public String index(Model model) {
@@ -39,6 +44,9 @@ public class UHomeController {
         model.addAttribute("listType", list);
         List<Branch> list1 = iIncomeService.getTop4BranchesByTotalValue();
 		model.addAttribute("listBranch", list1);
+		
+		List<MilkTea> listMilkTea = branchMilkTeaService.getTop3MilkTea();
+		model.addAttribute("listMilkTea", listMilkTea);
         // Dữ liệu `user` đã được thêm từ Interceptor, không cần xử lý lại
         return "user/homeuser"; // Trả về trang homeuser.html
     }

@@ -19,7 +19,8 @@ public class WHomeController {
 	@Autowired
 	private IIncomeService iIncomeService;
 	
-	@Autowired IBranchMilkTeaService branchMilkTeaService;
+	@Autowired 
+	private IBranchMilkTeaService branchMilkTeaService;
 	
 	@GetMapping({"/", "/web/home"})
 	public String index(Model model)
