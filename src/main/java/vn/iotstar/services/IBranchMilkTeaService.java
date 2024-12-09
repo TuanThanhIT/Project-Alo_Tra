@@ -25,5 +25,9 @@ public interface IBranchMilkTeaService {
 
 	Integer findSellQuantityByMilkTeaID(int milkTeaID);
 
+	List<MilkTea> getTop3MilkTea();
+	
+	
+
 
 }

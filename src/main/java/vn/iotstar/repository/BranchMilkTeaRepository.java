@@ -1,5 +1,7 @@
 package vn.iotstar.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +24,8 @@ public interface BranchMilkTeaRepository extends JpaRepository<BranchMilkTea, In
 
 	@Query("SELECT b.sellQuantity FROM BranchMilkTea b WHERE b.milkTea.milkTeaID = :milkTeaID")
 	Integer findSellQuantityByMilkTeaID(@Param("milkTeaID") int milkTeaID);
+
+	@Query("SELECT b.milkTea FROM BranchMilkTea b ORDER BY b.sellQuantity DESC")
+	List<MilkTea> findTop3BySellQuantity(Pageable pageable);
+
 }

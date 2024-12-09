@@ -17,7 +17,7 @@ import vn.iotstar.services.IBranchMilkTeaService;
 
 @Service
 @Transactional
-public class BranchMilkTeaServiceImpl implements IBranchMilkTeaService{
+public class BranchMilkTeaServiceImpl implements IBranchMilkTeaService {
 	@Autowired
 	private vn.iotstar.repository.BranchMilkTeaRepository iBranchMilkTeaRepository;
 
@@ -39,18 +39,18 @@ public class BranchMilkTeaServiceImpl implements IBranchMilkTeaService{
 	@Override
 	public void deleteById(int id) {
 		iBranchMilkTeaRepository.deleteById(id);
-		
+
 	}
-	
+
 	@Override
 	public Page<BranchMilkTea> getBranchMilkTeaByBranch(Branch branch, int pageNo) {
-		Pageable pageable = PageRequest.of(pageNo-1, 3);
-        return iBranchMilkTeaRepository.findByBranch(branch, pageable);
-    }
-	
+		Pageable pageable = PageRequest.of(pageNo - 1, 3);
+		return iBranchMilkTeaRepository.findByBranch(branch, pageable);
+	}
+
 	@Override
 	public BranchMilkTea getBranchMilkTea(Branch branch, MilkTea milkTea) {
-	    return iBranchMilkTeaRepository.findBranchMilkTeaByBranchAndMilkTea(branch, milkTea);
+		return iBranchMilkTeaRepository.findBranchMilkTeaByBranchAndMilkTea(branch, milkTea);
 	}
 
 	@Override
@@ -58,6 +58,10 @@ public class BranchMilkTeaServiceImpl implements IBranchMilkTeaService{
 		return iBranchMilkTeaRepository.findSellQuantityByMilkTeaID(milkTeaID);
 	}
 	
-	
-}
+	@Override
+	public List<MilkTea> getTop3MilkTea() {
+	    Pageable topThree = PageRequest.of(0, 4);
+	    return iBranchMilkTeaRepository.findTop3BySellQuantity(topThree);
+	}
 
+}

@@ -58,6 +58,11 @@ public class OrderServiceImpl implements IOrderService  {
 	public void delete(Order entity) {
 		orderRepository.delete(entity);
 	}
+	
+	@Override
+	public List<Order> findByUserId(int userId) {
+        return orderRepository.findByUserUserID(userId);
+    }
 
 	
 	
