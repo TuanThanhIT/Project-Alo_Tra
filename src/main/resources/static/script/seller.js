@@ -25,6 +25,8 @@ modeSwitch.addEventListener("click" , () =>{
     }
 });
 
+
+
 function openSidebar() {
     document.getElementById("sidebar").style.width = "250px";
     document.getElementById("overlay").style.display = "block"; // Hiển thị overlay
@@ -135,4 +137,32 @@ document.addEventListener("DOMContentLoaded", function () {
 			    outputElement.textContent = result;
 
 			    console.log("Giá trị lưu trong thẻ hidden:", hiddenElement.value);
+			});
+
+			document.addEventListener('DOMContentLoaded', function() {
+			    const updateButtons = document.querySelectorAll('.btn-update');
+
+			    updateButtons.forEach(button => {
+			        button.addEventListener('click', function(event) {
+			            event.preventDefault();
+			            const orderId = this.getAttribute('data-order-id');
+
+			            fetch(`/seller/orders/${orderId}/update-status`, {
+			                method: 'POST',
+			                headers: {
+			                    'Content-Type': 'application/json'
+			                },
+			                body: JSON.stringify({ status: 'COMPLETE' })
+			            })
+			            .then(response => response.json())
+			            .then(data => {
+			                if (data.success) {
+			                    alert('Cập nhật trạng thái thành công!');
+			                    location.reload();
+			                } else {
+			                    alert('Có lỗi xảy ra, vui lòng thử lại.');
+			                }
+			            });
+			        });
+			    });
 			});

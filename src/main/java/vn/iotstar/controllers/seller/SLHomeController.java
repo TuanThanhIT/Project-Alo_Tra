@@ -7,17 +7,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +31,9 @@ import vn.iotstar.entity.Branch;
 import vn.iotstar.entity.BranchMilkTea;
 import vn.iotstar.entity.MilkTea;
 import vn.iotstar.entity.MilkTeaType;
+import vn.iotstar.entity.Order;
 import vn.iotstar.entity.User;
+import vn.iotstar.enums.OrderStatus;
 import vn.iotstar.model.BranchDto;
 import vn.iotstar.model.MilkTeaDto;
 
@@ -34,6 +41,7 @@ import vn.iotstar.services.IBranchMilkTeaService;
 import vn.iotstar.services.IBranchService;
 import vn.iotstar.services.IMilkTeaService;
 import vn.iotstar.services.IMilkTeaTypeService;
+import vn.iotstar.services.IOrderService;
 import vn.iotstar.utils.PathConstants;
 
 import org.springframework.web.bind.WebDataBinder;
@@ -57,6 +65,9 @@ public class SLHomeController {
 
 	@Autowired
 	private IMilkTeaTypeService iMilkTeaTypeService;
+	
+	@Autowired
+	private IOrderService iOrderService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -336,5 +347,37 @@ public class SLHomeController {
 		return "redirect:/seller/milkTeas"; // Chuyển hướng đến danh sách MilkTea
 	}
 	
+	@GetMapping("/orders")
+	public String listOrder(Model model, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo
+			, HttpServletRequest request) {
+		Pageable pageable = PageRequest.of(pageNo-1, 2);
+		Page<Order> listOrder= iOrderService.findAll(pageable);
+		model.addAttribute("totalPage", listOrder.getTotalPages());
+		model.addAttribute("currentPage", pageNo);
+		model.addAttribute("listOrder", listOrder);
+		return "seller/order/list-Order";
+	}
 	
+	@PostMapping("/orders/{id}/update-status")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> updateOrderStatus(@PathVariable int id) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        Optional<Order> opOrder = iOrderService.findById(id);
+	        Order order = opOrder.get();
+	        if (order != null && !order.getStatus().equals("COMPLETED")) {
+	            order.setStatus(OrderStatus.COMPLETED);
+	            iOrderService.save(order);
+	            response.put("success", true);
+	        } else {
+	            response.put("success", false);
+	            response.put("message", "Order not found or already completed.");
+	        }
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", "An error occurred.");
+	    }
+	    return ResponseEntity.ok(response);
+	}
+
 }

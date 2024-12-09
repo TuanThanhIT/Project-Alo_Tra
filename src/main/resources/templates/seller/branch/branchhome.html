@@ -65,7 +65,8 @@
 			</div>
 			<div class="image-section">
 				<!-- Hình ảnh đặt trong đây -->
-				<img src="/img/product1.png" alt="Branch Image" class="branch-image">
+				<img th:src="'/uploads/' + ${branch.images.split(',')[0]}" alt="Branch Image" class="branch-image">
+				
 			</div>
 
 
