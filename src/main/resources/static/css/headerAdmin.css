@@ -146,5 +146,17 @@
     color: #f39c12; /* Màu cam ánh kim nổi bật khi hover */
 }
 
+#wrapper {
+	margin-left: 6cm;
+}
 
+body {
+	padding-top: 5px;
+	/* Điều chỉnh giá trị để tạo khoảng cách giữa header và nội dung */
+}
+
+#wrapper {
+	margin-top: 80px;
+	/* Điều chỉnh giá trị tùy theo chiều cao của header */
+}
 /* END HEADER */

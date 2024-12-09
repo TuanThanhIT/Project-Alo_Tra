@@ -42,8 +42,8 @@
                                      th:each="item : ${listCart}">
                                     <div class="col-md-5 col-lg-3 col-xl-3">
                                         <div class="mb-3 mb-md-0">
-                                            <img th:src="@{${item.milkTea.image != null && item.milkTea.image.startsWith('http') ? item.milkTea.image : '/uploads/' + item.milkTea.image}}"
-                                                 alt="Product Image" width="100" />
+                                            <img th:src="'/uploads/' + ${item.milkTea.image.split(',')[0]}"
+													alt="Milk Tea" width="150" height="100" />
                                         </div>
                                     </div>
                                     <div class="col-md-7 col-lg-9 col-xl-9">
