@@ -33,5 +33,12 @@ public class Shipper {
     @JoinColumn(name = "BranchID", referencedColumnName = "branchID")
     private Branch branch;
 
+    @Override
+    public String toString() {
+        return "Shipper{" +
+                "shipperID=" + shipID +
+                '}';
+    }
+
 }
 

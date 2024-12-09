@@ -34,6 +34,12 @@ public class Delivery {
     @OneToMany(mappedBy = "delivery")
     private List<Shipper> shippers;
 
+    @Override
+    public String toString() {
+        return "Delivery{" +
+                "deliveryID=" + deliveryID +
+                '}';
+    }
 
 }
 

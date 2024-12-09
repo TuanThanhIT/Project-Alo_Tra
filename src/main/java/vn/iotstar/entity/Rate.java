@@ -34,5 +34,15 @@ public class Rate {
 
     @Column(name = "RateValue")
     private BigDecimal rateValue;
+    
+    @Override
+    public String toString() {
+        return "Rate{" +
+                "rateID=" + rateID +
+                ", milkTeaID=" + (milkTea != null ? milkTea.getMilkTeaID() : "null") +
+                ", rating=" + rateValue +
+                '}';
+    }
+
 }
 

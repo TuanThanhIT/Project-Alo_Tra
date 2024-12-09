@@ -78,18 +78,9 @@ public class MilkTea {
     public String toString() {
         return "MilkTea{" +
                 "milkTeaID=" + milkTeaID +
-                ", milkTeaType=" + (milkTeaType != null ? milkTeaType.getMilkTeaTypeID() : "null") +
                 ", milkTeaName='" + milkTeaName + '\'' +
-                ", image='" + image + '\'' +
                 ", price=" + price +
-                ", discountPrice=" + discountPrice +
-                ", description='" + description + '\'' +
-                ", introduction='" + introduction + '\'' +
-                ", isFavorited=" + isFavorited +
-                ", branches=" + (branches != null ? branches.size() : "null") + // Chỉ lấy số lượng chi nhánh
-                ", branchMilkTeas=" + (branchMilkTeas != null ? branchMilkTeas.size() : "null") + // Chỉ lấy số lượng
-                ", userMilkTeaRates=" + (userMilkTeaRates != null ? userMilkTeaRates.size() : "null") + // Chỉ lấy số lượng
-                ", userMilkTeaLikes=" + (userMilkTeaLikes != null ? userMilkTeaLikes.size() : "null") + // Chỉ lấy số lượng
+                ", milkTeaTypeID=" + (milkTeaType != null ? milkTeaType.getMilkTeaTypeID() : "null") +
                 '}';
     }
 
