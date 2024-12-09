@@ -28,6 +28,7 @@ public class Branch {
     @JoinColumn(name = "UserID", referencedColumnName = "userID")
     private User user;
     
+    
     @Column(columnDefinition = "nvarchar(max)")
     private String branchName;
     

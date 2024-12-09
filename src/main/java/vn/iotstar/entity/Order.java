@@ -15,35 +15,33 @@ import vn.iotstar.enums.OrderStatus;
 @NoArgsConstructor
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderID;
-
-    @Column(columnDefinition = "nvarchar(max)")
-    private String shipAddress;
-
-    @ManyToOne
-    @JoinColumn(name = "UserID", referencedColumnName = "userID")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "CartID", referencedColumnName = "cartID")
-    private Cart cart; // Một đơn hàng thuộc về một giỏ hàng
-
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "payID")
-    @JsonManagedReference
-    private Pays payment;
-
-    @ManyToOne
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int orderID;
+	@Column(columnDefinition = "nvarchar(max)")
+	private String shipAddress;
+		
+	@ManyToOne
+	@JoinColumn(name = "UserID", referencedColumnName = "userID")
+	private User user;
+	@ManyToOne
     @JoinColumn(name = "BranchID", referencedColumnName = "branchID")
     private Branch branch; // Kết nối với bảng Branch
 
-    @Override
-    public String toString() {
-        return "Order{" + "orderID=" + orderID + ", userID=" + (user != null ? user.getUserID() : "null") + '}';
-    }
+	@ManyToOne
+	@JoinColumn(name = "CartID", referencedColumnName = "cartID")
+	private Cart cart; // Một đơn hàng thuộc về một giỏ hàng
+
+	@Enumerated(EnumType.STRING)
+	private OrderStatus status;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "payID")
+	@JsonManagedReference
+	private Pays payment;
+
+	@Override
+	public String toString() {
+		return "Order{" + "orderID=" + orderID + ", userID=" + (user != null ? user.getUserID() : "null") + '}';
+	}
 }

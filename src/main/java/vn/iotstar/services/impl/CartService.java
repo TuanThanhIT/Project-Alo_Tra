@@ -1,5 +1,6 @@
 package vn.iotstar.services.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,7 +65,7 @@ public class CartService implements ICartService{
 			
 			}
 			item.setQuantityMilkTea(0);
-			
+			cart.setTotalCost(new BigDecimal("0.00"));
 			cartMilkTRepo.save(item);
 			 
 	        

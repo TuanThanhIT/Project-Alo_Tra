@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.Valid;
 import vn.iotstar.entity.Role;
 import vn.iotstar.entity.User;
-import vn.iotstar.models.UserDto;
+import vn.iotstar.model.UserDto;
 import vn.iotstar.services.IEmailService;
 import vn.iotstar.services.IOtpService;
 import vn.iotstar.services.IRoleService;

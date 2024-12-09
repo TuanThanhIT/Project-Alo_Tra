@@ -12,7 +12,7 @@ import vn.iotstar.entity.Cart;
 @Repository
 public interface CartRepository extends JpaRepository<Cart,Integer>{
 	Optional<Cart> findByUserUserID(int userID);
-	@Query("SELECT SUM(c.totalProduct) FROM Cart c")
+	@Query("SELECT SUM(c.sellQuantity) FROM BranchMilkTea c")
     Long getTotalProductCount();
 	
 	@Query("SELECT c FROM Cart c LEFT JOIN FETCH c.milkTeas WHERE c.user.userID = :userId")

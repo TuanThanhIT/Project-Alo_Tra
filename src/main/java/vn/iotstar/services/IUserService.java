@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import vn.iotstar.entity.User;
-import vn.iotstar.models.UserDto;
+import vn.iotstar.model.UserDto;
 
 public interface IUserService {
 

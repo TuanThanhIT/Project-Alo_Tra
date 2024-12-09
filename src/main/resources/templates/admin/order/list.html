@@ -82,8 +82,8 @@ body {
 						<th>Order ID</th>
 						<th>User</th>
 						<th>Cart</th>
-						<th>Status</th>
-						<th>Payment Method</th>
+						 <th>Status</th>
+ 					<th>Payment Method</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -92,10 +92,10 @@ body {
 						<td th:text="${order.user != null ? order.user.fullName : 'N/A'}"></td>
 						<td th:text="${order.cart != null ? order.cart.cartID : 'N/A'}"></td>
 
-						<td
-							th:text="${order.status != null ? order.status.statusName : 'N/A'}"></td>
-						<td th:text="${order.pays != null ? order.pays.payName : 'N/A'}"></td>
-						
+						 <td
+							th:text="${order.status}"></td> 
+ <td th:text="${order.payment != null ? order.payment.payMethod : 'N/A'}"></td>
+ 						
 					</tr>
 				</tbody>
 			</table>

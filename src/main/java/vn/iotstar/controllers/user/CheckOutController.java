@@ -133,7 +133,17 @@ public class CheckOutController {
 		order.setShipAddress(address);
 		order.setUser(user);
 		order.setStatus(OrderStatus.PENDING); // Đơn hàng đang chờ xử lý
+		//BEGIN TOAN
+	     Optional<Branch> opBranch = iBranchService.findById(1);
+	     if (opBranch.isPresent()) { 
+	    	    Branch branch = opBranch.get(); 
+	    	    System.out.println("Branch found: " + branch); // Kiểm tra branch lấy được 
+	    	    order.setBranch(branch);
+	    	} else { 
+	    	    System.out.println("Branch not found with ID 1"); 
+	    	}
 
+	     //END TOAN
 		// Tạo đối tượng thanh toán (COD)
 		Pays payment = new Pays();
 		payment.setPayMethod("COD"); // Phương thức thanh toán COD
@@ -151,6 +161,7 @@ public class CheckOutController {
 		// Chuyển hướng người dùng đến trang thành công
 		return new ResponseEntity<>("/user/packages", HttpStatus.OK);
 	}
+
 
 	@PostMapping("/checkout-by-VNPay")
 	public ResponseEntity<?> payVN(HttpSession session, Model model, @RequestParam("address") String address,
@@ -214,7 +225,7 @@ public class CheckOutController {
 		order.setPayment(payment);
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		String curDate = currentDateTime.toString();
-		int intValue = totalWithShipping.setScale(0, RoundingMode.HALF_UP).intValue() * 100;
+		int intValue = totalWithShipping.setScale(0, RoundingMode.HALF_UP).intValue();
 
 		session.setAttribute("checkingOutOrder", order);
 		String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();

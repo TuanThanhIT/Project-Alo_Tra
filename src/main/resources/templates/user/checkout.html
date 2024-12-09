@@ -113,6 +113,8 @@
 					// Nếu có phương thức thanh toán và hình thức vận chuyển đã chọn
 					if (selectedPaymentMethod && selectedDeliveryId) {
 						const address = document.getElementById('form14').value;
+						console.log("Phương thức thanh toán:", selectedPaymentMethod);
+					    console.log("Hình thức giao hàng:", selectedDeliveryId);
 
 						// Thực hiện AJAX request nếu tất cả thông tin đều hợp lệ
 						$.ajax({

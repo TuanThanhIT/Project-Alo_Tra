@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import vn.iotstar.entity.User;
-import vn.iotstar.models.UserDto;
+import vn.iotstar.model.UserDto;
 
 
 @Repository

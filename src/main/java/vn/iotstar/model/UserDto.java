@@ -1,4 +1,4 @@
-package vn.iotstar.models;
+package vn.iotstar.model;
 
 import java.util.Date;
 
