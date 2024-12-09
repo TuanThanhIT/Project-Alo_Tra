@@ -3,6 +3,7 @@ package vn.iotstar.controllers.user;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +108,7 @@ public class CheckOutController {
 			model.addAttribute("error", "Giỏ hàng không tồn tại");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Giỏ hàng không tồn tại.");
 		}
-		
+
 		// Lấy phí vận chuyển từ DeliveryService
 		if (deliveryId == null) {
 			model.addAttribute("error", "Vui lòng chọn phương thức giao hàng");
@@ -197,11 +198,10 @@ public class CheckOutController {
 
 		// Thiết lập thanh toán cho đơn hàng
 		order.setPayment(payment);
-		LocalDate currentDate = LocalDate.now();
-		String curDate = currentDate.toString();
-		int intValue = totalWithShipping.setScale(0, RoundingMode.HALF_UP).intValue() + 100000;
-		
-		
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		String curDate = currentDateTime.toString();
+		int intValue = totalWithShipping.setScale(0, RoundingMode.HALF_UP).intValue() * 100;
+
 		session.setAttribute("checkingOutOrder", order);
 		String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 		String vnpayUrl = vnpayService.createOrder(request, intValue, "DonHang_" + curDate, baseUrl);

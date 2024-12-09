@@ -29,10 +29,10 @@ public class VNPayController {
 
 	@GetMapping("/vnpay-payment-return")
 	public String paymentCompleted(HttpServletRequest request, Model model, HttpSession session) {
-		User user = (User) session.getAttribute("user");
+		User user = (User) session.getAttribute("account");
 		int paymentStatus = vnPayService.orderReturn(request);
 		Order order = (Order) session.getAttribute("checkingOutOrder");	
-
+		
 		
 		if (paymentStatus == 1) {
 			orderService.save(order);
