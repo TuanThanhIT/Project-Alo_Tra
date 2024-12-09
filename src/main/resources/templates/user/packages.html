@@ -61,7 +61,7 @@
 									<td th:text="${order.shipAddress}"></td>
 									<td th:text="${order.status}"></td>
 									<td th:text="${order.payment.payMethod}"></td>
-									<td th:text="${order.cart.totalCost} + ' đ'"></td>
+									<td th:text="${order.payment.total} + ' đ'"></td>
 								</tr>
 							</tbody>
 						</table>

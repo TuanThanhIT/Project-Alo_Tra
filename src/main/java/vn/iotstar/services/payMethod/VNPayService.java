@@ -6,10 +6,12 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import vn.iotstar.configs.VNPAYConfig;
 
+@Service
 public class VNPayService {
 	public String createOrder(HttpServletRequest request, int amount, String orderInfor, String urlReturn) {
 		String vnp_Version = "2.1.0";
