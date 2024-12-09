@@ -25,22 +25,14 @@
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+	rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 
 <style>
-#wrapper {
-	margin-left: 6cm;
-}
 
-body {
-	padding-top: 5px;
-	/* Điều chỉnh giá trị để tạo khoảng cách giữa header và nội dung */
-}
-
-#wrapper {
-	margin-top: 80px;
-	/* Điều chỉnh giá trị tùy theo chiều cao của header */
-}
 </style>
 
 
@@ -178,8 +170,7 @@ body {
 									<!-- Card Header - Dropdown -->
 									<div
 										class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-										<h6 class="m-0 font-weight-bold text-primary">Earnings
-											Overview</h6>
+										<h6 class="m-0 font-weight-bold text-primary">Tổng quan doanh thu</h6>
 										<div class="dropdown no-arrow">
 											<a class="dropdown-toggle" href="#" role="button"
 												id="dropdownMenuLink" data-toggle="dropdown"
@@ -201,6 +192,8 @@ body {
 									<div class="card-body">
 										<div class="text-center mt-4">
 											<h2>Doanh thu theo tháng</h2>
+											<button id="exportExcel" class="btn btn-primary mt-3">Xuất Excel</button>
+											
 											<canvas id="incomeChart" width="400" height="200"></canvas>
 										</div>
 
@@ -260,6 +253,22 @@ body {
             }
         }
     });
+    
+    // Xuất dữ liệu ra Excel
+    document.getElementById('exportExcel').addEventListener('click', function () {
+        var data = [];
+        for (var i = 0; i < months.length; i++) {
+            data.push({
+                "Tháng": months[i],
+                "Doanh thu (VNĐ)": totalIncomePerMonth[i]
+            });
+        }
+
+        var ws = XLSX.utils.json_to_sheet(data);
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Doanh Thu");
+        XLSX.writeFile(wb, 'DoanhThuTheoThang.xlsx');
+    });
 </script>
 
 
@@ -299,51 +308,23 @@ body {
 							<!-- Content Column -->
 							<div class="col-lg-6 mb-4">
 								<h3>Biểu đồ doanh thu theo chi nhánh</h3>
-								<canvas id="branchBarChart" width="800" height="400"></canvas>
-							
+								<button id="exportBranchExcel" class="btn btn-primary mt-3">Xuất Excel</button>
+								
+								<canvas id="branchIncomeChart" width="400" height="400"></canvas>
+
 							</div>
 							<!-- bar chart  -->
-							
+
 							<div class="col-lg-6 mb-4">
 
 								<!-- Illustrations -->
 								<div class="card shadow mb-4">
-									<div class="card-header py-3">
-										<h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-									</div>
-									<div class="card-body">
-										<div class="text-center">
-											<img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
-												style="width: 25rem;" src="img/undraw_posting_photo.svg"
-												alt="...">
-										</div>
-										<p>
-											Add some quality, svg illustrations to your project courtesy
-											of <a target="_blank" rel="nofollow"
-												href="https://undraw.co/">unDraw</a>, a constantly updated
-											collection of beautiful svg images that you can use
-											completely free and without attribution!
-										</p>
-										<a target="_blank" rel="nofollow" href="https://undraw.co/">Browse
-											Illustrations on unDraw &rarr;</a>
-									</div>
+									<!-- chỗ này là 1 cục -->
 								</div>
 
 								<!-- Approach -->
 								<div class="card shadow mb-4">
-									<div class="card-header py-3">
-										<h6 class="m-0 font-weight-bold text-primary">Development
-											Approach</h6>
-									</div>
-									<div class="card-body">
-										<p>SB Admin 2 makes extensive use of Bootstrap 4 utility
-											classes in order to reduce CSS bloat and poor page
-											performance. Custom CSS classes are used to create custom
-											components and custom utility classes.</p>
-										<p class="mb-0">Before working with this theme, you should
-											become familiar with the Bootstrap framework, especially the
-											utility classes.</p>
-									</div>
+									<!-- chỗ này 1 cục -->
 								</div>
 
 							</div>
@@ -477,69 +458,90 @@ body {
 
 
 
-	 <script>
-        // Dữ liệu JSON được truyền từ Controller
-        const branchIncomeData = JSON.parse('${branchIncomeJson}');
 
-        // Tách ID chi nhánh và doanh thu
-        const branchLabels = branchIncomeData.map(data => `Chi nhánh ${data.branchId}`);
-        const branchIncomes = branchIncomeData.map(data => data.income);
+		<!--   Dữ liệu giả (thay thế cho dữ liệu từ Controller)
+          const branchIncomeData = [
+            { branchId: 1, income: 1000000 }, // Chi nhánh 1
+            { branchId: 2, income: 2000000 }, // Chi nhánh 2
+            { branchId: 3, income: 1500000 }, // Chi nhánh 3
+            { branchId: 4, income: 2500000 }  // Chi nhánh 4
+        ];   -->
 
-        // Thiết lập biểu đồ
-        const canvas = document.getElementById('branchBarChart');
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
+		<script>
+    // Dữ liệu giả
+   const branchIncomeData = [
+        { branchId: 1, income: 1000000 }, // Chi nhánh 1
+        { branchId: 2, income: 2000000 }, // Chi nhánh 2
+        { branchId: 3, income: 1500000 }, // Chi nhánh 3
+        { branchId: 4, income: 2500000 }  // Chi nhánh 4
+    ]; 
+   const branchLabels = branchIncomeData.map(data => 'Chi nhánh ' + data.branchId); // Tên chi nhánh
+   const branchIncomes = branchIncomeData.map(data => data.income); // Doanh thu
 
-            // Khởi tạo biểu đồ cột
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: branchLabels, // Tên các chi nhánh
-                    datasets: [{
-                        label: 'Doanh thu (VNĐ)',
-                        data: branchIncomes, // Dữ liệu doanh thu
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)', // Màu cột
-                        borderColor: 'rgba(75, 192, 192, 1)', // Màu viền
-                        borderWidth: 1 // Độ dày viền
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let value = context.raw;
-                                    return new Intl.NumberFormat('vi-VN', {
-                                        style: 'currency',
-                                        currency: 'VND'
-                                    }).format(value);
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return new Intl.NumberFormat('vi-VN', {
-                                        style: 'currency',
-                                        currency: 'VND'
-                                    }).format(value);
-                                }
-                            }
+    // Nhận dữ liệu từ controller (branchLabels và branchIncomes)
+    /* const branchLabels = JSON.parse('[[${branchLabelsJson}]]');
+    const branchIncomes = JSON.parse('[[${branchIncomesJson}]]');
+ */
+    // Vẽ biểu đồ cột (bar chart)
+    const ctxBranch = document.getElementById('branchIncomeChart').getContext('2d');
+    const branchIncomeChart = new Chart(ctxBranch, {
+        type: 'bar', // Biểu đồ cột
+        data: {
+            labels: branchLabels, // Tên chi nhánh
+            datasets: [{
+                label: 'Doanh thu (VNĐ)', // Nhãn dữ liệu
+                data: branchIncomes, // Dữ liệu doanh thu theo chi nhánh
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'], // Màu sắc các cột
+                borderColor: ['#FF6384AA', '#36A2EBAA', '#FFCE56AA', '#4BC0C0AA'], // Màu viền các cột
+                borderWidth: 1 // Độ rộng viền cột
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.raw.toLocaleString('vi-VN') + ' VNĐ'; // Định dạng VNĐ
                         }
                     }
                 }
-            });
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Chi nhánh' // Tiêu đề trục X
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Doanh thu (VNĐ)' // Tiêu đề trục Y
+                    }
+                }
+            }
         }
-    </script>
-								
+    });
+    /* xuất excel */
+    document.getElementById('exportBranchExcel').addEventListener('click', function () {
+        // Chuẩn bị dữ liệu từ biểu đồ cột
+        const data = branchIncomeData.map(item => ({
+            "Chi nhánh": "Chi nhánh " + item.branchId,
+            "Doanh thu (VNĐ)": item.income
+        }));
+
+        // Tạo sheet Excel
+        const ws = XLSX.utils.json_to_sheet(data); // Tạo sheet từ JSON
+        const wb = XLSX.utils.book_new();         // Tạo workbook mới
+        XLSX.utils.book_append_sheet(wb, ws, "Doanh Thu Chi Nhánh"); // Thêm sheet
+
+        // Xuất file Excel
+        XLSX.writeFile(wb, 'DoanhThuChiNhanh.xlsx');
+    });
+</script>
+
 
 	</div>
 </body>

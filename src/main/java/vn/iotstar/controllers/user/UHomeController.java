@@ -35,6 +35,7 @@ public class UHomeController {
 	private IIncomeService iIncomeService;
 	
 	@Autowired 
+
 	private IBranchMilkTeaService branchMilkTeaService;
     
     @GetMapping("home")
@@ -44,7 +45,7 @@ public class UHomeController {
         model.addAttribute("listType", list);
         List<Branch> list1 = iIncomeService.getTop4BranchesByTotalValue();
 		model.addAttribute("listBranch", list1);
-		
+
 		List<MilkTea> listMilkTea = branchMilkTeaService.getTop3MilkTea();
 		model.addAttribute("listMilkTea", listMilkTea);
         // Dữ liệu `user` đã được thêm từ Interceptor, không cần xử lý lại

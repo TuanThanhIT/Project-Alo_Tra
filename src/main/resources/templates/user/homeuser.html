@@ -139,6 +139,65 @@
 						</div>
 					</div>
 					<!-- Kết thúc vòng lặp -->
+					<!-- Button Xem thêm -->
+					<div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
+						<a th:href="@{/user/product}"
+							class="btn btn-primary rounded-pill p`y-3 px-5"> Xem thêm sản
+							phẩm </a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Sản phẩm bán chạy End -->
+
+		<!-- Cửa Hàng Nổi Bật Bắt Đầu -->
+		<div class="container-xxl py-5">
+			<div class="container">
+				<div class="section-title text-center mx-auto wow fadeInUp"
+					data-wow-delay="0.1s" style="max-width: 500px">
+					<p class="fs-5 fw-medium fst-italic text-primary">Cửa Hàng Nổi
+						Bật</p>
+					<h1 class="display-6">Điểm đến lý tưởng cho những tín đồ yêu
+						trà sữa</h1>
+				</div>
+				<div class="row g-4">
+					<!-- Lặp qua danh sách chi nhánh -->
+					<div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s"
+						th:each="milkTea : ${listMilkTea}">
+						<div class="store-item position-relative text-center">
+							<img th:src="'/uploads/' + ${milkTea.image.split(',')[0]}"
+								alt="Milk Tea" class="img-fluid" />
+							<div class="p-4">
+								<h4 class="mb-3" th:text="${milkTea.milkTeaName}">Tên trà
+									sữa</h4>
+								<p th:text="${milkTea.introduction}">Giới thiệu sản phẩm</p>
+								<h4 class="text-primary"
+									th:text="${milkTea.discountPrice.intValue()} + '₫'">Giá</h4>
+							</div>
+							<div class="store-overlay">
+								<a
+									th:href="@{/user/product/detail/{id}(id=${milkTea.milkTeaID})}"
+									class="btn btn-primary rounded-pill py-2 px-4 m-2"> Xem Chi
+									Tiết <i class="fa fa-arrow-right ms-2"></i>
+								</a> <a
+									th:href="@{/user/cart/addToCart(id=${milkTea.milkTeaID}, quantity=1, size='M')}"
+									class="btn btn-dark rounded-pill py-2 px-4 m-2"> Thêm vào
+									giỏ <i class="fa fa-cart-plus ms-2"></i>
+								</a>
+								<!-- Nút yêu thích -->
+								<button class="btn rounded-pill py-2 px-4 m-2 favorite-button"
+									th:classappend="${milkTea.isFavorited ? 'btn-outline-danger active' : 'btn-outline-danger'}"
+									th:data-favorite="${milkTea.isFavorited ? 'true' : 'false'}"
+									data-milktea-id="${milkTea.milkTeaID}"
+									data-user-id="${user.userID}">
+									<i class="fa fa-heart me-2"></i> <span
+										th:text="${milkTea.isFavorited ? 'Đã yêu thích' : 'Yêu thích'}">Yêu
+										thích</span>
+								</button>
+							</div>
+						</div>
+					</div>
+					<!-- Kết thúc vòng lặp -->
 					<!-- Nút Xem thêm -->
 					<div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
 						<a href="user/product"

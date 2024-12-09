@@ -24,7 +24,7 @@
             <form th:action="@{/admin/shipper/saveOrUpdate}" method="POST">
     <div class="card">
         <div class="card-header">
-            <h2 th:text="${shipper.isEdit ? 'Edit Shipper' : 'Add New Shipper'}"></h2>
+            <h2 th:text="${shipper.isEdit ? 'Add New Shipper' : 'Add New Shipper'}"></h2>
         </div>
         <div class="card-body">
             <!-- ID Shipper -->
@@ -89,7 +89,7 @@
             <a href="#" th:href="@{/admin/shipper}" class="btn btn-success">List Shippers</a>
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-save"></i>
-                <span th:text="${shipper.isEdit ? 'Update' : 'Save'}"></span>
+                <span th:text="${shipper.isEdit ? 'Save' : 'Save'}"></span>
             </button>
         </div>
     </div>

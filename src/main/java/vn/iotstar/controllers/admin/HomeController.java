@@ -98,39 +98,42 @@ public class HomeController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-
-		/// bar chart
-		// Lấy dữ liệu từ cơ sở dữ liệu
+////////////////////////////////////////////
+		// Lấy dữ liệu doanh thu theo chi nhánh từ cơ sở dữ liệu
 		List<Object[]> branchIncome = iIncomeService.findTotalIncomeByBranch();
 
-		// Lưu trữ dữ liệu doanh thu của từng chi nhánh
+		// Tạo danh sách chứa tên chi nhánh và doanh thu
 		List<Map<String, Object>> branchIncomeData = new ArrayList<>();
-		if (branchIncome != null && !branchIncome.isEmpty()) { // Kiểm tra nếu dữ liệu không null hoặc rỗng
-			for (Object[] row : branchIncome) {
-				try {
-					int branchId = (int) row[0]; // ID chi nhánh
-					double income = (double) row[1]; // Doanh thu chi nhánh
-
-					// Tạo đối tượng lưu trữ dữ liệu doanh thu
-					Map<String, Object> data = new HashMap<>();
-					data.put("branchId", branchId);
-					data.put("income", income);
-					branchIncomeData.add(data);
-				} catch (ClassCastException | ArrayIndexOutOfBoundsException ex) {
-					ex.printStackTrace(); // Log lỗi nếu dữ liệu không đúng định dạng
-				}
-			}
+		if (branchIncome != null && !branchIncome.isEmpty()) {
+		    for (Object[] row : branchIncome) {
+		        Map<String, Object> data = new HashMap<>();
+		        data.put("branchId", (int) row[0]);  // ID chi nhánh
+		        data.put("income", (double) row[1]); // Doanh thu
+		        branchIncomeData.add(data);
+		    }
 		}
 
-		// Chuyển mảng dữ liệu thành chuỗi JSON để sử dụng trong view
+		// Tách ra thành 2 phần: chi nhánh và doanh thu
+		List<String> branchLabels = new ArrayList<>();
+		List<Double> branchIncomes = new ArrayList<>();
+		for (Map<String, Object> data : branchIncomeData) {
+		    branchLabels.add("Chi nhánh " + data.get("branchId"));
+		    branchIncomes.add((Double) data.get("income"));
+		}
+
+		// Chuyển mảng thành chuỗi JSON để sử dụng trong view
 		ObjectMapper objectMapper2 = new ObjectMapper();
 		try {
-			String branchIncomeJson = objectMapper2.writeValueAsString(branchIncomeData);
-			model.addAttribute("branchIncomeJson", branchIncomeJson);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace(); // Log lỗi JSON
-		}
+		    String branchLabelsJson = objectMapper2.writeValueAsString(branchLabels);
+		    String branchIncomesJson = objectMapper2.writeValueAsString(branchIncomes);
 
+		    // Thêm dữ liệu vào model
+		    model.addAttribute("branchLabelsJson", branchLabelsJson);
+		    model.addAttribute("branchIncomesJson", branchIncomesJson);
+
+		} catch (JsonProcessingException e) {
+		    e.printStackTrace();
+		}
 		return "admin/index"; // Tên View
 	}
 }

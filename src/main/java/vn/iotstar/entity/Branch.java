@@ -80,4 +80,8 @@ public class Branch {
 
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
     private List<Shipper> shippers;
+    
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
+    private List<Order> orders;
+
 }

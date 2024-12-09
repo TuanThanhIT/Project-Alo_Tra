@@ -32,7 +32,7 @@ public class VNPAYConfig {
 				sb.append("&");
 			}
 		}
-//	        return hmacSHA512(vnp_HashSecret,sb.toString());
+		// return hmacSHA512(vnp_HashSecret,sb.toString());
 		return hmacSHA512(secretKey, sb.toString());
 	}
 

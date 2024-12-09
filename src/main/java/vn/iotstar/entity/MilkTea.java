@@ -73,6 +73,17 @@ public class MilkTea {
     
     @OneToMany(mappedBy = "milkTea", cascade = CascadeType.ALL)
     private List<Like> userMilkTeaLikes;
+   
+    @Override
+    public String toString() {
+        return "MilkTea{" +
+                "milkTeaID=" + milkTeaID +
+                ", milkTeaName='" + milkTeaName + '\'' +
+                ", price=" + price +
+                ", milkTeaTypeID=" + (milkTeaType != null ? milkTeaType.getMilkTeaTypeID() : "null") +
+                '}';
+    }
+
 
 
 }
