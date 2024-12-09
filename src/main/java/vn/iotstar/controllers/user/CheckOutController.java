@@ -70,6 +70,8 @@ public class CheckOutController {
 	        // Lấy tất cả các phương thức giao hàng
 	        List<Delivery> listDeli = deliServ.findAll();
 	        model.addAttribute("listdeli", listDeli);
+	        
+	        System.out.println(listDeli);
 
 	        return "user/checkout";
 	    }
@@ -78,7 +80,8 @@ public class CheckOutController {
 	 public String payNow(HttpSession session, Model model, 
 	                      @RequestParam("address") String address,
 	                      @RequestParam(required = false) Integer deliveryId) {
-
+		 
+		 System.out.println(deliveryId);
 	     // Lấy thông tin người dùng từ session
 	     User user = (User) session.getAttribute("account");
 	     if (user == null) {
@@ -132,7 +135,7 @@ public class CheckOutController {
 	     cartServ.deleteAllItem(user.getUserID());
 
 	     // Chuyển hướng người dùng đến trang thành công
-	     return "redirect:/user/home";
+	     return "redirect:/user/packages";
 	 }
 
 	@PostMapping("/checkout-by-VNPay")

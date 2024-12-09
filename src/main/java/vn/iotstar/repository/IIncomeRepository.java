@@ -2,6 +2,7 @@ package vn.iotstar.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,4 +22,11 @@ public interface IIncomeRepository extends JpaRepository<Income, Integer>{
     // Truy vấn tính tổng thu nhập cho mỗi branch
     @Query("SELECT i.branch.branchID, SUM(i.value) FROM Income i GROUP BY i.branch.branchID")
     List<Object[]> findTotalIncomeByBranch();
+    
+ // Truy vấn lấy ra 4 chi nhánh có tổng giá trị cao nhất
+    @Query("SELECT i.branch, SUM(i.value) AS totalValue " +
+           "FROM Income i " +
+           "GROUP BY i.branch " +
+           "ORDER BY totalValue DESC")
+    List<Object[]> findTop4BranchesByTotalValue(Pageable pageable);
 }

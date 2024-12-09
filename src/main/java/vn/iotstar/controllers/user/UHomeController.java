@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import vn.iotstar.entity.Branch;
 import vn.iotstar.entity.MilkTeaType;
 import vn.iotstar.entity.User;
+import vn.iotstar.services.IIncomeService;
 import vn.iotstar.services.IMilkTeaTypeService;
 import vn.iotstar.services.IUserService;
 
@@ -27,12 +29,16 @@ public class UHomeController {
     @Autowired
     private IUserService userService; // Giả sử bạn có một service để cập nhật thông tin người dùng
     
+	@Autowired
+	private IIncomeService iIncomeService;
+    
     @GetMapping("home")
     public String index(Model model) {
     	// Đưa các loại trà sữa hiển thị lên sidebar
         List<MilkTeaType> list = milkteaType.findAll();
         model.addAttribute("listType", list);
-
+        List<Branch> list1 = iIncomeService.getTop4BranchesByTotalValue();
+		model.addAttribute("listBranch", list1);
         // Dữ liệu `user` đã được thêm từ Interceptor, không cần xử lý lại
         return "user/homeuser"; // Trả về trang homeuser.html
     }

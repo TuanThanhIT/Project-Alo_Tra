@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import vn.iotstar.entity.MilkTea;
+import vn.iotstar.entity.MilkTeaType;
 import vn.iotstar.repository.MilkTeaRepository;
 import vn.iotstar.services.IMilkTeaService;
 
@@ -21,7 +22,7 @@ public class MilkTeaServiceImpl implements IMilkTeaService{
 	
 	@Autowired
 	private MilkTeaRepository milkTeaRepository;
-
+	
 	@Override
 	public List<MilkTea> findAll() {
 		return milkTeaRepository.findAll();
@@ -52,20 +53,22 @@ public class MilkTeaServiceImpl implements IMilkTeaService{
 		return milkTeaRepository.findByMilkTeaType_MilkTeaTypeID(milkTeaTypeID);
 	}
 
+	
+
 	@Override
-	public List<MilkTea> findByMilkTeaIDNot(int milkTeaID) {
-		return milkTeaRepository.findByMilkTeaIDNot(milkTeaID);
+	public List<MilkTea> findByMilkTeaTypeAndMilkTeaIDNot(MilkTeaType milkTeaType, int milkTeaID) {
+		return milkTeaRepository.findByMilkTeaTypeAndMilkTeaIDNot(milkTeaType, milkTeaID);
 	}
 
 	@Override
 	public Page<MilkTea> findAll(Integer pageNo) {
-		Pageable pageable = PageRequest.of(pageNo-1, 2);
+		Pageable pageable = PageRequest.of(pageNo-1, 8);
 		return this.milkTeaRepository.findAll(pageable);
 	}
 
 	@Override
 	public Page<MilkTea> findByMilkTeaType_MilkTeaTypeID(int milkTeaTypeID, Integer pageNo) {
-		Pageable pageable = PageRequest.of(pageNo-1, 2);
+		Pageable pageable = PageRequest.of(pageNo-1, 8);
 		return this.milkTeaRepository.findByMilkTeaType_MilkTeaTypeID(milkTeaTypeID, pageable);
 	}
 
@@ -77,7 +80,7 @@ public class MilkTeaServiceImpl implements IMilkTeaService{
 	@Override
 	public Page<MilkTea> searchMilkTea(String keyword, Integer pageNo) {
 		List list = this.searchMilkTea(keyword);
-		Pageable pageable = PageRequest.of(pageNo-1, 2);
+		Pageable pageable = PageRequest.of(pageNo-1, 8);
 		Integer start = (int)pageable.getOffset();
 		Integer end = (int)((pageable.getOffset() + pageable.getPageSize()) > list.size() ? list.size() : pageable.getOffset() + pageable.getPageSize());
 		list = list.subList(start, end);
@@ -92,7 +95,7 @@ public class MilkTeaServiceImpl implements IMilkTeaService{
 	@Override
 	public Page<MilkTea> searchMilkTeaByType(String keyword, int milkTeaTypeID, Integer pageNo) {
 		List list = this.searchMilkTeaByType(milkTeaTypeID, keyword);
-		Pageable pageable = PageRequest.of(pageNo-1, 2);
+		Pageable pageable = PageRequest.of(pageNo-1, 8);
 		Integer start = (int)pageable.getOffset();
 		Integer end = (int)((pageable.getOffset() + pageable.getPageSize()) > list.size() ? list.size() : pageable.getOffset() + pageable.getPageSize());
 		list = list.subList(start, end);
