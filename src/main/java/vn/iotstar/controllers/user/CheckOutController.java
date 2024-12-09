@@ -2,6 +2,7 @@ package vn.iotstar.controllers.user;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import vn.iotstar.entity.Branch;
 import vn.iotstar.entity.Cart;
 import vn.iotstar.entity.CartMilkTea;
 import vn.iotstar.entity.Delivery;
@@ -21,6 +23,7 @@ import vn.iotstar.entity.Order;
 import vn.iotstar.entity.Pays;
 import vn.iotstar.entity.User;
 import vn.iotstar.enums.OrderStatus;
+import vn.iotstar.services.IBranchService;
 import vn.iotstar.services.ICartMilkTeaService;
 import vn.iotstar.services.ICartService;
 import vn.iotstar.services.IDeliveryService;
@@ -49,6 +52,8 @@ public class CheckOutController {
 	private IPayService paysServ;
 	@Autowired
 	private IDeliveryService deliServ;
+	@Autowired
+	private IBranchService iBranchService;//Toan
 
 	 @GetMapping("/preview")
 	    public String getCheckOut(HttpSession session, Model model) {
@@ -111,14 +116,25 @@ public class CheckOutController {
 	     // Tính tổng tiền từ giỏ hàng và cộng thêm phí vận chuyển
 	     BigDecimal totalCost = cart.getTotalCost(); // Giả sử có phương thức để tính tổng tiền giỏ hàng
 	     BigDecimal totalWithShipping = totalCost.add(delivery.getExtraCost()); // Tổng tiền cộng phí vận chuyển
-
+	     
+	     
 	     // Tạo đối tượng đơn hàng mới
 	     Order order = new Order();
 	     order.setCart(cart);
 	     order.setShipAddress(address);
 	     order.setUser(user);
 	     order.setStatus(OrderStatus.PENDING); // Đơn hàng đang chờ xử lý
+	     //BEGIN TOAN
+	     Optional<Branch> opBranch = iBranchService.findById(1);
+	     if (opBranch.isPresent()) { 
+	    	    Branch branch = opBranch.get(); 
+	    	    System.out.println("Branch found: " + branch); // Kiểm tra branch lấy được 
+	    	    order.setBranch(branch);
+	    	} else { 
+	    	    System.out.println("Branch not found with ID 1"); 
+	    	}
 
+	     //END TOAN
 	     // Tạo đối tượng thanh toán (COD)
 	     Pays payment = new Pays();
 	     payment.setPayMethod("COD"); // Phương thức thanh toán COD
