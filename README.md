@@ -91,3 +91,7 @@ spring.mail.username
 **6. File báo cáo**
 
 - Ở thư mục FileBaoCao
+
+**6. File database**
+
+- Ở thư mục FileDatbase
