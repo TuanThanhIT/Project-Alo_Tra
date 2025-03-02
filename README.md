@@ -85,3 +85,9 @@ spring.mail.username
   - Mật khẩu: 123
 
 **5. Cài đặt lombok**
+
+- Nếu sử dụng spring tool suite thì phải cài lombok
+
+**6. File báo cáo**
+
+- Ở thư mục FileBaoCao
